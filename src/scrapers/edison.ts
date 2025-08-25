@@ -26,33 +26,30 @@ export const scrapeEdisonMenu = async (): Promise<MenuItem[]> => {
                 continue;
             }
 
-                // Check if line starts with a category (allow extra text after category)
-                const categoryMatch = line.match(/^(Green|Local|World Wide)(,.*)?$/);
-                if (categoryMatch && currentDay) {
-                    const category = categoryMatch[1];
-                    // Next line should be the price
-                    if (i + 1 < lines.length && lines[i + 1].includes('115:-')) {
-                        // Line after that should be the description
-                        if (i + 2 < lines.length) {
-                            // Normalize price: extract only the number
-                            const rawPrice = lines[i + 1];
-                            const priceMatch = rawPrice.match(/(\d+)/);
-                            const price = priceMatch ? `${priceMatch[1]} kr` : rawPrice;
-                            const description = lines[i + 2];
+            // Check if line starts with a category (allow extra text after category)
+            const categoryMatch = line.match(/^(Green|Local|World Wide)(,.*)?$/);
+            if (categoryMatch && currentDay) {
+                const category = categoryMatch[1];
+                // Next line should be the price
+                if (i + 1 < lines.length && i + 2 < lines.length) {
+                    const rawPrice = lines[i + 1];
+                    // Look for any number in the price line
+                    const priceMatch = rawPrice.match(/(\d+)/);
+                    const price = priceMatch ? priceMatch[1] : rawPrice;
+                    const description = lines[i + 2];
 
-                            const menuItem = {
-                                name: `${category}: ${description}`,
-                                price: price,
-                                day: currentDay
-                            };
+                    const menuItem = {
+                        name: `${category}: ${description}`,
+                        price: price,
+                        day: currentDay
+                    };
 
-                            menuItems.push(menuItem);
+                    menuItems.push(menuItem);
 
-                            // Skip the processed lines
-                            i += 2;
-                        }
-                    }
+                    // Skip the processed lines
+                    i += 2;
                 }
+            }
         }
 
         return menuItems;

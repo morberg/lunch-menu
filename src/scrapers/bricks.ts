@@ -25,7 +25,7 @@ export const scrapeBricksMenu = async (): Promise<MenuItem[]> => {
                 currentDay = line;
                 continue;
             }
-            
+
             // Check if line is a category (Green, Local, Worldwide, Pizza) followed by price and description
             if ((line === 'Green' || line === 'Local' || line === 'Worldwide' || line === 'Pizza') && currentDay) {
                 // Next line should be the price

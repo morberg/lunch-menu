@@ -36,7 +36,7 @@ async function debugEdisonStructure() {
         const fridayIdx = lines.findIndex(l => l === 'Fredag');
         if (fridayIdx !== -1) {
             console.log('\n=== CONTEXT AROUND FRIDAY ===');
-            for (let j = Math.max(0, fridayIdx-5); j <= Math.min(lines.length-1, fridayIdx+10); j++) {
+            for (let j = Math.max(0, fridayIdx - 5); j <= Math.min(lines.length - 1, fridayIdx + 10); j++) {
                 console.log(j + ': ' + lines[j]);
             }
         }

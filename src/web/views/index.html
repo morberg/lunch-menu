@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,41 +13,41 @@
             padding: 20px;
             background-color: #f5f5f5;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 30px;
         }
-        
+
         h1 {
             color: #333;
             margin-bottom: 10px;
         }
-        
+
         .subtitle {
             color: #666;
             font-size: 16px;
         }
-        
+
         .restaurant {
             background: white;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
+
         .restaurant h2 {
             color: #333;
             border-bottom: 2px solid #007bff;
             padding-bottom: 10px;
             margin-bottom: 15px;
         }
-        
+
         .day-section {
             margin-bottom: 20px;
         }
-        
+
         .day-title {
             font-weight: bold;
             color: #007bff;
@@ -55,7 +56,7 @@
             padding: 8px 0;
             border-bottom: 1px solid #eee;
         }
-        
+
         .menu-item {
             background: #f8f9fa;
             padding: 12px;
@@ -63,24 +64,24 @@
             border-radius: 6px;
             border-left: 4px solid #007bff;
         }
-        
+
         .menu-item-name {
             font-weight: 500;
             margin-bottom: 4px;
         }
-        
+
         .menu-item-price {
             color: #28a745;
             font-weight: bold;
             float: right;
         }
-        
+
         .loading {
             text-align: center;
             padding: 40px;
             color: #666;
         }
-        
+
         .error {
             background: #f8d7da;
             color: #721c24;
@@ -88,49 +89,52 @@
             border-radius: 6px;
             margin: 20px 0;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 8px;
         }
-        
-        th, td {
+
+        th,
+        td {
             padding: 4px 6px;
             text-align: left;
             vertical-align: top;
         }
-        
+
         th {
             background: #f0f0f0;
             font-size: 15px;
         }
-        
+
         td {
             border-top: 1px solid #eee;
         }
-        
+
         @media (max-width: 600px) {
             body {
                 padding: 6px;
             }
+
             .restaurant {
                 padding: 7px;
             }
         }
     </style>
 </head>
+
 <body>
     <header>
         <h1>🍽️ Lunchmenyer Lund</h1>
         <p class="subtitle">Färska lunchmenyer från restauranger nära dig</p>
     </header>
-    
+
     <main>
         <div id="loading" class="loading">
             Laddar menyer...
         </div>
-        
+
         <div id="content" style="display: none;">
             <!-- Menu content will be loaded here -->
         </div>
@@ -145,7 +149,7 @@
                 document.getElementById('content').style.display = 'block';
                 displayMenus(data);
             } catch (error) {
-                document.getElementById('loading').innerHTML = 
+                document.getElementById('loading').innerHTML =
                     '<div class="error">Kunde inte ladda menyer. Försök igen senare.</div>';
                 console.error('Error loading menus:', error);
             }
@@ -154,7 +158,17 @@
             const content = document.getElementById('content');
             content.innerHTML = '';
             // Swedish day names
-            const days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Veckans vegetariska', 'Månadens alternativ'];
+            // Map day keys to Swedish labels for display and filtering
+            const dayMap = {
+                'Måndag': 'Måndag',
+                'Tisdag': 'Tisdag',
+                'Onsdag': 'Onsdag',
+                'Torsdag': 'Torsdag',
+                'Fredag': 'Fredag',
+                'Weekly Special': 'Veckans vegetariska',
+                'Monthly Special': 'Månadens alternativ'
+            };
+            const days = Object.values(dayMap);
             const restaurants = [
                 { name: 'Edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
                 { name: 'Bricks Eatery', data: data.bricks, url: 'https://brickseatery.se/lunch/' },
@@ -166,7 +180,9 @@
                 dayDiv.className = 'day-section';
                 dayDiv.innerHTML = `<div class="day-title">${daySv}</div>`;
                 restaurants.forEach(r => {
-                    const items = (r.data || []).filter(item => item.day === daySv);
+                    // Find the key for this Swedish label
+                    const dayKey = Object.keys(dayMap).find(key => dayMap[key] === daySv);
+                    const items = (r.data || []).filter(item => item.day === daySv || item.day === dayKey);
                     if (items.length > 0) {
                         hasMenus = true;
                         const restaurantDiv = document.createElement('div');
@@ -209,4 +225,5 @@
         window.addEventListener('DOMContentLoaded', loadMenus);
     </script>
 </body>
+
 </html>

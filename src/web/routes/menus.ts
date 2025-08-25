@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/menus', async (req, res) => {
     try {
         console.log('Fetching menus from all restaurants...');
-        
+
         const [edisonMenu, bricksMenu, kantinMenu] = await Promise.allSettled([
             scrapeEdisonMenu(),
             scrapeBricksMenu(),

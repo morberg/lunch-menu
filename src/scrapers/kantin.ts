@@ -57,7 +57,7 @@ export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
                 const description = lines[i + 1];
                 const menuItem = {
                     name: `Veckans vegetariska: ${description}`,
-                    price: 'Se restaurang för pris',
+                    price: 'Se restaurang',
                     day: 'Weekly Special'
                 };
                 menuItems.push(menuItem);
@@ -68,7 +68,7 @@ export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
                 const description = lines[i + 1];
                 const menuItem = {
                     name: `Månadens alternativ: ${description}`,
-                    price: 'Se restaurang för pris',
+                    price: 'Se restaurang',
                     day: 'Monthly Special'
                 };
                 menuItems.push(menuItem);

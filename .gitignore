@@ -119,3 +119,4 @@ coverage/
 debug-*.js
 test-*.js
 debug-*.js
+.vercel

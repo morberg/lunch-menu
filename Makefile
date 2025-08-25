@@ -23,3 +23,6 @@ run-debug-bricks:
 
 run-debug-kantin:
 	npm run build && node dist/debug-kantin.js
+
+run-debug-grenden:
+	npm run build && node dist/debug-grenden.js

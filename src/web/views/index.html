@@ -173,7 +173,8 @@
                 { name: 'Edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
                 { name: 'Bricks Eatery', data: data.bricks, url: 'https://brickseatery.se/lunch/' },
                 { name: 'Kantin', data: data.kantin, url: 'https://www.kantinlund.se/' },
-                { name: 'Smakapakina', data: data.smakapakina, url: 'https://www.smakapakina.se/meny' }
+                { name: 'Smakapakina', data: data.smakapakina, url: 'https://www.smakapakina.se/meny' },
+                { name: 'Grenden', data: data.grenden, url: 'https://lund.pieplowsmat.se/grenden/' }
             ];
             days.forEach(daySv => {
                 let hasMenus = false;
@@ -219,7 +220,7 @@
                 }
             });
             // Show message if no menus available
-            if (!data.edison?.length && !data.bricks?.length && !data.kantin?.length) {
+            if (!data.edison?.length && !data.bricks?.length && !data.kantin?.length && !data.smakapakina?.length && !data.grenden?.length) {
                 content.innerHTML = '<div class="error">Inga menyer tillgängliga just nu. Försök igen senare.</div>';
             }
         }

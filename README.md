@@ -20,7 +20,8 @@ lunch-menu-scraper
 │   ├── scrapers
 │   │   ├── edison.ts       # Scraper for Edison restaurant
 │   │   ├── bricks.ts       # Scraper for Brick's Eatery
-│   │   └── kantin.ts       # Scraper for Kantin restaurant
+│   │   ├── kantin.ts       # Scraper for Kantin
+│   │   └── ...             # More scrapers as needed
 │   ├── types
 │   │   └── menu.ts         # Type definitions for menu items
 │   ├── web
@@ -38,30 +39,14 @@ lunch-menu-scraper
 
 ## Setup Instructions
 
-1. **Clone the repository:**
-   ```
-   git clone <repository-url>
-   cd lunch-menu-scraper
-   ```
-
-
-2. **Install dependencies:**
-   ```
-   make install
-   ```
-
-3. **Build the project:**
-   ```
-   make build
-   ```
-
-4. **Run the application:**
+1. **Run the application:**
    ```
    make start
    ```
 
-5. **Access the web interface:**
-   Open your web browser and navigate to `http://localhost:3000` to view the lunch menus.
+2. **Access the web interface:**
+   Open your web browser and navigate to `http://localhost:3000` to view the
+   lunch menus locally.
 
 ## Makefile Commands
 

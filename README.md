@@ -7,6 +7,8 @@ This project is a web application that scrapes daily lunch menus from selected r
 - [Edison](https://restaurangedison.se/lunch/)
 - [Brick's Eatery](https://brickseatery.se/lunch/)
 - [Kantin](https://www.kantinlund.se/)
+- [Gränden](https://grendenlund.se/lunch/)
+- [Smakapåkina](https://smakapakina.se/lunch/)
 
 ## Project Structure
 
@@ -76,9 +78,21 @@ You can use the included Makefile for common tasks:
 | make run-debug-bricks | Run Bricks debug script           |
 | make run-debug-kantin | Run Kantin debug script           |
 
+| make deploy-vercel     | Deploy the app to Vercel         |
+
 All npm commands can still be used directly if preferred.
 
 ## Usage Guidelines
+
+## Deployment
+
+The project can be deployed to Vercel using:
+
+```
+make deploy-vercel
+```
+
+View the deployed app at: https://lunch-menu-coral.vercel.app
 
 - The application will automatically scrape the lunch menus from the specified restaurants each time it is accessed.
 - Menu items will be displayed in a structured format, including the name of the dish and its price.

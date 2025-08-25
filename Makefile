@@ -26,3 +26,6 @@ run-debug-kantin:
 
 run-debug-grenden:
 	npm run build && node dist/debug-grenden.js
+
+deploy-vercel:
+	npx vercel --prod

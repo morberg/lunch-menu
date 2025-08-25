@@ -42,18 +42,41 @@ lunch-menu-scraper
    cd lunch-menu-scraper
    ```
 
+
 2. **Install dependencies:**
    ```
-   npm install
+   make install
    ```
 
-3. **Run the application:**
+3. **Build the project:**
    ```
-   npm start
+   make build
    ```
 
-4. **Access the web interface:**
+4. **Run the application:**
+   ```
+   make start
+   ```
+
+5. **Access the web interface:**
    Open your web browser and navigate to `http://localhost:3000` to view the lunch menus.
+
+## Makefile Commands
+
+You can use the included Makefile for common tasks:
+
+| Command           | Description                       |
+|-------------------|-----------------------------------|
+| make install      | Install dependencies              |
+| make build        | Build the project                 |
+| make start        | Build and start the web server    |
+| make test         | Run tests (if implemented)        |
+| make clean        | Remove build and dependency files |
+| make run-debug-edison | Run Edison debug script        |
+| make run-debug-bricks | Run Bricks debug script        |
+| make run-debug-kantin | Run Kantin debug script        |
+
+All npm commands can still be used directly if preferred.
 
 ## Usage Guidelines
 

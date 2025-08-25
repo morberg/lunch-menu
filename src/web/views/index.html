@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -89,26 +89,46 @@
             margin: 20px 0;
         }
         
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 8px;
+        }
+        
+        th, td {
+            padding: 4px 6px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        th {
+            background: #f0f0f0;
+            font-size: 15px;
+        }
+        
+        td {
+            border-top: 1px solid #eee;
+        }
+        
         @media (max-width: 600px) {
             body {
-                padding: 10px;
+                padding: 6px;
             }
-            
             .restaurant {
-                padding: 15px;
+                padding: 7px;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>🍽️ Lund Lunch Menus</h1>
-        <p class="subtitle">Fresh daily menus from restaurants near you</p>
+        <h1>🍽️ Lunchmenyer Lund</h1>
+        <p class="subtitle">Färska lunchmenyer från restauranger nära dig</p>
     </header>
     
     <main>
         <div id="loading" class="loading">
-            Loading menus...
+            Laddar menyer...
         </div>
         
         <div id="content" style="display: none;">
@@ -121,90 +141,71 @@
             try {
                 const response = await fetch('/api/menus');
                 const data = await response.json();
-                
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('content').style.display = 'block';
-                
                 displayMenus(data);
             } catch (error) {
                 document.getElementById('loading').innerHTML = 
-                    '<div class="error">Failed to load menus. Please try again later.</div>';
+                    '<div class="error">Kunde inte ladda menyer. Försök igen senare.</div>';
                 console.error('Error loading menus:', error);
             }
         }
-        
         function displayMenus(data) {
             const content = document.getElementById('content');
-            
-            // Helper function to create restaurant section
-            function createRestaurantSection(restaurantName, menuData, websiteUrl) {
-                if (!menuData || menuData.length === 0) {
-                    return null;
-                }
-                
-                const restaurantDiv = document.createElement('div');
-                restaurantDiv.className = 'restaurant';
-                
-                const titleHtml = websiteUrl ? 
-                    `<h2><a href="${websiteUrl}" target="_blank" style="color: inherit; text-decoration: none;">${restaurantName}</a></h2>` :
-                    `<h2>${restaurantName}</h2>`;
-                
-                restaurantDiv.innerHTML = titleHtml;
-                
-                // Group menu by day
-                const groupedByDay = {};
-                menuData.forEach(item => {
-                    if (!groupedByDay[item.day]) {
-                        groupedByDay[item.day] = [];
-                    }
-                    groupedByDay[item.day].push(item);
-                });
-                
-                // Order days properly
-                const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Weekly Special', 'Monthly Special'];
-                dayOrder.forEach(day => {
-                    if (groupedByDay[day]) {
-                        const dayDiv = document.createElement('div');
-                        dayDiv.className = 'day-section';
-                        dayDiv.innerHTML = `<div class="day-title">${day}</div>`;
-                        
-                        groupedByDay[day].forEach(item => {
-                            const menuItemDiv = document.createElement('div');
-                            menuItemDiv.className = 'menu-item';
-                            menuItemDiv.innerHTML = `
-                                <div class="menu-item-name">${item.name}</div>
-                                <div class="menu-item-price">${item.price}</div>
-                                <div style="clear: both;"></div>
+            content.innerHTML = '';
+            // Swedish day names
+            const days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Veckans vegetariska', 'Månadens alternativ'];
+            const restaurants = [
+                { name: 'Edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
+                { name: 'Bricks Eatery', data: data.bricks, url: 'https://brickseatery.se/lunch/' },
+                { name: 'Kantin', data: data.kantin, url: 'https://www.kantinlund.se/' }
+            ];
+            days.forEach(daySv => {
+                let hasMenus = false;
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'day-section';
+                dayDiv.innerHTML = `<div class="day-title">${daySv}</div>`;
+                restaurants.forEach(r => {
+                    const items = (r.data || []).filter(item => item.day === daySv);
+                    if (items.length > 0) {
+                        hasMenus = true;
+                        const restaurantDiv = document.createElement('div');
+                        restaurantDiv.className = 'restaurant';
+                        restaurantDiv.innerHTML = `<strong><a href="${r.url}" target="_blank" style="color: inherit; text-decoration: none;">${r.name}</a></strong>`;
+                        // Table for all menu items of this restaurant for this day
+                        const table = document.createElement('table');
+                        table.style.width = '100%';
+                        table.style.borderCollapse = 'collapse';
+                        table.style.marginBottom = '4px';
+                        table.innerHTML = `<tbody></tbody>`;
+                        const tbody = table.querySelector('tbody');
+                        items.forEach(item => {
+                            const tr = document.createElement('tr');
+                            // Extract only the number from price, if present
+                            let price = item.price;
+                            const priceMatch = price.match(/(\d+)/);
+                            if (priceMatch) {
+                                price = `${priceMatch[1]} kr`;
+                            }
+                            tr.innerHTML = `
+                                <td style="padding:4px 6px;vertical-align:top;">${item.name}</td>
+                                <td style="padding:4px 6px;text-align:right;vertical-align:top;color:#28a745;font-weight:bold;">${price}</td>
                             `;
-                            dayDiv.appendChild(menuItemDiv);
+                            tbody.appendChild(tr);
                         });
-                        
-                        restaurantDiv.appendChild(dayDiv);
+                        restaurantDiv.appendChild(table);
+                        dayDiv.appendChild(restaurantDiv);
                     }
                 });
-                
-                return restaurantDiv;
-            }
-            
-            // Display Edison
-            const edisonSection = createRestaurantSection('Restaurant Edison', data.edison, 'https://restaurangedison.se/lunch/');
-            if (edisonSection) content.appendChild(edisonSection);
-            
-            // Display Bricks
-            const bricksSection = createRestaurantSection('Bricks Eatery', data.bricks, 'https://brickseatery.se/lunch/');
-            if (bricksSection) content.appendChild(bricksSection);
-            
-            // Display Kantin
-            const kantinSection = createRestaurantSection('Kantin', data.kantin, 'https://www.kantinlund.se/');
-            if (kantinSection) content.appendChild(kantinSection);
-            
+                if (hasMenus) {
+                    content.appendChild(dayDiv);
+                }
+            });
             // Show message if no menus available
             if (!data.edison?.length && !data.bricks?.length && !data.kantin?.length) {
-                content.innerHTML = '<div class="error">No menus available at the moment. Please try again later.</div>';
+                content.innerHTML = '<div class="error">Inga menyer tillgängliga just nu. Försök igen senare.</div>';
             }
         }
-        
-        // Load menus when page loads
         window.addEventListener('DOMContentLoaded', loadMenus);
     </script>
 </body>

@@ -78,7 +78,7 @@ You can use the included Makefile for common tasks:
 | make run-debug-bricks  | Run Bricks debug script           |
 | make run-debug-kantin  | Run Kantin debug script           |
 | make run-debug-grenden | Run Grenden debug script          |
-| make deploy-vercel     | Deploy the app to Vercel          |
+| make deploy            | Deploy the app to Vercel          |
 
 All npm commands can still be used directly if preferred.
 
@@ -89,7 +89,7 @@ All npm commands can still be used directly if preferred.
 The project can be deployed to Vercel using:
 
 ```
-make deploy-vercel
+make deploy
 ```
 
 View the deployed app at: https://lunch-menu-coral.vercel.app

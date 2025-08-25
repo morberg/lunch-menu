@@ -67,18 +67,18 @@ lunch-menu-scraper
 
 You can use the included Makefile for common tasks:
 
-| Command               | Description                       |
-| --------------------- | --------------------------------- |
-| make install          | Install dependencies              |
-| make build            | Build the project                 |
-| make start            | Build and start the web server    |
-| make test             | Run tests (if implemented)        |
-| make clean            | Remove build and dependency files |
-| make run-debug-edison | Run Edison debug script           |
-| make run-debug-bricks | Run Bricks debug script           |
-| make run-debug-kantin | Run Kantin debug script           |
-
-| make deploy-vercel     | Deploy the app to Vercel         |
+| Command                | Description                       |
+| ---------------------- | --------------------------------- |
+| make install           | Install dependencies              |
+| make build             | Build the project                 |
+| make start             | Build and start the web server    |
+| make test              | Run tests (if implemented)        |
+| make clean             | Remove build and dependency files |
+| make run-debug-edison  | Run Edison debug script           |
+| make run-debug-bricks  | Run Bricks debug script           |
+| make run-debug-kantin  | Run Kantin debug script           |
+| make run-debug-grenden | Run Grenden debug script          |
+| make deploy-vercel     | Deploy the app to Vercel          |
 
 All npm commands can still be used directly if preferred.
 

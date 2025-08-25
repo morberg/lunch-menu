@@ -223,6 +223,21 @@
             if (!data.edison?.length && !data.bricks?.length && !data.kantin?.length && !data.smakapakina?.length && !data.grenden?.length) {
                 content.innerHTML = '<div class="error">Inga menyer tillgängliga just nu. Försök igen senare.</div>';
             }
+                // --- Automatic scroll to today's section ---
+                const today = new Date();
+                const swedishDays = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
+                const todayName = swedishDays[today.getDay()];
+                // Only scroll if today is a weekday (Måndag-Fredag)
+                if (['Måndag','Tisdag','Onsdag','Torsdag','Fredag'].includes(todayName)) {
+                    // Find the first .day-title matching today
+                    const dayTitles = document.querySelectorAll('.day-title');
+                    for (const el of dayTitles) {
+                        if (el.textContent.trim() === todayName) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            break;
+                        }
+                    }
+                }
         }
         window.addEventListener('DOMContentLoaded', loadMenus);
     </script>

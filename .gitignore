@@ -118,3 +118,5 @@ coverage/
 # Debug files
 debug-*.js
 test-*.js
+debug-*.ts
+test-*.ts

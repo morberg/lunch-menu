@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="sv-SE">
+<head><meta charset="UTF-8"><script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script><script>(()=>{class RocketLazyLoadScripts{constructor(){this.v="1.2.6",this.triggerEvents=["keydown","mousedown","mousemove","touchmove","touchstart","touchend","wheel"],this.userEventHandler=this.t.bind(this),this.touchStartHandler=this.i.bind(this),this.touchMoveHandler=this.o.bind(this),this.touchEndHandler=this.h.bind(this),this.clickHandler=this.u.bind(this),this.interceptedClicks=[],this.interceptedClickListeners=[],this.l(this),window.addEventListener("pageshow",(t=>{this.persisted=t.persisted,this.everythingLoaded&&this.m()})),this.CSPIssue=sessionStorage.getItem("rocketCSPIssue"),document.addEventListener("securitypolicyviolation",(t=>{this.CSPIssue||"script-src-elem"!==t.violatedDirective||"data"!==t.blockedURI||(this.CSPIssue=!0,sessionStorage.setItem("rocketCSPIssue",!0))})),document.addEventListener("DOMContentLoaded",(()=>{this.k()})),this.delayedScripts={normal:[],async:[],defer:[]},this.trash=[],this.allJQueries=[]}p(t){document.hidden?t.t():(this.triggerEvents.forEach((e=>window.addEventListener(e,t.userEventHandler,{passive:!0}))),window.addEventListener("touchstart",t.touchStartHandler,{passive:!0}),window.addEventListener("mousedown",t.touchStartHandler),document.addEventListener("visibilitychange",t.userEventHandler))}_(){this.triggerEvents.forEach((t=>window.removeEventListener(t,this.userEventHandler,{passive:!0}))),document.removeEventListener("visibilitychange",this.userEventHandler)}i(t){"HTML"!==t.target.tagName&&(window.addEventListener("touchend",this.touchEndHandler),window.addEventListener("mouseup",this.touchEndHandler),window.addEventListener("touchmove",this.touchMoveHandler,{passive:!0}),window.addEventListener("mousemove",this.touchMoveHandler),t.target.addEventListener("click",this.clickHandler),this.L(t.target,!0),this.S(t.target,"onclick","rocket-onclick"),this.C())}o(t){window.removeEventListener("touchend",this.touchEndHandler),window.removeEventListener("mouseup",this.touchEndHandler),window.removeEventListener("touchmove",this.touchMoveHandler,{passive:!0}),window.removeEventListener("mousemove",this.touchMoveHandler),t.target.removeEventListener("click",this.clickHandler),this.L(t.target,!1),this.S(t.target,"rocket-onclick","onclick"),this.M()}h(){window.removeEventListener("touchend",this.touchEndHandler),window.removeEventListener("mouseup",this.touchEndHandler),window.removeEventListener("touchmove",this.touchMoveHandler,{passive:!0}),window.removeEventListener("mousemove",this.touchMoveHandler)}u(t){t.target.removeEventListener("click",this.clickHandler),this.L(t.target,!1),this.S(t.target,"rocket-onclick","onclick"),this.interceptedClicks.push(t),t.preventDefault(),t.stopPropagation(),t.stopImmediatePropagation(),this.M()}O(){window.removeEventListener("touchstart",this.touchStartHandler,{passive:!0}),window.removeEventListener("mousedown",this.touchStartHandler),this.interceptedClicks.forEach((t=>{t.target.dispatchEvent(new MouseEvent("click",{view:t.view,bubbles:!0,cancelable:!0}))}))}l(t){EventTarget.prototype.addEventListenerWPRocketBase=EventTarget.prototype.addEventListener,EventTarget.prototype.addEventListener=function(e,i,o){"click"!==e||t.windowLoaded||i===t.clickHandler||t.interceptedClickListeners.push({target:this,func:i,options:o}),(this||window).addEventListenerWPRocketBase(e,i,o)}}L(t,e){this.interceptedClickListeners.forEach((i=>{i.target===t&&(e?t.removeEventListener("click",i.func,i.options):t.addEventListener("click",i.func,i.options))})),t.parentNode!==document.documentElement&&this.L(t.parentNode,e)}D(){return new Promise((t=>{this.P?this.M=t:t()}))}C(){this.P=!0}M(){this.P=!1}S(t,e,i){t.hasAttribute&&t.hasAttribute(e)&&(event.target.setAttribute(i,event.target.getAttribute(e)),event.target.removeAttribute(e))}t(){this._(this),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",this.R.bind(this)):this.R()}k(){let t=[];document.querySelectorAll("script[type=rocketlazyloadscript][data-rocket-src]").forEach((e=>{let i=e.getAttribute("data-rocket-src");if(i&&!i.startsWith("data:")){0===i.indexOf("//")&&(i=location.protocol+i);try{const o=new URL(i).origin;o!==location.origin&&t.push({src:o,crossOrigin:e.crossOrigin||"module"===e.getAttribute("data-rocket-type")})}catch(t){}}})),t=[...new Map(t.map((t=>[JSON.stringify(t),t]))).values()],this.T(t,"preconnect")}async R(){this.lastBreath=Date.now(),this.j(this),this.F(this),this.I(),this.W(),this.q(),await this.A(this.delayedScripts.normal),await this.A(this.delayedScripts.defer),await this.A(this.delayedScripts.async);try{await this.U(),await this.H(this),await this.J()}catch(t){console.error(t)}window.dispatchEvent(new Event("rocket-allScriptsLoaded")),this.everythingLoaded=!0,this.D().then((()=>{this.O()})),this.N()}W(){document.querySelectorAll("script[type=rocketlazyloadscript]").forEach((t=>{t.hasAttribute("data-rocket-src")?t.hasAttribute("async")&&!1!==t.async?this.delayedScripts.async.push(t):t.hasAttribute("defer")&&!1!==t.defer||"module"===t.getAttribute("data-rocket-type")?this.delayedScripts.defer.push(t):this.delayedScripts.normal.push(t):this.delayedScripts.normal.push(t)}))}async B(t){if(await this.G(),!0!==t.noModule||!("noModule"in HTMLScriptElement.prototype))return new Promise((e=>{let i;function o(){(i||t).setAttribute("data-rocket-status","executed"),e()}try{if(navigator.userAgent.indexOf("Firefox/")>0||""===navigator.vendor||this.CSPIssue)i=document.createElement("script"),[...t.attributes].forEach((t=>{let e=t.nodeName;"type"!==e&&("data-rocket-type"===e&&(e="type"),"data-rocket-src"===e&&(e="src"),i.setAttribute(e,t.nodeValue))})),t.text&&(i.text=t.text),i.hasAttribute("src")?(i.addEventListener("load",o),i.addEventListener("error",(function(){i.setAttribute("data-rocket-status","failed-network"),e()})),setTimeout((()=>{i.isConnected||e()}),1)):(i.text=t.text,o()),t.parentNode.replaceChild(i,t);else{const i=t.getAttribute("data-rocket-type"),s=t.getAttribute("data-rocket-src");i?(t.type=i,t.removeAttribute("data-rocket-type")):t.removeAttribute("type"),t.addEventListener("load",o),t.addEventListener("error",(i=>{this.CSPIssue&&i.target.src.startsWith("data:")?(console.log("WPRocket: data-uri blocked by CSP -> fallback"),t.removeAttribute("src"),this.B(t).then(e)):(t.setAttribute("data-rocket-status","failed-network"),e())})),s?(t.removeAttribute("data-rocket-src"),t.src=s):t.src="data:text/javascript;base64,"+window.btoa(unescape(encodeURIComponent(t.text)))}}catch(i){t.setAttribute("data-rocket-status","failed-transform"),e()}}));t.setAttribute("data-rocket-status","skipped")}async A(t){const e=t.shift();return e&&e.isConnected?(await this.B(e),this.A(t)):Promise.resolve()}q(){this.T([...this.delayedScripts.normal,...this.delayedScripts.defer,...this.delayedScripts.async],"preload")}T(t,e){var i=document.createDocumentFragment();t.forEach((t=>{const o=t.getAttribute&&t.getAttribute("data-rocket-src")||t.src;if(o&&!o.startsWith("data:")){const s=document.createElement("link");s.href=o,s.rel=e,"preconnect"!==e&&(s.as="script"),t.getAttribute&&"module"===t.getAttribute("data-rocket-type")&&(s.crossOrigin=!0),t.crossOrigin&&(s.crossOrigin=t.crossOrigin),t.integrity&&(s.integrity=t.integrity),i.appendChild(s),this.trash.push(s)}})),document.head.appendChild(i)}j(t){let e={};function i(i,o){return e[o].eventsToRewrite.indexOf(i)>=0&&!t.everythingLoaded?"rocket-"+i:i}function o(t,o){!function(t){e[t]||(e[t]={originalFunctions:{add:t.addEventListener,remove:t.removeEventListener},eventsToRewrite:[]},t.addEventListener=function(){arguments[0]=i(arguments[0],t),e[t].originalFunctions.add.apply(t,arguments)},t.removeEventListener=function(){arguments[0]=i(arguments[0],t),e[t].originalFunctions.remove.apply(t,arguments)})}(t),e[t].eventsToRewrite.push(o)}function s(e,i){let o=e[i];e[i]=null,Object.defineProperty(e,i,{get:()=>o||function(){},set(s){t.everythingLoaded?o=s:e["rocket"+i]=o=s}})}o(document,"DOMContentLoaded"),o(window,"DOMContentLoaded"),o(window,"load"),o(window,"pageshow"),o(document,"readystatechange"),s(document,"onreadystatechange"),s(window,"onload"),s(window,"onpageshow");try{Object.defineProperty(document,"readyState",{get:()=>t.rocketReadyState,set(e){t.rocketReadyState=e},configurable:!0}),document.readyState="loading"}catch(t){console.log("WPRocket DJE readyState conflict, bypassing")}}F(t){let e;function i(e){return t.everythingLoaded?e:e.split(" ").map((t=>"load"===t||0===t.indexOf("load.")?"rocket-jquery-load":t)).join(" ")}function o(o){function s(t){const e=o.fn[t];o.fn[t]=o.fn.init.prototype[t]=function(){return this[0]===window&&("string"==typeof arguments[0]||arguments[0]instanceof String?arguments[0]=i(arguments[0]):"object"==typeof arguments[0]&&Object.keys(arguments[0]).forEach((t=>{const e=arguments[0][t];delete arguments[0][t],arguments[0][i(t)]=e}))),e.apply(this,arguments),this}}o&&o.fn&&!t.allJQueries.includes(o)&&(o.fn.ready=o.fn.init.prototype.ready=function(e){return t.domReadyFired?e.bind(document)(o):document.addEventListener("rocket-DOMContentLoaded",(()=>e.bind(document)(o))),o([])},s("on"),s("one"),t.allJQueries.push(o)),e=o}o(window.jQuery),Object.defineProperty(window,"jQuery",{get:()=>e,set(t){o(t)}})}async H(t){const e=document.querySelector("script[data-webpack]");e&&(await async function(){return new Promise((t=>{e.addEventListener("load",t),e.addEventListener("error",t)}))}(),await t.K(),await t.H(t))}async U(){this.domReadyFired=!0;try{document.readyState="interactive"}catch(t){}await this.G(),document.dispatchEvent(new Event("rocket-readystatechange")),await this.G(),document.rocketonreadystatechange&&document.rocketonreadystatechange(),await this.G(),document.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this.G(),window.dispatchEvent(new Event("rocket-DOMContentLoaded"))}async J(){try{document.readyState="complete"}catch(t){}await this.G(),document.dispatchEvent(new Event("rocket-readystatechange")),await this.G(),document.rocketonreadystatechange&&document.rocketonreadystatechange(),await this.G(),window.dispatchEvent(new Event("rocket-load")),await this.G(),window.rocketonload&&window.rocketonload(),await this.G(),this.allJQueries.forEach((t=>t(window).trigger("rocket-jquery-load"))),await this.G();const t=new Event("rocket-pageshow");t.persisted=this.persisted,window.dispatchEvent(t),await this.G(),window.rocketonpageshow&&window.rocketonpageshow({persisted:this.persisted}),this.windowLoaded=!0}m(){document.onreadystatechange&&document.onreadystatechange(),window.onload&&window.onload(),window.onpageshow&&window.onpageshow({persisted:this.persisted})}I(){const t=new Map;document.write=document.writeln=function(e){const i=document.currentScript;i||console.error("WPRocket unable to document.write this: "+e);const o=document.createRange(),s=i.parentElement;let n=t.get(i);void 0===n&&(n=i.nextSibling,t.set(i,n));const c=document.createDocumentFragment();o.setStart(c,0),c.appendChild(o.createContextualFragment(e)),s.insertBefore(c,n)}}async G(){Date.now()-this.lastBreath>45&&(await this.K(),this.lastBreath=Date.now())}async K(){return document.hidden?new Promise((t=>setTimeout(t))):new Promise((t=>requestAnimationFrame(t)))}N(){this.trash.forEach((t=>t.remove()))}static run(){const t=new RocketLazyLoadScripts;t.p(t)}}RocketLazyLoadScripts.run()})();</script>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+	<title>Lunch - Restaurang Edison</title><link rel="preload" data-rocket-preload as="image" href="https://restaurangedison.se/wp-content/uploads/2024/10/smarta_kok-18-kopiera.webp" fetchpriority="high">
+	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+	<meta name="description" content="Klassisk lunch med mer smak! Se vår lunchmeny Vårt koncept Sugen på klassisk lunch? Husmanskost, asiatiskt, vegetariskt – eller mat från andra sidan jordklotet? Vill du prova nåt nytt eller prova nåt gammalt på nytt?Vårt koncept är nämligen att från grunden erbjuda traditionella luncher, komponerat med fantasirika smaker och influenser&hellip;">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<link rel="canonical" href="https://restaurangedison.se/lunch/">
+<meta property="og:url" content="https://restaurangedison.se/lunch/">
+<meta property="og:site_name" content="Restaurang Edison">
+<meta property="og:locale" content="sv_SE">
+<meta property="og:type" content="article">
+<meta property="article:author" content="">
+<meta property="article:publisher" content="">
+<meta property="og:title" content="Lunch - Restaurang Edison">
+<meta property="og:description" content="Klassisk lunch med mer smak! Se vår lunchmeny Vårt koncept Sugen på klassisk lunch? Husmanskost, asiatiskt, vegetariskt – eller mat från andra sidan jordklotet? Vill du prova nåt nytt eller prova nåt gammalt på nytt?Vårt koncept är nämligen att från grunden erbjuda traditionella luncher, komponerat med fantasirika smaker och influenser&hellip;">
+<meta property="fb:pages" content="">
+<meta property="fb:admins" content="">
+<meta property="fb:app_id" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="">
+<meta name="twitter:creator" content="">
+<meta name="twitter:title" content="Lunch - Restaurang Edison">
+<meta name="twitter:description" content="Klassisk lunch med mer smak! Se vår lunchmeny Vårt koncept Sugen på klassisk lunch? Husmanskost, asiatiskt, vegetariskt – eller mat från andra sidan jordklotet? Vill du prova nåt nytt eller prova nåt gammalt på nytt?Vårt koncept är nämligen att från grunden erbjuda traditionella luncher, komponerat med fantasirika smaker och influenser&hellip;">
+<link rel='dns-prefetch' href='//fonts.gstatic.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//maps.googleapis.com' />
+<link rel='dns-prefetch' href='//maps.gstatic.com' />
+<link rel='dns-prefetch' href='//google-analytics.com' />
+
+<link rel="alternate" type="application/rss+xml" title="Restaurang Edison &raquo; Webbflöde" href="https://restaurangedison.se/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Restaurang Edison &raquo; Kommentarsflöde" href="https://restaurangedison.se/comments/feed/" />
+<link data-minify="1" rel="stylesheet" type="text/css" href="https://restaurangedison.se/wp-content/cache/min/1/yvb2gyr.css?ver=1755259500"><style id='wp-emoji-styles-inline-css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<style id='classic-theme-styles-inline-css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<style id='global-styles-inline-css'>
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+:root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
+</style>
+<link data-minify="1" rel='stylesheet' id='eeb-css-frontend-css' href='https://restaurangedison.se/wp-content/cache/min/1/wp-content/plugins/email-encoder-bundle/core/includes/assets/css/style.css?ver=1755259500' media='all' />
+<link data-minify="1" rel='stylesheet' id='chld_thm_cfg_parent-css' href='https://restaurangedison.se/wp-content/cache/min/1/wp-content/themes/hello-elementor/style.css?ver=1755259500' media='all' />
+<link data-minify="1" rel='stylesheet' id='parent-style-css' href='https://restaurangedison.se/wp-content/cache/min/1/wp-content/themes/hello-elementor/style.css?ver=1755259500' media='all' />
+<link data-minify="1" rel='stylesheet' id='child-style-css' href='https://restaurangedison.se/wp-content/cache/min/1/wp-content/themes/hello-elementor-child/style.css?ver=1755259500' media='all' />
+<link rel='stylesheet' id='hello-elementor-css' href='https://restaurangedison.se/wp-content/themes/hello-elementor/style.min.css?ver=3.1.1' media='all' />
+<link rel='stylesheet' id='hello-elementor-theme-style-css' href='https://restaurangedison.se/wp-content/themes/hello-elementor/theme.min.css?ver=3.1.1' media='all' />
+<link rel='stylesheet' id='hello-elementor-header-footer-css' href='https://restaurangedison.se/wp-content/themes/hello-elementor/header-footer.min.css?ver=3.1.1' media='all' />
+<link rel='stylesheet' id='elementor-frontend-css' href='https://restaurangedison.se/wp-content/uploads/elementor/css/custom-frontend.min.css?ver=1755259380' media='all' />
+<link rel='stylesheet' id='widget-image-css' href='https://restaurangedison.se/wp-content/plugins/elementor/assets/css/widget-image.min.css?ver=3.31.2' media='all' />
+<link rel='stylesheet' id='widget-nav-menu-css' href='https://restaurangedison.se/wp-content/uploads/elementor/css/custom-pro-widget-nav-menu.min.css?ver=1755259380' media='all' />
+<link rel='stylesheet' id='widget-divider-css' href='https://restaurangedison.se/wp-content/plugins/elementor/assets/css/widget-divider.min.css?ver=3.31.2' media='all' />
+<link rel='stylesheet' id='widget-heading-css' href='https://restaurangedison.se/wp-content/plugins/elementor/assets/css/widget-heading.min.css?ver=3.31.2' media='all' />
+<link rel='stylesheet' id='widget-icon-list-css' href='https://restaurangedison.se/wp-content/uploads/elementor/css/custom-widget-icon-list.min.css?ver=1755259380' media='all' />
+<link rel='stylesheet' id='e-animation-slideInRight-css' href='https://restaurangedison.se/wp-content/plugins/elementor/assets/lib/animations/styles/slideInRight.min.css?ver=3.31.2' media='all' />
+<link rel='stylesheet' id='e-animation-grow-css' href='https://restaurangedison.se/wp-content/plugins/elementor/assets/lib/animations/styles/e-animation-grow.min.css?ver=3.31.2' media='all' />
+<link data-minify="1" rel='stylesheet' id='elementor-icons-css' href='https://restaurangedison.se/wp-content/cache/min/1/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=1755259500' media='all' />
+<link rel='stylesheet' id='widget-contact-buttons-base-css' href='https://restaurangedison.se/wp-content/uploads/elementor/css/custom-widget-contact-buttons-base.min.css?ver=1755259380' media='all' />
+<link rel='stylesheet' id='elementor-post-4-css' href='https://restaurangedison.se/wp-content/uploads/elementor/css/post-4.css?ver=1755259380' media='all' />
+<link data-minify="1" rel='stylesheet' id='font-awesome-5-all-css' href='https://restaurangedison.se/wp-content/cache/min/1/wp-content/plugins/elementor/assets/lib/font-awesome/css/all.min.css?ver=1755259500' media='all' />
+<link rel='stylesheet' id='font-awesome-4-shim-css' href='https://restaurangedison.se/wp-content/plugins/elementor/assets/lib/font-awesome/css/v4-shims.min.css?ver=3.31.2' media='all' />
+<link rel='stylesheet' id='e-animation-zoomIn-css' href='https://restaurangedison.se/wp-content/plugins/elementor/assets/lib/animations/styles/zoomIn.min.css?ver=3.31.2' media='all' />
+<link rel='stylesheet' id='e-animation-fadeInUp-css' href='https://restaurangedison.se/wp-content/plugins/elementor/assets/lib/animations/styles/fadeInUp.min.css?ver=3.31.2' media='all' />
+<link rel='stylesheet' id='elementor-post-52-css' href='https://restaurangedison.se/wp-content/uploads/elementor/css/post-52.css?ver=1755259499' media='all' />
+<link rel='stylesheet' id='elementor-post-110-css' href='https://restaurangedison.se/wp-content/uploads/elementor/css/post-110.css?ver=1755259380' media='all' />
+<link rel='stylesheet' id='elementor-post-114-css' href='https://restaurangedison.se/wp-content/uploads/elementor/css/post-114.css?ver=1755259380' media='all' />
+<link rel='stylesheet' id='elementor-post-362-css' href='https://restaurangedison.se/wp-content/uploads/elementor/css/post-362.css?ver=1755259380' media='all' />
+<link rel='stylesheet' id='elementor-post-338-css' href='https://restaurangedison.se/wp-content/uploads/elementor/css/post-338.css?ver=1755259380' media='all' />
+<style id='rocket-lazyload-inline-css'>
+.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;}.rll-youtube-player:focus-within{outline: 2px solid currentColor;outline-offset: 5px;}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:100%;width:100%;left:0;top:0;position:absolute;background:url(https://restaurangedison.se/wp-content/plugins/wp-rocket/assets/img/youtube.png) no-repeat center;background-color: transparent !important;cursor:pointer;border:none;}
+</style>
+<link data-minify="1" rel='stylesheet' id='elementor-gf-local-roboto-css' href='https://restaurangedison.se/wp-content/cache/min/1/wp-content/uploads/elementor/google-fonts/css/roboto.css?ver=1755259500' media='all' />
+<link data-minify="1" rel='stylesheet' id='elementor-gf-local-robotoslab-css' href='https://restaurangedison.se/wp-content/cache/min/1/wp-content/uploads/elementor/google-fonts/css/robotoslab.css?ver=1755259500' media='all' />
+<link data-minify="1" rel='stylesheet' id='elementor-gf-local-poppins-css' href='https://restaurangedison.se/wp-content/cache/min/1/wp-content/uploads/elementor/google-fonts/css/poppins.css?ver=1755259500' media='all' />
+<script src="https://restaurangedison.se/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js" data-rocket-defer defer></script>
+<script src="https://restaurangedison.se/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js" data-rocket-defer defer></script>
+<script data-minify="1" src="https://restaurangedison.se/wp-content/cache/min/1/wp-content/plugins/email-encoder-bundle/core/includes/assets/js/custom.js?ver=1744797197" id="eeb-js-frontend-js" data-rocket-defer defer></script>
+<script src="https://restaurangedison.se/wp-content/plugins/elementor/assets/lib/font-awesome/js/v4-shims.min.js?ver=3.31.2" id="font-awesome-4-shim-js" data-rocket-defer defer></script>
+<link rel="https://api.w.org/" href="https://restaurangedison.se/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://restaurangedison.se/wp-json/wp/v2/pages/52" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://restaurangedison.se/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 6.8.2" />
+<link rel='shortlink' href='https://restaurangedison.se/?p=52' />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://restaurangedison.se/wp-json/oembed/1.0/embed?url=https%3A%2F%2Frestaurangedison.se%2Flunch%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://restaurangedison.se/wp-json/oembed/1.0/embed?url=https%3A%2F%2Frestaurangedison.se%2Flunch%2F&#038;format=xml" />
+<meta name="generator" content="Elementor 3.31.2; features: additional_custom_breakpoints, e_element_cache; settings: css_print_method-external, google_font-enabled, font_display-swap">
+<link rel="icon" href="https://restaurangedison.se/wp-content/uploads/2024/09/cropped-favicon-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://restaurangedison.se/wp-content/uploads/2024/09/cropped-favicon-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://restaurangedison.se/wp-content/uploads/2024/09/cropped-favicon-180x180.png" />
+<meta name="msapplication-TileImage" content="https://restaurangedison.se/wp-content/uploads/2024/09/cropped-favicon-270x270.png" />
+		<style id="wp-custom-css">
+			.day-container {
+    background-color: #fff; /* Standardfärg */
+    color: #000500;
+}
+.active {
+    background: rgba(108,2,6,1);
+}
+.active h3, .active .elementor-price-list-text{
+    color:#fff !important;
+    
+}
+.active .elementor-price-list-image img{
+    filter:grayscale(1) brightness(200);
+    
+}
+
+.logobanner .swiper-wrapper{
+-webkit-transition-timing-function: linear !important;
+transition-timing-function: linear !important;
+}
+.elementor-g-recaptcha {
+    visibility: hidden;
+}
+
+/* LUNCHMENYER KODAT */
+.lunchmeny_container{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 16px 0;
+}
+
+.lunch_icon svg {
+    fill: #6C0206;
+    /* Ändra till önskad färg */
+    width: 24px;
+    /* Om du vill justera storleken */
+    height: 24px;
+    flex-basis:10px;
+}
+
+.lunch_title{
+    max-width: 80%;
+    width: 100%;
+    min-width: 17%;
+    font-size:18px;
+    flex-basis:20px;
+    font-weight:400;
+
+}
+.lunch_price{
+    font-size:18px;
+    font-weight:500;
+}
+
+.lunch_desc{
+    font-size:14px;
+    font-weight:400;
+
+}
+
+.lunch_separator{
+    width: 100%;
+    max-width: 62%;
+    align-self: center;
+    border-bottom-style: dotted;
+    border-bottom-width: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.active .lunchmeny_container{
+		color:#fff !important;
+	
+}
+.active .lunch_icon svg{
+		fill:#fff !important;
+	
+}
+
+@media (max-width:767px){
+.lunch_separator{
+    max-width:50%;
+
+}
+.lunch_title {
+    min-width:25%;
+
+}
+    
+}
+@media (max-width:550px) {
+    .lunch_separator {
+        max-width: 50%;
+        display:none;
+
+    }
+        .lunch_title {
+            min-width: 75%;
+    
+        }
+
+    .lunch_title {
+        min-width: 25%;
+
+    }
+
+}
+
+
+
+
+
+@media (max-width:767px){
+	.elementor-price-list-item{
+			flex-direction: column;
+		
+	}
+	.elementor-price-list-image{
+		padding:8px;
+	}
+	
+}		</style>
+		
+<script async src='https://www.googletagmanager.com/gtag/js?id=G-Z5K71R4M4Z'></script><script type="rocketlazyloadscript">
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+
+ gtag('config', 'G-Z5K71R4M4Z' , {});
+
+</script>
+<noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript></head>
+<body class="wp-singular page-template-default page page-id-52 wp-custom-logo wp-theme-hello-elementor wp-child-theme-hello-elementor-child elementor-default elementor-kit-4 elementor-page elementor-page-52">
+
+
+<a class="skip-link screen-reader-text" href="#content">Hoppa till innehåll</a>
+
+		<div data-elementor-type="header" data-elementor-id="110" class="elementor elementor-110 elementor-location-header" data-elementor-post-type="elementor_library">
+			<div class="elementor-element elementor-element-e8542a1 e-flex e-con-boxed e-con e-parent" data-id="e8542a1" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-02a39b7 elementor-widget__width-initial elementor-widget elementor-widget-theme-site-logo elementor-widget-image" data-id="02a39b7" data-element_type="widget" data-widget_type="theme-site-logo.default">
+				<div class="elementor-widget-container">
+											<a href="https://restaurangedison.se">
+			<img fetchpriority="high" width="488" height="193" src="https://restaurangedison.se/wp-content/uploads/2024/09/Restaurang-edison-logotyp-frilagd.png" class="attachment-full size-full wp-image-81" alt="" srcset="https://restaurangedison.se/wp-content/uploads/2024/09/Restaurang-edison-logotyp-frilagd.png 488w, https://restaurangedison.se/wp-content/uploads/2024/09/Restaurang-edison-logotyp-frilagd-300x119.png 300w" sizes="(max-width: 488px) 100vw, 488px" />				</a>
+											</div>
+				</div>
+				<div class="elementor-element elementor-element-ebd89d7 elementor-nav-menu__align-end elementor-nav-menu--stretch elementor-nav-menu__text-align-center elementor-nav-menu--dropdown-tablet elementor-nav-menu--toggle elementor-nav-menu--burger elementor-widget elementor-widget-nav-menu" data-id="ebd89d7" data-element_type="widget" data-settings="{&quot;full_width&quot;:&quot;stretch&quot;,&quot;layout&quot;:&quot;horizontal&quot;,&quot;submenu_icon&quot;:{&quot;value&quot;:&quot;&lt;i class=\&quot;fas fa-caret-down\&quot;&gt;&lt;\/i&gt;&quot;,&quot;library&quot;:&quot;fa-solid&quot;},&quot;toggle&quot;:&quot;burger&quot;}" data-widget_type="nav-menu.default">
+				<div class="elementor-widget-container">
+								<nav aria-label="Meny" class="elementor-nav-menu--main elementor-nav-menu__container elementor-nav-menu--layout-horizontal e--pointer-background e--animation-sweep-left">
+				<ul id="menu-1-ebd89d7" class="elementor-nav-menu"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-91"><a href="https://restaurangedison.se/" class="elementor-item">Hem</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-90"><a href="https://restaurangedison.se/cafe/" class="elementor-item">Café</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-52 current_page_item menu-item-89"><a href="https://restaurangedison.se/lunch/" aria-current="page" class="elementor-item elementor-item-active">Lunch</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-449"><a href="https://restaurangedison.se/catering/" class="elementor-item">Catering</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-88"><a href="https://restaurangedison.se/bokning/" class="elementor-item">Bokning</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-87"><a href="https://restaurangedison.se/konferens/" class="elementor-item">Konferens</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-85"><a href="https://restaurangedison.se/event-aktiviteter/" class="elementor-item">Event &amp; Aktiviteter</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-84"><a href="https://restaurangedison.se/om-oss/" class="elementor-item">Om oss</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-86"><a href="https://restaurangedison.se/kontakt/" class="elementor-item">Kontakt</a></li>
+</ul>			</nav>
+					<div class="elementor-menu-toggle" role="button" tabindex="0" aria-label="Slå på/av meny" aria-expanded="false">
+			<i aria-hidden="true" role="presentation" class="elementor-menu-toggle__icon--open eicon-menu-bar"></i><i aria-hidden="true" role="presentation" class="elementor-menu-toggle__icon--close eicon-close"></i>		</div>
+					<nav class="elementor-nav-menu--dropdown elementor-nav-menu__container" aria-hidden="true">
+				<ul id="menu-2-ebd89d7" class="elementor-nav-menu"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-91"><a href="https://restaurangedison.se/" class="elementor-item" tabindex="-1">Hem</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-90"><a href="https://restaurangedison.se/cafe/" class="elementor-item" tabindex="-1">Café</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-52 current_page_item menu-item-89"><a href="https://restaurangedison.se/lunch/" aria-current="page" class="elementor-item elementor-item-active" tabindex="-1">Lunch</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-449"><a href="https://restaurangedison.se/catering/" class="elementor-item" tabindex="-1">Catering</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-88"><a href="https://restaurangedison.se/bokning/" class="elementor-item" tabindex="-1">Bokning</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-87"><a href="https://restaurangedison.se/konferens/" class="elementor-item" tabindex="-1">Konferens</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-85"><a href="https://restaurangedison.se/event-aktiviteter/" class="elementor-item" tabindex="-1">Event &amp; Aktiviteter</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-84"><a href="https://restaurangedison.se/om-oss/" class="elementor-item" tabindex="-1">Om oss</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-86"><a href="https://restaurangedison.se/kontakt/" class="elementor-item" tabindex="-1">Kontakt</a></li>
+</ul>			</nav>
+						</div>
+				</div>
+					</div>
+				</div>
+				</div>
+		
+<main id="content" class="site-main post-52 page type-page status-publish hentry">
+
+	
+	<div class="page-content">
+				<div data-elementor-type="wp-page" data-elementor-id="52" class="elementor elementor-52" data-elementor-post-type="page">
+				<div class="elementor-element elementor-element-0235442 e-flex e-con-boxed e-con e-parent" data-id="0235442" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-cdb78e5 elementor-invisible elementor-widget elementor-widget-heading" data-id="cdb78e5" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;zoomIn&quot;,&quot;_animation_delay&quot;:500}" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h1 class="elementor-heading-title elementor-size-default">Klassisk lunch</h1>				</div>
+				</div>
+				<div class="elementor-element elementor-element-03c2399 elementor-invisible elementor-widget elementor-widget-heading" data-id="03c2399" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;zoomIn&quot;,&quot;_animation_delay&quot;:800}" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">med mer smak!</h2>				</div>
+				</div>
+				<div class="elementor-element elementor-element-e163aa5 elementor-invisible elementor-widget elementor-widget-button" data-id="e163aa5" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;fadeInUp&quot;,&quot;_animation_delay&quot;:1500}" data-widget_type="button.default">
+				<div class="elementor-widget-container">
+									<div class="elementor-button-wrapper">
+					<a class="elementor-button elementor-button-link elementor-size-sm" href="#lunch">
+						<span class="elementor-button-content-wrapper">
+									<span class="elementor-button-text">Se vår lunchmeny</span>
+					</span>
+					</a>
+				</div>
+								</div>
+				</div>
+					</div>
+				</div>
+		<div class="elementor-element elementor-element-8e9f92d e-flex e-con-boxed e-con e-parent" data-id="8e9f92d" data-element_type="container">
+					<div class="e-con-inner">
+		<div class="elementor-element elementor-element-698f7a3 e-con-full e-flex e-con e-child" data-id="698f7a3" data-element_type="container">
+				<div class="elementor-element elementor-element-c52ff20 elementor-widget elementor-widget-heading" data-id="c52ff20" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">Vårt koncept</h2>				</div>
+				</div>
+				<div class="elementor-element elementor-element-5e6f211 elementor-widget elementor-widget-text-editor" data-id="5e6f211" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									<p>Sugen på klassisk lunch? Husmanskost, asiatiskt, vegetariskt – eller mat från andra sidan jordklotet? Vill du prova nåt nytt eller prova nåt gammalt på nytt?</p><p>Vårt koncept är nämligen att från grunden erbjuda traditionella luncher, komponerat med fantasirika smaker och influenser hämtade från världens alla hörn! Vi erbjuder alltid tre olika dagens. Alltid med ett vegetariskt alternativ. Vi serverar klassiska ingredienser och luncher kryddat med nya matinfluenser som bokstavligen ger mersmak!</p>								</div>
+				</div>
+				<div class="elementor-element elementor-element-7b61ee0 elementor-widget elementor-widget-button" data-id="7b61ee0" data-element_type="widget" data-widget_type="button.default">
+				<div class="elementor-widget-container">
+									<div class="elementor-button-wrapper">
+					<a class="elementor-button elementor-button-link elementor-size-sm" href="https://restaurangedison.se/bokning/">
+						<span class="elementor-button-content-wrapper">
+									<span class="elementor-button-text">Boka catering</span>
+					</span>
+					</a>
+				</div>
+								</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-cbd34c5 e-con-full e-flex e-con e-child" data-id="cbd34c5" data-element_type="container">
+				<div class="elementor-element elementor-element-a572bbc elementor-widget elementor-widget-image" data-id="a572bbc" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img decoding="async" width="800" height="534" src="https://restaurangedison.se/wp-content/uploads/2024/10/smarta_kok-25-kopiera-1024x683.webp" class="attachment-large size-large wp-image-577" alt="" srcset="https://restaurangedison.se/wp-content/uploads/2024/10/smarta_kok-25-kopiera-1024x683.webp 1024w, https://restaurangedison.se/wp-content/uploads/2024/10/smarta_kok-25-kopiera-300x200.webp 300w, https://restaurangedison.se/wp-content/uploads/2024/10/smarta_kok-25-kopiera-768x512.webp 768w, https://restaurangedison.se/wp-content/uploads/2024/10/smarta_kok-25-kopiera-1536x1024.webp 1536w, https://restaurangedison.se/wp-content/uploads/2024/10/smarta_kok-25-kopiera.webp 1920w" sizes="(max-width: 800px) 100vw, 800px" />															</div>
+				</div>
+				</div>
+					</div>
+				</div>
+		<div class="elementor-element elementor-element-df277b4 e-flex e-con-boxed e-con e-parent" data-id="df277b4" data-element_type="container" id="lunch">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-856ff36 elementor-widget__width-inherit elementor-widget elementor-widget-heading" data-id="856ff36" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">Vår lunchmeny</h2>				</div>
+				</div>
+				<div class="elementor-element elementor-element-849e7a1 elementor-widget__width-inherit elementor-widget elementor-widget-shortcode" data-id="849e7a1" data-element_type="widget" data-widget_type="shortcode.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-shortcode">
+    <h3 class="week">Vecka 35</h3>
+<style>h3.week{
+color:#6C0206;
+text-align: center;
+width:100%;
+font-size:40px;
+text-transform:uppercase;
+}
+@media (max-width:767px){
+    h3.week{
+        font-size:30px;
+    }
+}</style></div>
+						</div>
+				</div>
+		<div class="elementor-element elementor-element-31d0eb1 e-con-full monday e-flex e-con e-child" data-id="31d0eb1" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-70861cf elementor-widget elementor-widget-heading" data-id="70861cf" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h3 class="elementor-heading-title elementor-size-default">Måndag</h3>				</div>
+				</div>
+				<div class="elementor-element elementor-element-ab51ab3 elementor-widget elementor-widget-shortcode" data-id="ab51ab3" data-element_type="widget" data-widget_type="shortcode.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-shortcode">
+    <div class="lunchmeny_wrapper">
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M346.7 6C337.6 17 320 42.3 320 72c0 40 15.3 55.3 40 80s40 40 80 40c29.7 0 55-17.6 66-26.7c4-3.3 6-8.2 6-13.3s-2-10-6-13.2c-11.4-9.1-38.3-26.8-74-26.8c-32 0-40 8-40 8s8-8 8-40c0-35.7-17.7-62.6-26.8-74C370 2 365.1 0 360 0s-10 2-13.3 6zM244.6 136c-40 0-77.1 18.1-101.7 48.2l60.5 60.5c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-55.3-55.3 0 .1L2.2 477.9C-2 487-.1 497.8 7 505s17.9 9 27.1 4.8l134.7-62.4-52.1-52.1c-6.2-6.2-6.2-16.4 0-22.6s16.4-6.2 22.6 0L199.7 433l100.2-46.4c46.4-21.5 76.2-68 76.2-119.2C376 194.8 317.2 136 244.6 136z"/></svg></span>
+            <span class="lunch_title">Green</span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Linsbolognese med pasta, ruccola & lagrad ost</div>
+        </div>
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M96 64c0-35.3 28.7-64 64-64H266.3c26.2 0 49.7 15.9 59.4 40.2L373.7 160H480V126.2c0-24.8 5.8-49.3 16.9-71.6l2.5-5c7.9-15.8 27.1-22.2 42.9-14.3s22.2 27.1 14.3 42.9l-2.5 5c-6.7 13.3-10.1 28-10.1 42.9V160h56c22.1 0 40 17.9 40 40v45.4c0 16.5-8.5 31.9-22.6 40.7l-43.3 27.1c-14.2-5.9-29.8-9.2-46.1-9.2c-39.3 0-74.1 18.9-96 48H352c0 17.7-14.3 32-32 32h-8.2c-1.7 4.8-3.7 9.5-5.8 14.1l5.8 5.8c12.5 12.5 12.5 32.8 0 45.3l-22.6 22.6c-12.5 12.5-32.8 12.5-45.3 0l-5.8-5.8c-4.6 2.2-9.3 4.1-14.1 5.8V480c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32v-8.2c-4.8-1.7-9.5-3.7-14.1-5.8l-5.8 5.8c-12.5 12.5-32.8 12.5-45.3 0L40.2 449.1c-12.5-12.5-12.5-32.8 0-45.3l5.8-5.8c-2.2-4.6-4.1-9.3-5.8-14.1H32c-17.7 0-32-14.3-32-32V320c0-17.7 14.3-32 32-32h8.2c1.7-4.8 3.7-9.5 5.8-14.1l-5.8-5.8c-12.5-12.5-12.5-32.8 0-45.3l22.6-22.6c9-9 21.9-11.5 33.1-7.6V192 160 64zm170.3 0H160v96h32H304.7L266.3 64zM176 256a80 80 0 1 0 0 160 80 80 0 1 0 0-160zM528 448a24 24 0 1 0 0-48 24 24 0 1 0 0 48zm0 64c-48.6 0-88-39.4-88-88c0-29.8 14.8-56.1 37.4-72c14.3-10.1 31.8-16 50.6-16c2.7 0 5.3 .1 7.9 .3c44.9 4 80.1 41.7 80.1 87.7c0 48.6-39.4 88-88 88z"/></svg></span>
+            <span class="lunch_title">Local </span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Blandfärslimpa med svampsås, persilja, vaxbönor & rostad potatis</div>
+        </div>
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M266.3 48.3L232.5 73.6c-5.4 4-8.5 10.4-8.5 17.1v9.1c0 6.8 5.5 12.3 12.3 12.3c2.4 0 4.8-.7 6.8-2.1l41.8-27.9c2-1.3 4.4-2.1 6.8-2.1h1c6.2 0 11.3 5.1 11.3 11.3c0 3-1.2 5.9-3.3 8l-19.9 19.9c-5.8 5.8-12.9 10.2-20.7 12.8l-26.5 8.8c-5.8 1.9-9.6 7.3-9.6 13.4c0 3.7-1.5 7.3-4.1 10l-17.9 17.9c-6.4 6.4-9.9 15-9.9 24v4.3c0 16.4 13.6 29.7 29.9 29.7c11 0 21.2-6.2 26.1-16l4-8.1c2.4-4.8 7.4-7.9 12.8-7.9c4.5 0 8.7 2.1 11.4 5.7l16.3 21.7c2.1 2.9 5.5 4.5 9.1 4.5c8.4 0 13.9-8.9 10.1-16.4l-1.1-2.3c-3.5-7 0-15.5 7.5-18l21.2-7.1c7.6-2.5 12.7-9.6 12.7-17.6c0-10.3 8.3-18.6 18.6-18.6H400c8.8 0 16 7.2 16 16s-7.2 16-16 16H379.3c-7.2 0-14.2 2.9-19.3 8l-4.7 4.7c-2.1 2.1-3.3 5-3.3 8c0 6.2 5.1 11.3 11.3 11.3h11.3c6 0 11.8 2.4 16 6.6l6.5 6.5c1.8 1.8 2.8 4.3 2.8 6.8s-1 5-2.8 6.8l-7.5 7.5C386 262 384 266.9 384 272s2 10 5.7 13.7L408 304c10.2 10.2 24.1 16 38.6 16H454c6.5-20.2 10-41.7 10-64c0-111.4-87.6-202.4-197.7-207.7zm172 307.9c-3.7-2.6-8.2-4.1-13-4.1c-6 0-11.8-2.4-16-6.6L396 332c-7.7-7.7-18-12-28.9-12c-9.7 0-19.2-3.5-26.6-9.8L314 287.4c-11.6-9.9-26.4-15.4-41.7-15.4H251.4c-12.6 0-25 3.7-35.5 10.7L188.5 301c-17.8 11.9-28.5 31.9-28.5 53.3v3.2c0 17 6.7 33.3 18.7 45.3l16 16c8.5 8.5 20 13.3 32 13.3H248c13.3 0 24 10.7 24 24c0 2.5 .4 5 1.1 7.3c71.3-5.8 132.5-47.6 165.2-107.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM187.3 100.7c-6.2-6.2-16.4-6.2-22.6 0l-32 32c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l32-32c6.2-6.2 6.2-16.4 0-22.6z"/></svg></span>
+            <span class="lunch_title">World Wide </span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Indisk biffgryta med linser, rostad lök, ris & myntayoghurt</div>
+        </div>
+        </div>
+<style>.lunchmeny_container{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 16px 0;
+}
+.lunch_icon svg {
+    fill: #6C0206;
+    /* Ändra till önskad färg */
+    width: 24px;
+    /* Om du vill justera storleken */
+    height: 24px;
+    flex-basis:10px;
+}
+.lunch_title{
+    max-width: 80%;
+    width: 100%;
+    min-width: 17%;
+    font-size:18px;
+    flex-basis:20px;
+    font-weight:400;
+}
+.lunch_price{
+    font-size:18px;
+    font-weight:500;
+}
+.lunch_desc{
+    font-size:14px;
+    font-weight:400;
+}
+.lunch_separator{
+    width: 100%;
+    max-width: 62%;
+    align-self: center;
+    border-bottom-style: dotted;
+    border-bottom-width: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+@media (max-width:767px){
+.lunch_separator{
+    max-width:50%;
+}
+.lunch_title {
+    min-width:25%;
+}
+    
+}
+@media (max-width:550px) {
+    .lunch_separator {
+        max-width: 50%;
+        display:none;
+    }
+        .lunch_title {
+            min-width: 75%;
+    
+        }
+    .lunch_title {
+        min-width: 25%;
+    }
+}
+</style></div>
+						</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-5694bee e-con-full tuesday e-flex e-con e-child" data-id="5694bee" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-4377208 elementor-widget elementor-widget-heading" data-id="4377208" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h3 class="elementor-heading-title elementor-size-default">Tisdag</h3>				</div>
+				</div>
+				<div class="elementor-element elementor-element-878284a elementor-widget elementor-widget-shortcode" data-id="878284a" data-element_type="widget" data-widget_type="shortcode.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-shortcode">
+    <div class="lunchmeny_wrapper">
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M346.7 6C337.6 17 320 42.3 320 72c0 40 15.3 55.3 40 80s40 40 80 40c29.7 0 55-17.6 66-26.7c4-3.3 6-8.2 6-13.3s-2-10-6-13.2c-11.4-9.1-38.3-26.8-74-26.8c-32 0-40 8-40 8s8-8 8-40c0-35.7-17.7-62.6-26.8-74C370 2 365.1 0 360 0s-10 2-13.3 6zM244.6 136c-40 0-77.1 18.1-101.7 48.2l60.5 60.5c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-55.3-55.3 0 .1L2.2 477.9C-2 487-.1 497.8 7 505s17.9 9 27.1 4.8l134.7-62.4-52.1-52.1c-6.2-6.2-6.2-16.4 0-22.6s16.4-6.2 22.6 0L199.7 433l100.2-46.4c46.4-21.5 76.2-68 76.2-119.2C376 194.8 317.2 136 244.6 136z"/></svg></span>
+            <span class="lunch_title">Green </span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Svamprisotto med zucchini, rostad mandel, örtolja & maché</div>
+        </div>
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M96 64c0-35.3 28.7-64 64-64H266.3c26.2 0 49.7 15.9 59.4 40.2L373.7 160H480V126.2c0-24.8 5.8-49.3 16.9-71.6l2.5-5c7.9-15.8 27.1-22.2 42.9-14.3s22.2 27.1 14.3 42.9l-2.5 5c-6.7 13.3-10.1 28-10.1 42.9V160h56c22.1 0 40 17.9 40 40v45.4c0 16.5-8.5 31.9-22.6 40.7l-43.3 27.1c-14.2-5.9-29.8-9.2-46.1-9.2c-39.3 0-74.1 18.9-96 48H352c0 17.7-14.3 32-32 32h-8.2c-1.7 4.8-3.7 9.5-5.8 14.1l5.8 5.8c12.5 12.5 12.5 32.8 0 45.3l-22.6 22.6c-12.5 12.5-32.8 12.5-45.3 0l-5.8-5.8c-4.6 2.2-9.3 4.1-14.1 5.8V480c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32v-8.2c-4.8-1.7-9.5-3.7-14.1-5.8l-5.8 5.8c-12.5 12.5-32.8 12.5-45.3 0L40.2 449.1c-12.5-12.5-12.5-32.8 0-45.3l5.8-5.8c-2.2-4.6-4.1-9.3-5.8-14.1H32c-17.7 0-32-14.3-32-32V320c0-17.7 14.3-32 32-32h8.2c1.7-4.8 3.7-9.5 5.8-14.1l-5.8-5.8c-12.5-12.5-12.5-32.8 0-45.3l22.6-22.6c9-9 21.9-11.5 33.1-7.6V192 160 64zm170.3 0H160v96h32H304.7L266.3 64zM176 256a80 80 0 1 0 0 160 80 80 0 1 0 0-160zM528 448a24 24 0 1 0 0-48 24 24 0 1 0 0 48zm0 64c-48.6 0-88-39.4-88-88c0-29.8 14.8-56.1 37.4-72c14.3-10.1 31.8-16 50.6-16c2.7 0 5.3 .1 7.9 .3c44.9 4 80.1 41.7 80.1 87.7c0 48.6-39.4 88-88 88z"/></svg></span>
+            <span class="lunch_title">Local</span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Dragen gris med cheddarmajo, bränd kål, picklad lök & vitlöksrostad potatis</div>
+        </div>
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M266.3 48.3L232.5 73.6c-5.4 4-8.5 10.4-8.5 17.1v9.1c0 6.8 5.5 12.3 12.3 12.3c2.4 0 4.8-.7 6.8-2.1l41.8-27.9c2-1.3 4.4-2.1 6.8-2.1h1c6.2 0 11.3 5.1 11.3 11.3c0 3-1.2 5.9-3.3 8l-19.9 19.9c-5.8 5.8-12.9 10.2-20.7 12.8l-26.5 8.8c-5.8 1.9-9.6 7.3-9.6 13.4c0 3.7-1.5 7.3-4.1 10l-17.9 17.9c-6.4 6.4-9.9 15-9.9 24v4.3c0 16.4 13.6 29.7 29.9 29.7c11 0 21.2-6.2 26.1-16l4-8.1c2.4-4.8 7.4-7.9 12.8-7.9c4.5 0 8.7 2.1 11.4 5.7l16.3 21.7c2.1 2.9 5.5 4.5 9.1 4.5c8.4 0 13.9-8.9 10.1-16.4l-1.1-2.3c-3.5-7 0-15.5 7.5-18l21.2-7.1c7.6-2.5 12.7-9.6 12.7-17.6c0-10.3 8.3-18.6 18.6-18.6H400c8.8 0 16 7.2 16 16s-7.2 16-16 16H379.3c-7.2 0-14.2 2.9-19.3 8l-4.7 4.7c-2.1 2.1-3.3 5-3.3 8c0 6.2 5.1 11.3 11.3 11.3h11.3c6 0 11.8 2.4 16 6.6l6.5 6.5c1.8 1.8 2.8 4.3 2.8 6.8s-1 5-2.8 6.8l-7.5 7.5C386 262 384 266.9 384 272s2 10 5.7 13.7L408 304c10.2 10.2 24.1 16 38.6 16H454c6.5-20.2 10-41.7 10-64c0-111.4-87.6-202.4-197.7-207.7zm172 307.9c-3.7-2.6-8.2-4.1-13-4.1c-6 0-11.8-2.4-16-6.6L396 332c-7.7-7.7-18-12-28.9-12c-9.7 0-19.2-3.5-26.6-9.8L314 287.4c-11.6-9.9-26.4-15.4-41.7-15.4H251.4c-12.6 0-25 3.7-35.5 10.7L188.5 301c-17.8 11.9-28.5 31.9-28.5 53.3v3.2c0 17 6.7 33.3 18.7 45.3l16 16c8.5 8.5 20 13.3 32 13.3H248c13.3 0 24 10.7 24 24c0 2.5 .4 5 1.1 7.3c71.3-5.8 132.5-47.6 165.2-107.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM187.3 100.7c-6.2-6.2-16.4-6.2-22.6 0l-32 32c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l32-32c6.2-6.2 6.2-16.4 0-22.6z"/></svg></span>
+            <span class="lunch_title">World Wide</span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Kycklinggryta med jordnötssås, limeris & gröna bönor</div>
+        </div>
+        </div>
+</div>
+						</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-4c5bbc6 e-con-full wednesday e-flex e-con e-child" data-id="4c5bbc6" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-2b3988b elementor-widget elementor-widget-heading" data-id="2b3988b" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h3 class="elementor-heading-title elementor-size-default">Onsdag</h3>				</div>
+				</div>
+				<div class="elementor-element elementor-element-7e760b1 elementor-widget elementor-widget-shortcode" data-id="7e760b1" data-element_type="widget" data-widget_type="shortcode.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-shortcode">
+    <div class="lunchmeny_wrapper">
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M346.7 6C337.6 17 320 42.3 320 72c0 40 15.3 55.3 40 80s40 40 80 40c29.7 0 55-17.6 66-26.7c4-3.3 6-8.2 6-13.3s-2-10-6-13.2c-11.4-9.1-38.3-26.8-74-26.8c-32 0-40 8-40 8s8-8 8-40c0-35.7-17.7-62.6-26.8-74C370 2 365.1 0 360 0s-10 2-13.3 6zM244.6 136c-40 0-77.1 18.1-101.7 48.2l60.5 60.5c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-55.3-55.3 0 .1L2.2 477.9C-2 487-.1 497.8 7 505s17.9 9 27.1 4.8l134.7-62.4-52.1-52.1c-6.2-6.2-6.2-16.4 0-22.6s16.4-6.2 22.6 0L199.7 433l100.2-46.4c46.4-21.5 76.2-68 76.2-119.2C376 194.8 317.2 136 244.6 136z"/></svg></span>
+            <span class="lunch_title">Green</span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Sötpotatis”falafel” med jalapenocreme, rostad majs & libabröd	</div>
+        </div>
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M96 64c0-35.3 28.7-64 64-64H266.3c26.2 0 49.7 15.9 59.4 40.2L373.7 160H480V126.2c0-24.8 5.8-49.3 16.9-71.6l2.5-5c7.9-15.8 27.1-22.2 42.9-14.3s22.2 27.1 14.3 42.9l-2.5 5c-6.7 13.3-10.1 28-10.1 42.9V160h56c22.1 0 40 17.9 40 40v45.4c0 16.5-8.5 31.9-22.6 40.7l-43.3 27.1c-14.2-5.9-29.8-9.2-46.1-9.2c-39.3 0-74.1 18.9-96 48H352c0 17.7-14.3 32-32 32h-8.2c-1.7 4.8-3.7 9.5-5.8 14.1l5.8 5.8c12.5 12.5 12.5 32.8 0 45.3l-22.6 22.6c-12.5 12.5-32.8 12.5-45.3 0l-5.8-5.8c-4.6 2.2-9.3 4.1-14.1 5.8V480c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32v-8.2c-4.8-1.7-9.5-3.7-14.1-5.8l-5.8 5.8c-12.5 12.5-32.8 12.5-45.3 0L40.2 449.1c-12.5-12.5-12.5-32.8 0-45.3l5.8-5.8c-2.2-4.6-4.1-9.3-5.8-14.1H32c-17.7 0-32-14.3-32-32V320c0-17.7 14.3-32 32-32h8.2c1.7-4.8 3.7-9.5 5.8-14.1l-5.8-5.8c-12.5-12.5-12.5-32.8 0-45.3l22.6-22.6c9-9 21.9-11.5 33.1-7.6V192 160 64zm170.3 0H160v96h32H304.7L266.3 64zM176 256a80 80 0 1 0 0 160 80 80 0 1 0 0-160zM528 448a24 24 0 1 0 0-48 24 24 0 1 0 0 48zm0 64c-48.6 0-88-39.4-88-88c0-29.8 14.8-56.1 37.4-72c14.3-10.1 31.8-16 50.6-16c2.7 0 5.3 .1 7.9 .3c44.9 4 80.1 41.7 80.1 87.7c0 48.6-39.4 88-88 88z"/></svg></span>
+            <span class="lunch_title">Local</span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Wallenbergare med potatispuré, lingon, ärtor & brynt smör</div>
+        </div>
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M266.3 48.3L232.5 73.6c-5.4 4-8.5 10.4-8.5 17.1v9.1c0 6.8 5.5 12.3 12.3 12.3c2.4 0 4.8-.7 6.8-2.1l41.8-27.9c2-1.3 4.4-2.1 6.8-2.1h1c6.2 0 11.3 5.1 11.3 11.3c0 3-1.2 5.9-3.3 8l-19.9 19.9c-5.8 5.8-12.9 10.2-20.7 12.8l-26.5 8.8c-5.8 1.9-9.6 7.3-9.6 13.4c0 3.7-1.5 7.3-4.1 10l-17.9 17.9c-6.4 6.4-9.9 15-9.9 24v4.3c0 16.4 13.6 29.7 29.9 29.7c11 0 21.2-6.2 26.1-16l4-8.1c2.4-4.8 7.4-7.9 12.8-7.9c4.5 0 8.7 2.1 11.4 5.7l16.3 21.7c2.1 2.9 5.5 4.5 9.1 4.5c8.4 0 13.9-8.9 10.1-16.4l-1.1-2.3c-3.5-7 0-15.5 7.5-18l21.2-7.1c7.6-2.5 12.7-9.6 12.7-17.6c0-10.3 8.3-18.6 18.6-18.6H400c8.8 0 16 7.2 16 16s-7.2 16-16 16H379.3c-7.2 0-14.2 2.9-19.3 8l-4.7 4.7c-2.1 2.1-3.3 5-3.3 8c0 6.2 5.1 11.3 11.3 11.3h11.3c6 0 11.8 2.4 16 6.6l6.5 6.5c1.8 1.8 2.8 4.3 2.8 6.8s-1 5-2.8 6.8l-7.5 7.5C386 262 384 266.9 384 272s2 10 5.7 13.7L408 304c10.2 10.2 24.1 16 38.6 16H454c6.5-20.2 10-41.7 10-64c0-111.4-87.6-202.4-197.7-207.7zm172 307.9c-3.7-2.6-8.2-4.1-13-4.1c-6 0-11.8-2.4-16-6.6L396 332c-7.7-7.7-18-12-28.9-12c-9.7 0-19.2-3.5-26.6-9.8L314 287.4c-11.6-9.9-26.4-15.4-41.7-15.4H251.4c-12.6 0-25 3.7-35.5 10.7L188.5 301c-17.8 11.9-28.5 31.9-28.5 53.3v3.2c0 17 6.7 33.3 18.7 45.3l16 16c8.5 8.5 20 13.3 32 13.3H248c13.3 0 24 10.7 24 24c0 2.5 .4 5 1.1 7.3c71.3-5.8 132.5-47.6 165.2-107.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM187.3 100.7c-6.2-6.2-16.4-6.2-22.6 0l-32 32c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l32-32c6.2-6.2 6.2-16.4 0-22.6z"/></svg></span>
+            <span class="lunch_title">World Wide</span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Gochujang bakad fläsksida med ris, limemajo, sesamrostad morot & broccoli</div>
+        </div>
+        </div>
+</div>
+						</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-04e3898 e-con-full thursday e-flex e-con e-child" data-id="04e3898" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-a5c01c9 elementor-widget elementor-widget-heading" data-id="a5c01c9" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h3 class="elementor-heading-title elementor-size-default">Torsdag</h3>				</div>
+				</div>
+				<div class="elementor-element elementor-element-5dbde03 elementor-widget elementor-widget-shortcode" data-id="5dbde03" data-element_type="widget" data-widget_type="shortcode.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-shortcode">
+    <div class="lunchmeny_wrapper">
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M346.7 6C337.6 17 320 42.3 320 72c0 40 15.3 55.3 40 80s40 40 80 40c29.7 0 55-17.6 66-26.7c4-3.3 6-8.2 6-13.3s-2-10-6-13.2c-11.4-9.1-38.3-26.8-74-26.8c-32 0-40 8-40 8s8-8 8-40c0-35.7-17.7-62.6-26.8-74C370 2 365.1 0 360 0s-10 2-13.3 6zM244.6 136c-40 0-77.1 18.1-101.7 48.2l60.5 60.5c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-55.3-55.3 0 .1L2.2 477.9C-2 487-.1 497.8 7 505s17.9 9 27.1 4.8l134.7-62.4-52.1-52.1c-6.2-6.2-6.2-16.4 0-22.6s16.4-6.2 22.6 0L199.7 433l100.2-46.4c46.4-21.5 76.2-68 76.2-119.2C376 194.8 317.2 136 244.6 136z"/></svg></span>
+            <span class="lunch_title">Green </span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Asiatisk vegbiff med sojamajo, ris & chilipicklad pumpa</div>
+        </div>
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M96 64c0-35.3 28.7-64 64-64H266.3c26.2 0 49.7 15.9 59.4 40.2L373.7 160H480V126.2c0-24.8 5.8-49.3 16.9-71.6l2.5-5c7.9-15.8 27.1-22.2 42.9-14.3s22.2 27.1 14.3 42.9l-2.5 5c-6.7 13.3-10.1 28-10.1 42.9V160h56c22.1 0 40 17.9 40 40v45.4c0 16.5-8.5 31.9-22.6 40.7l-43.3 27.1c-14.2-5.9-29.8-9.2-46.1-9.2c-39.3 0-74.1 18.9-96 48H352c0 17.7-14.3 32-32 32h-8.2c-1.7 4.8-3.7 9.5-5.8 14.1l5.8 5.8c12.5 12.5 12.5 32.8 0 45.3l-22.6 22.6c-12.5 12.5-32.8 12.5-45.3 0l-5.8-5.8c-4.6 2.2-9.3 4.1-14.1 5.8V480c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32v-8.2c-4.8-1.7-9.5-3.7-14.1-5.8l-5.8 5.8c-12.5 12.5-32.8 12.5-45.3 0L40.2 449.1c-12.5-12.5-12.5-32.8 0-45.3l5.8-5.8c-2.2-4.6-4.1-9.3-5.8-14.1H32c-17.7 0-32-14.3-32-32V320c0-17.7 14.3-32 32-32h8.2c1.7-4.8 3.7-9.5 5.8-14.1l-5.8-5.8c-12.5-12.5-12.5-32.8 0-45.3l22.6-22.6c9-9 21.9-11.5 33.1-7.6V192 160 64zm170.3 0H160v96h32H304.7L266.3 64zM176 256a80 80 0 1 0 0 160 80 80 0 1 0 0-160zM528 448a24 24 0 1 0 0-48 24 24 0 1 0 0 48zm0 64c-48.6 0-88-39.4-88-88c0-29.8 14.8-56.1 37.4-72c14.3-10.1 31.8-16 50.6-16c2.7 0 5.3 .1 7.9 .3c44.9 4 80.1 41.7 80.1 87.7c0 48.6-39.4 88-88 88z"/></svg></span>
+            <span class="lunch_title">Local</span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Bakad sej med räkröra, kokt potatis & citronbakad blomkål    </div>
+        </div>
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M266.3 48.3L232.5 73.6c-5.4 4-8.5 10.4-8.5 17.1v9.1c0 6.8 5.5 12.3 12.3 12.3c2.4 0 4.8-.7 6.8-2.1l41.8-27.9c2-1.3 4.4-2.1 6.8-2.1h1c6.2 0 11.3 5.1 11.3 11.3c0 3-1.2 5.9-3.3 8l-19.9 19.9c-5.8 5.8-12.9 10.2-20.7 12.8l-26.5 8.8c-5.8 1.9-9.6 7.3-9.6 13.4c0 3.7-1.5 7.3-4.1 10l-17.9 17.9c-6.4 6.4-9.9 15-9.9 24v4.3c0 16.4 13.6 29.7 29.9 29.7c11 0 21.2-6.2 26.1-16l4-8.1c2.4-4.8 7.4-7.9 12.8-7.9c4.5 0 8.7 2.1 11.4 5.7l16.3 21.7c2.1 2.9 5.5 4.5 9.1 4.5c8.4 0 13.9-8.9 10.1-16.4l-1.1-2.3c-3.5-7 0-15.5 7.5-18l21.2-7.1c7.6-2.5 12.7-9.6 12.7-17.6c0-10.3 8.3-18.6 18.6-18.6H400c8.8 0 16 7.2 16 16s-7.2 16-16 16H379.3c-7.2 0-14.2 2.9-19.3 8l-4.7 4.7c-2.1 2.1-3.3 5-3.3 8c0 6.2 5.1 11.3 11.3 11.3h11.3c6 0 11.8 2.4 16 6.6l6.5 6.5c1.8 1.8 2.8 4.3 2.8 6.8s-1 5-2.8 6.8l-7.5 7.5C386 262 384 266.9 384 272s2 10 5.7 13.7L408 304c10.2 10.2 24.1 16 38.6 16H454c6.5-20.2 10-41.7 10-64c0-111.4-87.6-202.4-197.7-207.7zm172 307.9c-3.7-2.6-8.2-4.1-13-4.1c-6 0-11.8-2.4-16-6.6L396 332c-7.7-7.7-18-12-28.9-12c-9.7 0-19.2-3.5-26.6-9.8L314 287.4c-11.6-9.9-26.4-15.4-41.7-15.4H251.4c-12.6 0-25 3.7-35.5 10.7L188.5 301c-17.8 11.9-28.5 31.9-28.5 53.3v3.2c0 17 6.7 33.3 18.7 45.3l16 16c8.5 8.5 20 13.3 32 13.3H248c13.3 0 24 10.7 24 24c0 2.5 .4 5 1.1 7.3c71.3-5.8 132.5-47.6 165.2-107.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM187.3 100.7c-6.2-6.2-16.4-6.2-22.6 0l-32 32c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l32-32c6.2-6.2 6.2-16.4 0-22.6z"/></svg></span>
+            <span class="lunch_title">World Wide</span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Burgare med grillad pluma, rostad paprikamajo, spetskålsallad & potatishalva</div>
+        </div>
+        </div>
+</div>
+						</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-3dc560e e-con-full friday e-flex e-con e-child" data-id="3dc560e" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-c703762 elementor-widget elementor-widget-heading" data-id="c703762" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h3 class="elementor-heading-title elementor-size-default">Fredag</h3>				</div>
+				</div>
+				<div class="elementor-element elementor-element-c23e193 elementor-widget elementor-widget-shortcode" data-id="c23e193" data-element_type="widget" data-widget_type="shortcode.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-shortcode">
+    <div class="lunchmeny_wrapper">
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M346.7 6C337.6 17 320 42.3 320 72c0 40 15.3 55.3 40 80s40 40 80 40c29.7 0 55-17.6 66-26.7c4-3.3 6-8.2 6-13.3s-2-10-6-13.2c-11.4-9.1-38.3-26.8-74-26.8c-32 0-40 8-40 8s8-8 8-40c0-35.7-17.7-62.6-26.8-74C370 2 365.1 0 360 0s-10 2-13.3 6zM244.6 136c-40 0-77.1 18.1-101.7 48.2l60.5 60.5c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-55.3-55.3 0 .1L2.2 477.9C-2 487-.1 497.8 7 505s17.9 9 27.1 4.8l134.7-62.4-52.1-52.1c-6.2-6.2-6.2-16.4 0-22.6s16.4-6.2 22.6 0L199.7 433l100.2-46.4c46.4-21.5 76.2-68 76.2-119.2C376 194.8 317.2 136 244.6 136z"/></svg></span>
+            <span class="lunch_title">Green, VI BJUDER ALLA ÄTANDE GÄSTER PÅ KAKA</span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Broccoli- & ädelostpaj med rostat päron, gröna blad & solrospesto</div>
+        </div>
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path d="M96 64c0-35.3 28.7-64 64-64H266.3c26.2 0 49.7 15.9 59.4 40.2L373.7 160H480V126.2c0-24.8 5.8-49.3 16.9-71.6l2.5-5c7.9-15.8 27.1-22.2 42.9-14.3s22.2 27.1 14.3 42.9l-2.5 5c-6.7 13.3-10.1 28-10.1 42.9V160h56c22.1 0 40 17.9 40 40v45.4c0 16.5-8.5 31.9-22.6 40.7l-43.3 27.1c-14.2-5.9-29.8-9.2-46.1-9.2c-39.3 0-74.1 18.9-96 48H352c0 17.7-14.3 32-32 32h-8.2c-1.7 4.8-3.7 9.5-5.8 14.1l5.8 5.8c12.5 12.5 12.5 32.8 0 45.3l-22.6 22.6c-12.5 12.5-32.8 12.5-45.3 0l-5.8-5.8c-4.6 2.2-9.3 4.1-14.1 5.8V480c0 17.7-14.3 32-32 32H160c-17.7 0-32-14.3-32-32v-8.2c-4.8-1.7-9.5-3.7-14.1-5.8l-5.8 5.8c-12.5 12.5-32.8 12.5-45.3 0L40.2 449.1c-12.5-12.5-12.5-32.8 0-45.3l5.8-5.8c-2.2-4.6-4.1-9.3-5.8-14.1H32c-17.7 0-32-14.3-32-32V320c0-17.7 14.3-32 32-32h8.2c1.7-4.8 3.7-9.5 5.8-14.1l-5.8-5.8c-12.5-12.5-12.5-32.8 0-45.3l22.6-22.6c9-9 21.9-11.5 33.1-7.6V192 160 64zm170.3 0H160v96h32H304.7L266.3 64zM176 256a80 80 0 1 0 0 160 80 80 0 1 0 0-160zM528 448a24 24 0 1 0 0-48 24 24 0 1 0 0 48zm0 64c-48.6 0-88-39.4-88-88c0-29.8 14.8-56.1 37.4-72c14.3-10.1 31.8-16 50.6-16c2.7 0 5.3 .1 7.9 .3c44.9 4 80.1 41.7 80.1 87.7c0 48.6-39.4 88-88 88z"/></svg></span>
+            <span class="lunch_title">Local, VI BJUDER ALLA ÄTANDE GÄSTER PÅ KAKA</span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Kalkonstek med bakad purjo, äpple, rostad potatis & cidersenapssky </div>
+        </div>
+            
+        <div class="lunchmeny_container">
+            <span class="lunch_icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M266.3 48.3L232.5 73.6c-5.4 4-8.5 10.4-8.5 17.1v9.1c0 6.8 5.5 12.3 12.3 12.3c2.4 0 4.8-.7 6.8-2.1l41.8-27.9c2-1.3 4.4-2.1 6.8-2.1h1c6.2 0 11.3 5.1 11.3 11.3c0 3-1.2 5.9-3.3 8l-19.9 19.9c-5.8 5.8-12.9 10.2-20.7 12.8l-26.5 8.8c-5.8 1.9-9.6 7.3-9.6 13.4c0 3.7-1.5 7.3-4.1 10l-17.9 17.9c-6.4 6.4-9.9 15-9.9 24v4.3c0 16.4 13.6 29.7 29.9 29.7c11 0 21.2-6.2 26.1-16l4-8.1c2.4-4.8 7.4-7.9 12.8-7.9c4.5 0 8.7 2.1 11.4 5.7l16.3 21.7c2.1 2.9 5.5 4.5 9.1 4.5c8.4 0 13.9-8.9 10.1-16.4l-1.1-2.3c-3.5-7 0-15.5 7.5-18l21.2-7.1c7.6-2.5 12.7-9.6 12.7-17.6c0-10.3 8.3-18.6 18.6-18.6H400c8.8 0 16 7.2 16 16s-7.2 16-16 16H379.3c-7.2 0-14.2 2.9-19.3 8l-4.7 4.7c-2.1 2.1-3.3 5-3.3 8c0 6.2 5.1 11.3 11.3 11.3h11.3c6 0 11.8 2.4 16 6.6l6.5 6.5c1.8 1.8 2.8 4.3 2.8 6.8s-1 5-2.8 6.8l-7.5 7.5C386 262 384 266.9 384 272s2 10 5.7 13.7L408 304c10.2 10.2 24.1 16 38.6 16H454c6.5-20.2 10-41.7 10-64c0-111.4-87.6-202.4-197.7-207.7zm172 307.9c-3.7-2.6-8.2-4.1-13-4.1c-6 0-11.8-2.4-16-6.6L396 332c-7.7-7.7-18-12-28.9-12c-9.7 0-19.2-3.5-26.6-9.8L314 287.4c-11.6-9.9-26.4-15.4-41.7-15.4H251.4c-12.6 0-25 3.7-35.5 10.7L188.5 301c-17.8 11.9-28.5 31.9-28.5 53.3v3.2c0 17 6.7 33.3 18.7 45.3l16 16c8.5 8.5 20 13.3 32 13.3H248c13.3 0 24 10.7 24 24c0 2.5 .4 5 1.1 7.3c71.3-5.8 132.5-47.6 165.2-107.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM187.3 100.7c-6.2-6.2-16.4-6.2-22.6 0l-32 32c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l32-32c6.2-6.2 6.2-16.4 0-22.6z"/></svg></span>
+            <span class="lunch_title">World Wide, VI BJUDER ALLA ÄTANDE GÄSTER PÅ KAKA</span>
+            <span class="lunch_separator"></span>
+            <span class="lunch_price">115:-</span>
+            <div class="lunch_desc">Chorizobiff med parmesancreme, krossad potatis & chimichurri</div>
+        </div>
+        </div>
+</div>
+						</div>
+				</div>
+				</div>
+					</div>
+				</div>
+		<a class="elementor-element elementor-element-cd7de8f e-con-full elementor-hidden-desktop elementor-hidden-laptop elementor-hidden-tablet e-flex elementor-invisible e-con e-parent" data-id="cd7de8f" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;position&quot;:&quot;fixed&quot;,&quot;animation&quot;:&quot;fadeInUp&quot;,&quot;animation_mobile&quot;:&quot;fadeInUp&quot;,&quot;animation_delay&quot;:1500}" href="#lunch">
+				<div class="elementor-element elementor-element-9b61552 elementor-widget elementor-widget-heading" data-id="9b61552" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">SE LUNCHMENYN</h2>				</div>
+				</div>
+				</a>
+				</div>
+		
+		
+			</div>
+
+	
+</main>
+
+			<div data-elementor-type="footer" data-elementor-id="114" class="elementor elementor-114 elementor-location-footer" data-elementor-post-type="elementor_library">
+			<div class="elementor-element elementor-element-bbfcc77 e-flex e-con-boxed e-con e-parent" data-id="bbfcc77" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-5266e37 elementor-widget__width-inherit elementor-widget-divider--view-line elementor-widget elementor-widget-divider" data-id="5266e37" data-element_type="widget" data-widget_type="divider.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-divider">
+			<span class="elementor-divider-separator">
+						</span>
+		</div>
+						</div>
+				</div>
+		<div class="elementor-element elementor-element-2871b69 e-con-full e-flex e-con e-child" data-id="2871b69" data-element_type="container">
+				<div class="elementor-element elementor-element-ad743e2 elementor-widget__width-inherit elementor-widget elementor-widget-image" data-id="ad743e2" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img width="488" height="193" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20488%20193'%3E%3C/svg%3E" class="attachment-large size-large wp-image-98" alt="" data-lazy-srcset="https://restaurangedison.se/wp-content/uploads/2024/09/Restaurang-edison-logotyp-black-and-white.png 488w, https://restaurangedison.se/wp-content/uploads/2024/09/Restaurang-edison-logotyp-black-and-white-300x119.png 300w" data-lazy-sizes="(max-width: 488px) 100vw, 488px" data-lazy-src="https://restaurangedison.se/wp-content/uploads/2024/09/Restaurang-edison-logotyp-black-and-white.png" /><noscript><img width="488" height="193" src="https://restaurangedison.se/wp-content/uploads/2024/09/Restaurang-edison-logotyp-black-and-white.png" class="attachment-large size-large wp-image-98" alt="" srcset="https://restaurangedison.se/wp-content/uploads/2024/09/Restaurang-edison-logotyp-black-and-white.png 488w, https://restaurangedison.se/wp-content/uploads/2024/09/Restaurang-edison-logotyp-black-and-white-300x119.png 300w" sizes="(max-width: 488px) 100vw, 488px" /></noscript>															</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-0abf197 e-con-full e-flex e-con e-child" data-id="0abf197" data-element_type="container">
+				<div class="elementor-element elementor-element-237454c elementor-widget elementor-widget-heading" data-id="237454c" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h3 class="elementor-heading-title elementor-size-default">Öppettider</h3>				</div>
+				</div>
+				<div class="elementor-element elementor-element-3741bfe elementor-widget elementor-widget-text-editor" data-id="3741bfe" data-element_type="widget" data-widget_type="text-editor.default">
+				<div class="elementor-widget-container">
+									<p><strong>Måndag &#8211; fredag</strong><br />Café 8.00 &#8211; 15.00<br />Frukost 8.00 -10.00<br />Lunch 11.15 &#8211; 13.30<br /><em>Övriga tider efter överenskommelse.</em></p>								</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-d4fc0b7 e-con-full e-flex e-con e-child" data-id="d4fc0b7" data-element_type="container">
+				<div class="elementor-element elementor-element-6e91a0a elementor-widget elementor-widget-heading" data-id="6e91a0a" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h3 class="elementor-heading-title elementor-size-default">Restaurang Edison</h3>				</div>
+				</div>
+				<div class="elementor-element elementor-element-8795b87 elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="8795b87" data-element_type="widget" data-widget_type="icon-list.default">
+				<div class="elementor-widget-container">
+							<ul class="elementor-icon-list-items">
+							<li class="elementor-icon-list-item">
+										<span class="elementor-icon-list-text">Emdalavägen 6B</span>
+									</li>
+								<li class="elementor-icon-list-item">
+										<span class="elementor-icon-list-text">223 69 Lund</span>
+									</li>
+						</ul>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-7e8f24c elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="7e8f24c" data-element_type="widget" data-widget_type="icon-list.default">
+				<div class="elementor-widget-container">
+							<ul class="elementor-icon-list-items">
+							<li class="elementor-icon-list-item">
+											<span class="elementor-icon-list-icon">
+							<i aria-hidden="true" class="fal fa-phone-laptop"></i>						</span>
+										<span class="elementor-icon-list-text">046-501 02</span>
+									</li>
+								<li class="elementor-icon-list-item">
+											<span class="elementor-icon-list-icon">
+							<i aria-hidden="true" class="fal fa-mail-bulk"></i>						</span>
+										<span class="elementor-icon-list-text"><span id="eeb-756199-383855"></span><script type="text/javascript">(function(){var ml="4d%oinkb0restu.ga",mi="736545?2089:;<@=9@5?:14;35>;:",o="";for(var j=0,l=mi.length;j<l;j++){o+=ml.charAt(mi.charCodeAt(j)-48);}document.getElementById("eeb-756199-383855").innerHTML = decodeURIComponent(o);}());</script><noscript>*protected email*</noscript></span>
+									</li>
+						</ul>
+						</div>
+				</div>
+				</div>
+					</div>
+				</div>
+				</div>
+		
+<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"\/*"},{"not":{"href_matches":["\/wp-*.php","\/wp-admin\/*","\/wp-content\/uploads\/*","\/wp-content\/*","\/wp-content\/plugins\/*","\/wp-content\/themes\/hello-elementor-child\/*","\/wp-content\/themes\/hello-elementor\/*","\/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+		<div data-elementor-type="floating-buttons" data-elementor-id="362" class="elementor elementor-362 elementor-location-floating_buttons" data-elementor-post-type="e-floating-buttons">
+			<div class="elementor-element elementor-element-86e168c e-flex e-con-boxed e-con e-parent" data-id="86e168c" data-element_type="container">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-7268b004 animated-normal elementor-widget elementor-widget-contact-buttons-var-5" data-id="7268b004" data-element_type="widget" data-settings="{&quot;style_chat_button_animation&quot;:&quot;slideInRight&quot;,&quot;style_chat_button_animation_delay&quot;:1000,&quot;style_button_color_hover_animation&quot;:&quot;grow&quot;}" data-widget_type="contact-buttons-var-5.default">
+				<div class="elementor-widget-container">
+							<div class="e-contact-buttons e-contact-buttons-var-5 has-h-alignment-end has-v-alignment-bottom has-platform-email" id="" data-document-id="52" aria-role="dialog">
+					<div class="e-contact-buttons__chat-button-container">
+			<a class="e-contact-buttons__chat-button e-contact-buttons__chat-button-shadow has-size-small elementor-animation-grow mail-link" href="javascript:;" data-enc-email="obxavat[at]erfgnhenatrqvfba.fr" rel="noopener noreferrer" target="_blank" aria-label="Öppna Chatt E-post" data-wpel-link="ignore">
+				<i aria-hidden="true" class="fas fa-envelope"></i>			</a>
+		</div>
+				</div>
+						</div>
+				</div>
+					</div>
+				</div>
+				</div>
+				<div data-elementor-type="floating-buttons" data-elementor-id="338" class="elementor elementor-338 elementor-location-floating_buttons" data-elementor-post-type="e-floating-buttons">
+			<div class="elementor-element elementor-element-eebb389 e-flex e-con-boxed e-con e-parent" data-id="eebb389" data-element_type="container">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-42b1bd46 animated-normal elementor-widget elementor-widget-contact-buttons-var-5" data-id="42b1bd46" data-element_type="widget" data-settings="{&quot;style_chat_button_animation&quot;:&quot;slideInRight&quot;,&quot;style_chat_button_animation_delay&quot;:1000,&quot;style_button_color_hover_animation&quot;:&quot;grow&quot;}" data-widget_type="contact-buttons-var-5.default">
+				<div class="elementor-widget-container">
+							<div class="e-contact-buttons e-contact-buttons-var-5 has-h-alignment-end has-v-alignment-bottom has-platform-phone" id="" data-document-id="52" aria-role="dialog">
+					<div class="e-contact-buttons__chat-button-container">
+			<a class="e-contact-buttons__chat-button e-contact-buttons__chat-button-shadow has-size-small elementor-animation-grow" href="tel:04650102" rel="noopener noreferrer" target="_blank" aria-label="Öppna Chatt Telefon">
+				<i aria-hidden="true" class="fas fa-phone-alt"></i>			</a>
+		</div>
+				</div>
+						</div>
+				</div>
+					</div>
+				</div>
+				</div>
+		<script data-minify="1" src="https://restaurangedison.se/wp-content/cache/min/1/wp-content/plugins/dynamicconditions/Public/js/dynamic-conditions-public.js?ver=1744797197" id="dynamic-conditions-js" data-rocket-defer defer></script>
+<script id="rocket-browser-checker-js-after">
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+<script id="rocket-preload-links-js-extra">
+var RocketPreloadLinksConfig = {"excludeUris":"\/(?:.+\/)?feed(?:\/(?:.+\/?)?)?$|\/(?:.+\/)?embed\/|\/(index.php\/)?(.*)wp-json(\/.*|$)|\/refer\/|\/go\/|\/recommend\/|\/recommends\/","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php|html|htm","siteUrl":"https:\/\/restaurangedison.se","onHoverDelay":"100","rateThrottle":"3"};
+</script>
+<script id="rocket-preload-links-js-after">
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+</script>
+<script src="https://restaurangedison.se/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=3.31.2" id="elementor-webpack-runtime-js" data-rocket-defer defer></script>
+<script src="https://restaurangedison.se/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=3.31.2" id="elementor-frontend-modules-js" data-rocket-defer defer></script>
+<script src="https://restaurangedison.se/wp-includes/js/jquery/ui/core.min.js?ver=1.13.3" id="jquery-ui-core-js" data-rocket-defer defer></script>
+<script id="elementor-frontend-js-before">
+var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"Dela p\u00e5 Facebook","shareOnTwitter":"Dela p\u00e5 Twitter","pinIt":"F\u00e4st det","download":"Ladda ner","downloadImage":"Ladda ner bild","fullscreen":"Helsk\u00e4rm","zoom":"Zoom","share":"Dela","playVideo":"Spela videoklipp","previous":"F\u00f6reg\u00e5ende","next":"N\u00e4sta","close":"St\u00e4ng","a11yCarouselPrevSlideMessage":"F\u00f6reg\u00e5ende bild","a11yCarouselNextSlideMessage":"N\u00e4sta bild","a11yCarouselFirstSlideMessage":"Detta \u00e4r f\u00f6rsta bilden","a11yCarouselLastSlideMessage":"Detta \u00e4r sista bilden","a11yCarouselPaginationBulletMessage":"G\u00e5 till bild"},"is_rtl":false,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"Mobilt portr\u00e4ttl\u00e4ge","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"Mobil liggande","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"St\u00e5ende p\u00e5 l\u00e4splatta","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"Liggande p\u00e5 l\u00e4splatta","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"B\u00e4rbar dator","value":1366,"default_value":1366,"direction":"max","is_enabled":true},"widescreen":{"label":"Widescreen","value":2400,"default_value":2400,"direction":"min","is_enabled":false}},"hasCustomBreakpoints":true},"version":"3.31.2","is_static":false,"experimentalFeatures":{"additional_custom_breakpoints":true,"container":true,"theme_builder_v2":true,"nested-elements":true,"e_element_cache":true,"home_screen":true,"global_classes_should_enforce_capabilities":true,"e_variables":true,"cloud-library":true,"e_opt_in_v4_page":true},"urls":{"assets":"https:\/\/restaurangedison.se\/wp-content\/plugins\/elementor\/assets\/","ajaxurl":"https:\/\/restaurangedison.se\/wp-admin\/admin-ajax.php","uploadUrl":"https:\/\/restaurangedison.se\/wp-content\/uploads"},"nonces":{"floatingButtonsClickTracking":"e26364d852"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet","viewport_laptop"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description"},"post":{"id":52,"title":"Lunch%20-%20Restaurang%20Edison","excerpt":"","featuredImage":false}};
+</script>
+<script src="https://restaurangedison.se/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.31.2" id="elementor-frontend-js" data-rocket-defer defer></script>
+<script src="https://restaurangedison.se/wp-content/plugins/elementor-pro/assets/lib/smartmenus/jquery.smartmenus.min.js?ver=1.2.1" id="smartmenus-js" data-rocket-defer defer></script>
+<script src="https://restaurangedison.se/wp-content/plugins/elementor-pro/assets/js/webpack-pro.runtime.min.js?ver=3.28.0" id="elementor-pro-webpack-runtime-js" data-rocket-defer defer></script>
+<script src="https://restaurangedison.se/wp-includes/js/dist/hooks.min.js?ver=4d63a3d491d11ffd8ac6" id="wp-hooks-js"></script>
+<script src="https://restaurangedison.se/wp-includes/js/dist/i18n.min.js?ver=5e580eb46a90c2b997e6" id="wp-i18n-js"></script>
+<script id="wp-i18n-js-after">
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+</script>
+<script id="elementor-pro-frontend-js-before">
+var ElementorProFrontendConfig = {"ajaxurl":"https:\/\/restaurangedison.se\/wp-admin\/admin-ajax.php","nonce":"47e50fc14f","urls":{"assets":"https:\/\/restaurangedison.se\/wp-content\/plugins\/elementor-pro\/assets\/","rest":"https:\/\/restaurangedison.se\/wp-json\/"},"settings":{"lazy_load_background_images":false},"popup":{"hasPopUps":true},"shareButtonsNetworks":{"facebook":{"title":"Facebook","has_counter":true},"twitter":{"title":"Twitter"},"linkedin":{"title":"LinkedIn","has_counter":true},"pinterest":{"title":"Pinterest","has_counter":true},"reddit":{"title":"Reddit","has_counter":true},"vk":{"title":"VK","has_counter":true},"odnoklassniki":{"title":"OK","has_counter":true},"tumblr":{"title":"Tumblr"},"digg":{"title":"Digg"},"skype":{"title":"Skype"},"stumbleupon":{"title":"StumbleUpon","has_counter":true},"mix":{"title":"Mix"},"telegram":{"title":"Telegram"},"pocket":{"title":"Pocket","has_counter":true},"xing":{"title":"XING","has_counter":true},"whatsapp":{"title":"WhatsApp"},"email":{"title":"Email"},"print":{"title":"Print"},"x-twitter":{"title":"X"},"threads":{"title":"Threads"}},"facebook_sdk":{"lang":"sv_SE","app_id":""},"lottie":{"defaultAnimationUrl":"https:\/\/restaurangedison.se\/wp-content\/plugins\/elementor-pro\/modules\/lottie\/assets\/animations\/default.json"}};
+</script>
+<script src="https://restaurangedison.se/wp-content/plugins/elementor-pro/assets/js/frontend.min.js?ver=3.28.0" id="elementor-pro-frontend-js" data-rocket-defer defer></script>
+<script src="https://restaurangedison.se/wp-content/plugins/elementor-pro/assets/js/elements-handlers.min.js?ver=3.28.0" id="pro-elements-handlers-js" data-rocket-defer defer></script>
+<script src="https://kit.fontawesome.com/09773b5d00.js?ver=3.28.0" id="font-awesome-pro-js" data-rocket-defer defer></script>
+<script type="rocketlazyloadscript">
+document.addEventListener('DOMContentLoaded', function () {
+    var date = new Date();
+    var day = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
+
+    var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+    // Ta bort eventuellt aktiv klass
+    document.querySelectorAll('.day-container').forEach(function(container) {
+        container.classList.remove('active');
+    });
+
+    // Lägg till aktiv klass för dagens veckodag
+    var currentDay = days[day];
+    var activeContainer = document.querySelector('.' + currentDay);
+    
+    if (activeContainer) {
+        activeContainer.classList.add('active');
+    }
+});
+</script>
+<script>window.lazyLoadOptions=[{elements_selector:"img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,callback_loaded:function(element){if(element.tagName==="IFRAME"&&element.dataset.rocketLazyload=="fitvidscompatible"){if(element.classList.contains("lazyloaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}},{elements_selector:".rocket-lazyload",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,}];window.addEventListener('LazyLoad::Initialized',function(e){var lazyLoadInstance=e.detail.instance;if(window.MutationObserver){var observer=new MutationObserver(function(mutations){var image_count=0;var iframe_count=0;var rocketlazy_count=0;mutations.forEach(function(mutation){for(var i=0;i<mutation.addedNodes.length;i++){if(typeof mutation.addedNodes[i].getElementsByTagName!=='function'){continue}
+if(typeof mutation.addedNodes[i].getElementsByClassName!=='function'){continue}
+images=mutation.addedNodes[i].getElementsByTagName('img');is_image=mutation.addedNodes[i].tagName=="IMG";iframes=mutation.addedNodes[i].getElementsByTagName('iframe');is_iframe=mutation.addedNodes[i].tagName=="IFRAME";rocket_lazy=mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');image_count+=images.length;iframe_count+=iframes.length;rocketlazy_count+=rocket_lazy.length;if(is_image){image_count+=1}
+if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="https://restaurangedison.se/wp-content/plugins/wp-rocket/assets/js/lazyload/17.8.3/lazyload.min.js"></script><script>function lazyLoadThumb(e,alt,l){var t='<img data-lazy-src="https://i.ytimg.com/vi/ID/hqdefault.jpg" alt="" width="480" height="360"><noscript><img src="https://i.ytimg.com/vi/ID/hqdefault.jpg" alt="" width="480" height="360"></noscript>',a='<button class="play" aria-label="play Youtube video"></button>';if(l){t=t.replace('data-lazy-','');t=t.replace('loading="lazy"','');t=t.replace(/<noscript>.*?<\/noscript>/g,'');}t=t.replace('alt=""','alt="'+alt+'"');return t.replace("ID",e)+a}function lazyLoadYoutubeIframe(){var e=document.createElement("iframe"),t="ID?autoplay=1";t+=0===this.parentNode.dataset.query.length?"":"&"+this.parentNode.dataset.query;e.setAttribute("src",t.replace("ID",this.parentNode.dataset.src)),e.setAttribute("frameborder","0"),e.setAttribute("allowfullscreen","1"),e.setAttribute("allow","accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"),this.parentNode.parentNode.replaceChild(e,this.parentNode)}document.addEventListener("DOMContentLoaded",function(){var exclusions=[];var e,t,p,u,l,a=document.getElementsByClassName("rll-youtube-player");for(t=0;t<a.length;t++)(e=document.createElement("div")),(u='https://i.ytimg.com/vi/ID/hqdefault.jpg'),(u=u.replace('ID',a[t].dataset.id)),(l=exclusions.some(exclusion=>u.includes(exclusion))),e.setAttribute("data-id",a[t].dataset.id),e.setAttribute("data-query",a[t].dataset.query),e.setAttribute("data-src",a[t].dataset.src),(e.innerHTML=lazyLoadThumb(a[t].dataset.id,a[t].dataset.alt,l)),a[t].appendChild(e),(p=e.querySelector(".play")),(p.onclick=lazyLoadYoutubeIframe)});</script>
+<script>class RocketElementorAnimation{constructor(){this.deviceMode=document.createElement("span"),this.deviceMode.id="elementor-device-mode-wpr",this.deviceMode.setAttribute("class","elementor-screen-only"),document.body.appendChild(this.deviceMode)}_detectAnimations(){let t=getComputedStyle(this.deviceMode,":after").content.replace(/"/g,"");this.animationSettingKeys=this._listAnimationSettingsKeys(t),document.querySelectorAll(".elementor-invisible[data-settings]").forEach(t=>{const e=t.getBoundingClientRect();if(e.bottom>=0&&e.top<=window.innerHeight)try{this._animateElement(t)}catch(t){}})}_animateElement(t){const e=JSON.parse(t.dataset.settings),i=e._animation_delay||e.animation_delay||0,n=e[this.animationSettingKeys.find(t=>e[t])];if("none"===n)return void t.classList.remove("elementor-invisible");t.classList.remove(n),this.currentAnimation&&t.classList.remove(this.currentAnimation),this.currentAnimation=n;let s=setTimeout(()=>{t.classList.remove("elementor-invisible"),t.classList.add("animated",n),this._removeAnimationSettings(t,e)},i);window.addEventListener("rocket-startLoading",function(){clearTimeout(s)})}_listAnimationSettingsKeys(t="mobile"){const e=[""];switch(t){case"mobile":e.unshift("_mobile");case"tablet":e.unshift("_tablet");case"desktop":e.unshift("_desktop")}const i=[];return["animation","_animation"].forEach(t=>{e.forEach(e=>{i.push(t+e)})}),i}_removeAnimationSettings(t,e){this._listAnimationSettingsKeys().forEach(t=>delete e[t]),t.dataset.settings=JSON.stringify(e)}static run(){const t=new RocketElementorAnimation;requestAnimationFrame(t._detectAnimations.bind(t))}}document.addEventListener("DOMContentLoaded",RocketElementorAnimation.run);</script></body>
+</html>
+
+<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me - Debug: cached@1756125390 -->

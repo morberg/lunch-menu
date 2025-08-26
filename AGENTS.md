@@ -2,6 +2,9 @@
 
 ## General guidelines
 - Avoid hardcoding
+- Make sure tests are working when you have made changes
+- Simple is good, try to keep the code as simple as possible
+- Do not add unnecessary things
 
 ## Makefile First
 - Always use Makefile targets for common tasks

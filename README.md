@@ -1,4 +1,5 @@
 # Lunch Menu Scraper
+<!-- See AGENTS.md for development guidelines -->
 
 This project is a web application that scrapes daily lunch menus from selected restaurants in Lund, Sweden. The application retrieves menu items and their prices, presenting them in a user-friendly format accessible via a web interface.
 
@@ -63,6 +64,7 @@ You can use the included Makefile for common tasks:
 | make run-debug-bricks  | Run Bricks debug script           |
 | make run-debug-kantin  | Run Kantin debug script           |
 | make run-debug-grenden | Run Grenden debug script          |
+| make run-debug-smakapakina | Run Smakapakina debug script  |
 | make deploy            | Deploy the app to Vercel          |
 
 All npm commands can still be used directly if preferred.

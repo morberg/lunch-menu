@@ -1,4 +1,5 @@
 # Makefile for lunch-menu-scraper
+# See AGENTS.md for development guidelines
 
 install:
 	npm install
@@ -26,6 +27,9 @@ run-debug-kantin:
 
 run-debug-grenden:
 	npm run build && node dist/debug-grenden.js
+
+run-debug-smakapakina:
+	npm run build && node dist/debug-smakapakina.js
 
 deploy:
 	npx vercel --prod

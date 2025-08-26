@@ -26,16 +26,18 @@ export const scrapeBricksMenu = async (): Promise<MenuItem[]> => {
                 continue;
             }
 
-            // Check if line is a category (Green, Local, Worldwide, Pizza) followed by price and description
-            if ((line === 'Green' || line === 'Local' || line === 'Worldwide' || line === 'Pizza') && currentDay) {
-                // Next line should be the price
-                if (i + 1 < lines.length && i + 2 < lines.length) {
+            // Check if this looks like a category
+            if (currentDay && i + 1 < lines.length && i + 2 < lines.length) {
+                const nextLine = lines[i + 1];
+                const thirdLine = lines[i + 2];
+
+                // Check if next line looks like a price (contains digits and 'kr')
+                if (nextLine.match(/\d+.*kr/i) && thirdLine.length > 20) {
                     const category = line;
                     // Normalize price: extract only the number
-                    const rawPrice = lines[i + 1];
-                    const priceMatch = rawPrice.match(/(\d+)/);
-                    const price = priceMatch ? `${priceMatch[1]} kr` : rawPrice;
-                    const description = lines[i + 2];
+                    const priceMatch = nextLine.match(/(\d+)/);
+                    const price = priceMatch ? `${priceMatch[1]} kr` : nextLine;
+                    const description = thirdLine;
 
                     const menuItem = {
                         name: `${category}: ${description}`,

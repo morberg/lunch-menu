@@ -1,5 +1,8 @@
 # Agent Guidelines
 
+## General guidelines
+- Avoid hardcoding
+
 ## Makefile First
 - Always use Makefile targets for common tasks
 - Add new targets when introducing new workflows

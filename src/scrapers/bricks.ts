@@ -36,7 +36,7 @@ export const scrapeBricksMenu = async (): Promise<MenuItem[]> => {
                 if (nextLine.match(/\d+.*kr/i) && thirdLine.length > 20) {
                     const category = line;
                     const description = thirdLine;
-                    
+
                     // Parse the price using our utility
                     const price = parsePrice(nextLine);
 

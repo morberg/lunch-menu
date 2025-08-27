@@ -118,7 +118,7 @@ export function parseEdisonMenuFromHTML(htmlContent: string): MenuItem[] {
             if (i + 1 < lines.length && i + 2 < lines.length) {
                 const rawPrice = lines[i + 1];
                 const description = lines[i + 2];
-                
+
                 // Parse the price using our utility
                 const price = parsePrice(rawPrice);
 
@@ -167,14 +167,14 @@ export function parseKantinMenuFromHTML(htmlContent: string): MenuItem[] {
                     !description.includes('Vi skickar') &&
                     description.length > 10) {
 
-                        // Parse price from description or use fallback
-                        const price = parsePrice(description);
-                        
-                        const menuItem: MenuItem = {
-                            name: description,
-                            price: price,
-                            day: currentDay
-                        };                    menuItems.push(menuItem);
+                    // Parse price from description or use fallback
+                    const price = parsePrice(description);
+
+                    const menuItem: MenuItem = {
+                        name: description,
+                        price: price,
+                        day: currentDay
+                    }; menuItems.push(menuItem);
                     i++; // Skip the processed description line
                 }
             }
@@ -184,7 +184,7 @@ export function parseKantinMenuFromHTML(htmlContent: string): MenuItem[] {
         if (line === 'Veckans vegetariska' && i + 1 < lines.length) {
             const description = lines[i + 1];
             const price = parsePrice('Se restaurang');
-            
+
             const menuItem: MenuItem = {
                 name: `Veckans vegetariska: ${description}`,
                 price: price,
@@ -233,7 +233,7 @@ export function parseGrendenMenuFromHTML(htmlContent: string): MenuItem[] {
 
             if (dishName.length > 5) {
                 const parsedPrice = parsePrice(price);
-                
+
                 menuItems.push({
                     name: dishName,
                     price: parsedPrice,
@@ -297,7 +297,7 @@ export function parseSmakapakinaMenuFromHTML(htmlContent: string): MenuItem[] {
                     line.toLowerCase().includes('sallad'))) {
 
                 const price = parsePrice('155 kr');
-                
+
                 menuItems.push({
                     name: line,
                     price: price,

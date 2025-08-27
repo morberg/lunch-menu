@@ -41,7 +41,7 @@ export const scrapeGrendenMenu = async (): Promise<MenuItem[]> => {
                 // Save previous day's items if we have them
                 if (currentDay && (fieldsAndForests || justLikeGrandmas)) {
                     const parsedPrice = parsePrice(price);
-                    
+
                     if (fieldsAndForests) {
                         menuItems.push({
                             name: `Fields & Forests: ${fieldsAndForests}`,
@@ -137,7 +137,7 @@ export const scrapeGrendenMenu = async (): Promise<MenuItem[]> => {
         // Don't forget to add the last day's items
         if (currentDay && (fieldsAndForests || justLikeGrandmas)) {
             const parsedPrice = parsePrice(price);
-            
+
             if (fieldsAndForests) {
                 menuItems.push({
                     name: `Fields & Forests: ${fieldsAndForests}`,

@@ -36,7 +36,7 @@ export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
 
                         // Parse price from description or use fallback
                         const price = parsePrice(description);
-                        
+
                         const menuItem: MenuItem = {
                             name: description,
                             price: price,
@@ -53,7 +53,7 @@ export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
             if (line === 'Veckans vegetariska' && i + 1 < lines.length) {
                 const description = lines[i + 1];
                 const price = parsePrice('Se restaurang');
-                
+
                 const menuItem: MenuItem = {
                     name: `Veckans vegetariska: ${description}`,
                     price: price,
@@ -66,7 +66,7 @@ export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
             if (line === 'Månadens alternativ' && i + 1 < lines.length) {
                 const description = lines[i + 1];
                 const price = parsePrice('Se restaurang');
-                
+
                 const menuItem: MenuItem = {
                     name: `Månadens alternativ: ${description}`,
                     price: price,

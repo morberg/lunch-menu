@@ -2,7 +2,7 @@ import { MenuItem } from '../types/menu';
 
 describe('Menu Types Tests', () => {
     it('should validate MenuItem interface', () => {
-                const testMenuItem = {
+        const testMenuItem = {
             name: 'Pasta Bolognese',
             price: 125,
             day: 'Måndag'

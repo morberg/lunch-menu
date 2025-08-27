@@ -10,7 +10,7 @@
 export function parsePrice(priceText: string): number | null {
     // Normalize the text
     const normalized = priceText.trim();
-    
+
     // Handle special cases where no numerical price is available
     const noPricePatterns = [
         /se restaurang/i,
@@ -19,23 +19,23 @@ export function parsePrice(priceText: string): number | null {
         /^-+$/,
         /^n\/?a$/i
     ];
-    
+
     for (const pattern of noPricePatterns) {
         if (pattern.test(normalized)) {
             return null;
         }
     }
-    
+
     // Extract numerical price
     const priceMatch = normalized.match(/(\d+(?:[.,]\d{2})?)\s*(?:kr|:-|sek)?/i);
-    
+
     if (priceMatch) {
         const amountStr = priceMatch[1].replace(',', '.');
         const amount = parseFloat(amountStr);
-        
+
         return isNaN(amount) ? null : amount;
     }
-    
+
     // If no pattern matches, return null
     return null;
 }
@@ -49,7 +49,7 @@ export function formatPrice(amount: number | null): string {
     if (amount === null) {
         return '-';
     }
-    
+
     // Format as whole number if no decimals, otherwise with decimals
     if (amount % 1 === 0) {
         return `${amount} kr`;

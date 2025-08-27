@@ -35,7 +35,7 @@ export const scrapeEdisonMenu = async (): Promise<MenuItem[]> => {
                 if (i + 1 < lines.length && i + 2 < lines.length) {
                     const rawPrice = lines[i + 1];
                     const description = lines[i + 2];
-                    
+
                     // Parse the price using our utility
                     const price = parsePrice(rawPrice);
 

@@ -18,7 +18,7 @@ async function testKantinScraper() {
                 (typeof item.price === 'number' || item.price === null) &&
                 typeof item.day === 'string' &&
                 item.name.length > 0
-            );            console.log(`✓ ${validItems.length}/${menu.length} items have valid structure`);
+            ); console.log(`✓ ${validItems.length}/${menu.length} items have valid structure`);
 
             if (validItems.length === menu.length) {
                 console.log('✓ All items passed validation');

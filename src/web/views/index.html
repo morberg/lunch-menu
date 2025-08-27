@@ -200,10 +200,9 @@
                         // Restaurant name with price if uniform
                         let restaurantHeader = `<strong><a href="${r.url}" target="_blank" style="color: inherit; text-decoration: none;">${r.name}</a></strong>`;
                         if (hasUniformPrice && uniformPrice !== null) {
-                            restaurantHeader += ` <span style="color: #28a745; font-weight: bold; margin-left: 8px;">${uniformPrice} kr</span>`;
-                        } else if (hasUniformPrice && uniformPrice === null) {
-                            restaurantHeader += ` <span style="color: #666; font-weight: bold; margin-left: 8px;">-</span>`;
+                            restaurantHeader += ` <span style="color: #28a745; float: right;">${uniformPrice} kr</span>`;
                         }
+                        // If uniformPrice is null, don't display anything
                         restaurantDiv.innerHTML = restaurantHeader;
 
                         // Table for all menu items of this restaurant for this day

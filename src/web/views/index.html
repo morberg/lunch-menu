@@ -187,9 +187,25 @@
                     const items = (r.data || []).filter(item => item.day === daySv || item.day === dayKey);
                     if (items.length > 0) {
                         hasMenus = true;
+
+                        // Check if all items have the same price
+                        const prices = items.map(item => item.price);
+                        const uniquePrices = [...new Set(prices)];
+                        const hasUniformPrice = uniquePrices.length === 1;
+                        const uniformPrice = hasUniformPrice ? uniquePrices[0] : null;
+
                         const restaurantDiv = document.createElement('div');
                         restaurantDiv.className = 'restaurant';
-                        restaurantDiv.innerHTML = `<strong><a href="${r.url}" target="_blank" style="color: inherit; text-decoration: none;">${r.name}</a></strong>`;
+
+                        // Restaurant name with price if uniform
+                        let restaurantHeader = `<strong><a href="${r.url}" target="_blank" style="color: inherit; text-decoration: none;">${r.name}</a></strong>`;
+                        if (hasUniformPrice && uniformPrice !== null) {
+                            restaurantHeader += ` <span style="color: #28a745; font-weight: bold; margin-left: 8px;">${uniformPrice} kr</span>`;
+                        } else if (hasUniformPrice && uniformPrice === null) {
+                            restaurantHeader += ` <span style="color: #666; font-weight: bold; margin-left: 8px;">-</span>`;
+                        }
+                        restaurantDiv.innerHTML = restaurantHeader;
+
                         // Table for all menu items of this restaurant for this day
                         const table = document.createElement('table');
                         table.style.width = '100%';
@@ -199,17 +215,25 @@
                         const tbody = table.querySelector('tbody');
                         items.forEach(item => {
                             const tr = document.createElement('tr');
-                            // Use the numerical price if available, otherwise display '-'
-                            let price;
-                            if (item.price !== null && item.price !== undefined) {
-                                price = `${item.price} kr`;
+
+                            if (hasUniformPrice) {
+                                // Only show dish name when all prices are the same
+                                tr.innerHTML = `
+                                    <td style="padding:4px 6px;vertical-align:top;">${item.name}</td>
+                                `;
                             } else {
-                                price = '-';
+                                // Show both dish name and individual price when prices differ
+                                let price;
+                                if (item.price !== null && item.price !== undefined) {
+                                    price = `${item.price} kr`;
+                                } else {
+                                    price = '-';
+                                }
+                                tr.innerHTML = `
+                                    <td style="padding:4px 6px;vertical-align:top;">${item.name}</td>
+                                    <td style="padding:4px 6px;text-align:right;vertical-align:top;color:#28a745;">${price}</td>
+                                `;
                             }
-                            tr.innerHTML = `
-                                <td style="padding:4px 6px;vertical-align:top;">${item.name}</td>
-                                <td style="padding:4px 6px;text-align:right;vertical-align:top;color:#28a745;">${price}</td>
-                            `;
                             tbody.appendChild(tr);
                         });
                         restaurantDiv.appendChild(table);

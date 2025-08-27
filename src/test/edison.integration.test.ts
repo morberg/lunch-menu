@@ -24,10 +24,9 @@ describe('Edison Scraper Integration', () => {
                 expect(item).toHaveProperty('price');
                 expect(item).toHaveProperty('day');
                 expect(typeof item.name).toBe('string');
-                expect(typeof item.price).toBe('string');
+                expect(typeof item.price === 'number' || item.price === null).toBe(true);
                 expect(typeof item.day).toBe('string');
                 expect(item.name.length).toBeGreaterThan(0);
-                expect(item.price).toMatch(/\d+/);
             });
 
             // Validate that we have Swedish weekdays

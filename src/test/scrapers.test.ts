@@ -2,18 +2,18 @@ import { MenuItem } from '../types/menu';
 
 describe('Menu Types Tests', () => {
     it('should validate MenuItem interface', () => {
-        const testItem: MenuItem = {
-            name: 'Köttbullar med potatis',
-            price: '125 kr',
+                const testMenuItem = {
+            name: 'Pasta Bolognese',
+            price: 125,
             day: 'Måndag'
         };
 
-        expect(testItem.name).toBeDefined();
-        expect(testItem.price).toBeDefined();
-        expect(testItem.day).toBeDefined();
-        expect(typeof testItem.name).toBe('string');
-        expect(typeof testItem.price).toBe('string');
-        expect(typeof testItem.day).toBe('string');
+        expect(testMenuItem.name).toBeDefined();
+        expect(testMenuItem.price).toBeDefined();
+        expect(testMenuItem.day).toBeDefined();
+        expect(typeof testMenuItem.name).toBe('string');
+        expect(typeof testMenuItem.price).toBe('number');
+        expect(typeof testMenuItem.day).toBe('string');
     });
 
     it('should validate Swedish weekday names', () => {
@@ -36,8 +36,8 @@ describe('Menu Types Tests', () => {
 describe('Menu Data Validation', () => {
     it('should validate menu item arrays', () => {
         const menuItems: MenuItem[] = [
-            { name: 'Pasta Carbonara', price: '125 kr', day: 'Måndag' },
-            { name: 'Fish and Chips', price: '135 kr', day: 'Tisdag' }
+            { name: 'Pasta Carbonara', price: 125, day: 'Måndag' },
+            { name: 'Fish and Chips', price: 135, day: 'Tisdag' }
         ];
 
         expect(Array.isArray(menuItems)).toBe(true);

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
+import { parsePrice } from '../utils/price';
 
 export const scrapeBricksMenu = async (): Promise<MenuItem[]> => {
     try {
@@ -34,12 +35,12 @@ export const scrapeBricksMenu = async (): Promise<MenuItem[]> => {
                 // Check if next line looks like a price (contains digits and 'kr')
                 if (nextLine.match(/\d+.*kr/i) && thirdLine.length > 20) {
                     const category = line;
-                    // Normalize price: extract only the number
-                    const priceMatch = nextLine.match(/(\d+)/);
-                    const price = priceMatch ? `${priceMatch[1]} kr` : nextLine;
                     const description = thirdLine;
+                    
+                    // Parse the price using our utility
+                    const price = parsePrice(nextLine);
 
-                    const menuItem = {
+                    const menuItem: MenuItem = {
                         name: `${category}: ${description}`,
                         price: price,
                         day: currentDay

@@ -24,7 +24,7 @@ describe('Kantin Scraper Integration', () => {
                 expect(item).toHaveProperty('price');
                 expect(item).toHaveProperty('day');
                 expect(typeof item.name).toBe('string');
-                expect(typeof item.price).toBe('string');
+                expect(typeof item.price === 'number' || item.price === null).toBe(true);
                 expect(typeof item.day).toBe('string');
                 expect(item.name.length).toBeGreaterThan(0);
             });
@@ -45,9 +45,9 @@ describe('Kantin Scraper Integration', () => {
             const priceFormats = new Set(menu.map(item => item.price));
             console.log('Kantin price formats found:', Array.from(priceFormats));
 
-            // Should have either explicit prices or "Se restaurang"
+            // Should have either explicit prices (numbers) or null
             menu.forEach(item => {
-                expect(item.price).toMatch(/(Se restaurang|\d+.*kr)/i);
+                expect(typeof item.price === 'number' || item.price === null).toBe(true);
             });
         }
     });

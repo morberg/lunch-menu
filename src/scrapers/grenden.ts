@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
+import { parsePrice } from '../utils/price';
 
 export const scrapeGrendenMenu = async (): Promise<MenuItem[]> => {
     try {
@@ -39,18 +40,20 @@ export const scrapeGrendenMenu = async (): Promise<MenuItem[]> => {
             if (swedishDays.includes(line)) {
                 // Save previous day's items if we have them
                 if (currentDay && (fieldsAndForests || justLikeGrandmas)) {
+                    const parsedPrice = parsePrice(price);
+                    
                     if (fieldsAndForests) {
                         menuItems.push({
                             name: `Fields & Forests: ${fieldsAndForests}`,
                             day: dayMapping[currentDay] || currentDay,
-                            price: price
+                            price: parsedPrice
                         });
                     }
                     if (justLikeGrandmas) {
                         menuItems.push({
                             name: `Just Like Grandma's: ${justLikeGrandmas}`,
                             day: dayMapping[currentDay] || currentDay,
-                            price: price
+                            price: parsedPrice
                         });
                     }
                 }
@@ -133,18 +136,20 @@ export const scrapeGrendenMenu = async (): Promise<MenuItem[]> => {
 
         // Don't forget to add the last day's items
         if (currentDay && (fieldsAndForests || justLikeGrandmas)) {
+            const parsedPrice = parsePrice(price);
+            
             if (fieldsAndForests) {
                 menuItems.push({
                     name: `Fields & Forests: ${fieldsAndForests}`,
                     day: dayMapping[currentDay] || currentDay,
-                    price: price
+                    price: parsedPrice
                 });
             }
             if (justLikeGrandmas) {
                 menuItems.push({
                     name: `Just Like Grandma's: ${justLikeGrandmas}`,
                     day: dayMapping[currentDay] || currentDay,
-                    price: price
+                    price: parsedPrice
                 });
             }
         }

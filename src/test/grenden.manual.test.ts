@@ -13,12 +13,11 @@ async function testGrendenScraper() {
             console.log('✓ Menu items found');
 
             const validItems = menu.filter(item =>
-                item.name && item.price && item.day &&
+                item.name && item.day &&
                 typeof item.name === 'string' &&
-                typeof item.price === 'string' &&
+                (typeof item.price === 'number' || item.price === null) &&
                 typeof item.day === 'string' &&
-                item.name.length > 0 &&
-                /\d+/.test(item.price)
+                item.name.length > 0
             );
 
             console.log(`✓ ${validItems.length}/${menu.length} items have valid structure`);

@@ -13,9 +13,9 @@ async function testSmakapakinaScraper() {
             console.log('✓ Menu items found');
 
             const validItems = menu.filter(item =>
-                item.name && item.price && item.day &&
+                item.name && item.day &&
                 typeof item.name === 'string' &&
-                typeof item.price === 'string' &&
+                (typeof item.price === 'number' || item.price === null) &&
                 typeof item.day === 'string' &&
                 item.name.length > 0
             );

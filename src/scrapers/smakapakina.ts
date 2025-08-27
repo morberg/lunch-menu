@@ -1,6 +1,9 @@
+import axios from 'axios';
+import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
+import { parsePrice } from '../utils/price';
 
-export async function scrapeSmakapakina(): Promise<MenuItem[]> {
+export const scrapeSmakapakina = async (): Promise<MenuItem[]> => {
     try {
         // TODO: Parse from https://www.smakapakina.se/meny if it changes from
         // week to week
@@ -67,14 +70,13 @@ export async function scrapeSmakapakina(): Promise<MenuItem[]> {
                     const dayMatch = title.match(/(måndag|tisdag|onsdag|torsdag|fredag)/i);
                     const day = dayMatch ? dayMatch[1] : '';
 
-                    // Extract clean price
-                    const priceMatch = priceText.match(/(\d+)/);
-                    const cleanPrice = priceMatch ? priceMatch[1] + ' kr' : priceText;
+                    // Parse the price using our utility
+                    const price = parsePrice(priceText);
 
                     const menuItem: MenuItem = {
                         name: allDishes,
                         day: day,
-                        price: cleanPrice
+                        price: price
                     };
 
                     menuItems.push(menuItem);

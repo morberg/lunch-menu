@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
+import { parsePrice } from '../utils/price';
 
 export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
     try {
@@ -33,14 +34,10 @@ export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
                         !description.includes('Vi skickar') &&
                         description.length > 10) {
 
-                        // Kantin doesn't always show prices, so fallback to 'Se restaurang'
-                        let price = 'Se restaurang';
-                        // Try to extract a price from the description if present
-                        const priceMatch = description.match(/(\d+)[ ]?(kr|:-|kj)?/i);
-                        if (priceMatch) {
-                            price = `${priceMatch[1]} kr`;
-                        }
-                        const menuItem = {
+                        // Parse price from description or use fallback
+                        const price = parsePrice(description);
+                        
+                        const menuItem: MenuItem = {
                             name: description,
                             price: price,
                             day: currentDay
@@ -55,9 +52,11 @@ export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
             // Check for special weekly items
             if (line === 'Veckans vegetariska' && i + 1 < lines.length) {
                 const description = lines[i + 1];
-                const menuItem = {
+                const price = parsePrice('Se restaurang');
+                
+                const menuItem: MenuItem = {
                     name: `Veckans vegetariska: ${description}`,
-                    price: 'Se restaurang',
+                    price: price,
                     day: 'Weekly Special'
                 };
                 menuItems.push(menuItem);
@@ -66,9 +65,11 @@ export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
 
             if (line === 'Månadens alternativ' && i + 1 < lines.length) {
                 const description = lines[i + 1];
-                const menuItem = {
+                const price = parsePrice('Se restaurang');
+                
+                const menuItem: MenuItem = {
                     name: `Månadens alternativ: ${description}`,
-                    price: 'Se restaurang',
+                    price: price,
                     day: 'Monthly Special'
                 };
                 menuItems.push(menuItem);

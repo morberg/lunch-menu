@@ -1,6 +1,6 @@
 interface MenuItem {
     name: string;
-    price: string;
+    price: number | null; // Price in SEK, null if not available
     day: string;
 }
 

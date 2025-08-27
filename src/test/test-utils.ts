@@ -2,6 +2,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { MenuItem } from '../types/menu';
+import { parsePrice } from '../utils/price';
 
 // Simple HTML text extractor (no cheerio dependency)
 function extractTextFromHTML(htmlContent: string): string {
@@ -73,7 +74,8 @@ export function parseBricksMenuFromHTML(htmlContent: string): MenuItem[] {
             // If we found a price or detected a category structure, this is likely a menu item
             if (potentialPrice || categoryDetected) {
                 // Use a default price if none found
-                const price = potentialPrice || '115 kr';
+                const priceText = potentialPrice || '115 kr';
+                const price = parsePrice(priceText);
 
                 menuItems.push({
                     name: line,
@@ -115,12 +117,12 @@ export function parseEdisonMenuFromHTML(htmlContent: string): MenuItem[] {
             // Next line should be the price
             if (i + 1 < lines.length && i + 2 < lines.length) {
                 const rawPrice = lines[i + 1];
-                // Look for any number in the price line
-                const priceMatch = rawPrice.match(/(\d+)/);
-                const price = priceMatch ? priceMatch[1] + ' kr' : rawPrice;
                 const description = lines[i + 2];
+                
+                // Parse the price using our utility
+                const price = parsePrice(rawPrice);
 
-                const menuItem = {
+                const menuItem: MenuItem = {
                     name: `${category}: ${description}`,
                     price: price,
                     day: currentDay
@@ -165,20 +167,14 @@ export function parseKantinMenuFromHTML(htmlContent: string): MenuItem[] {
                     !description.includes('Vi skickar') &&
                     description.length > 10) {
 
-                    // Kantin doesn't always show prices, so fallback to 'Se restaurang'
-                    let price = 'Se restaurang';
-                    // Try to extract a price from the description if present
-                    const priceMatch = description.match(/(\d+)[ ]?(kr|:-|kj)?/i);
-                    if (priceMatch) {
-                        price = `${priceMatch[1]} kr`;
-                    }
-                    const menuItem = {
-                        name: description,
-                        price: price,
-                        day: currentDay
-                    };
-
-                    menuItems.push(menuItem);
+                        // Parse price from description or use fallback
+                        const price = parsePrice(description);
+                        
+                        const menuItem: MenuItem = {
+                            name: description,
+                            price: price,
+                            day: currentDay
+                        };                    menuItems.push(menuItem);
                     i++; // Skip the processed description line
                 }
             }
@@ -187,9 +183,11 @@ export function parseKantinMenuFromHTML(htmlContent: string): MenuItem[] {
         // Check for special weekly items
         if (line === 'Veckans vegetariska' && i + 1 < lines.length) {
             const description = lines[i + 1];
-            const menuItem = {
+            const price = parsePrice('Se restaurang');
+            
+            const menuItem: MenuItem = {
                 name: `Veckans vegetariska: ${description}`,
-                price: 'Se restaurang',
+                price: price,
                 day: 'Weekly Special'
             };
             menuItems.push(menuItem);
@@ -234,9 +232,11 @@ export function parseGrendenMenuFromHTML(htmlContent: string): MenuItem[] {
             const dishName = line.replace(/\d+[ ]?(kr|:-)?/i, '').trim();
 
             if (dishName.length > 5) {
+                const parsedPrice = parsePrice(price);
+                
                 menuItems.push({
                     name: dishName,
-                    price: price,
+                    price: parsedPrice,
                     day: currentDay
                 });
             }
@@ -269,7 +269,8 @@ export function parseSmakapakinaMenuFromHTML(htmlContent: string): MenuItem[] {
 
             if (titleMatch) {
                 const dishName = titleMatch[1];
-                const price = priceMatch ? `${priceMatch[1]} kr` : '155 kr'; // Default Smakapakina price
+                const priceText = priceMatch ? `${priceMatch[1]} kr` : '155 kr'; // Default Smakapakina price
+                const price = parsePrice(priceText);
 
                 // Assign to a weekly special since Smakapakina often has weekly menus
                 menuItems.push({
@@ -295,9 +296,11 @@ export function parseSmakapakinaMenuFromHTML(htmlContent: string): MenuItem[] {
                     line.toLowerCase().includes('pasta') ||
                     line.toLowerCase().includes('sallad'))) {
 
+                const price = parsePrice('155 kr');
+                
                 menuItems.push({
                     name: line,
-                    price: '155 kr',
+                    price: price,
                     day: 'Weekly Special'
                 });
             }

@@ -199,11 +199,12 @@
                         const tbody = table.querySelector('tbody');
                         items.forEach(item => {
                             const tr = document.createElement('tr');
-                            // Extract only the number from price, if present
-                            let price = item.price;
-                            const priceMatch = price.match(/(\d+)/);
-                            if (priceMatch) {
-                                price = `${priceMatch[1]} kr`;
+                            // Use the numerical price if available, otherwise display '-'
+                            let price;
+                            if (item.price !== null && item.price !== undefined) {
+                                price = `${item.price} kr`;
+                            } else {
+                                price = '-';
                             }
                             tr.innerHTML = `
                                 <td style="padding:4px 6px;vertical-align:top;">${item.name}</td>

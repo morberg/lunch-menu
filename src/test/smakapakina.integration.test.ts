@@ -24,10 +24,9 @@ describe('Smakapakina Scraper Integration', () => {
                 expect(item).toHaveProperty('price');
                 expect(item).toHaveProperty('day');
                 expect(typeof item.name).toBe('string');
-                expect(typeof item.price).toBe('string');
+                expect(typeof item.price === 'number' || item.price === null).toBe(true);
                 expect(typeof item.day).toBe('string');
                 expect(item.name.length).toBeGreaterThan(0);
-                expect(item.price).toMatch(/\d+/);
             });
 
             // Smakapakina often uses weekly specials
@@ -45,9 +44,9 @@ describe('Smakapakina Scraper Integration', () => {
             const priceFormats = new Set(menu.map(item => item.price));
             console.log('Smakapakina price formats found:', Array.from(priceFormats));
 
-            // Expect all prices to contain "kr" and numbers
+            // Expect all prices to be numbers
             menu.forEach(item => {
-                expect(item.price).toMatch(/\d+.*kr/i);
+                expect(typeof item.price === 'number' || item.price === null).toBe(true);
             });
         }
     });

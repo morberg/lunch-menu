@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
+import { parsePrice } from '../utils/price';
 
 export const scrapeEdisonMenu = async (): Promise<MenuItem[]> => {
     try {
@@ -33,12 +34,12 @@ export const scrapeEdisonMenu = async (): Promise<MenuItem[]> => {
                 // Next line should be the price
                 if (i + 1 < lines.length && i + 2 < lines.length) {
                     const rawPrice = lines[i + 1];
-                    // Look for any number in the price line
-                    const priceMatch = rawPrice.match(/(\d+)/);
-                    const price = priceMatch ? priceMatch[1] : rawPrice;
                     const description = lines[i + 2];
+                    
+                    // Parse the price using our utility
+                    const price = parsePrice(rawPrice);
 
-                    const menuItem = {
+                    const menuItem: MenuItem = {
                         name: `${category}: ${description}`,
                         price: price,
                         day: currentDay

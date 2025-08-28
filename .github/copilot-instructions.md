@@ -22,7 +22,6 @@
 ## Node.js Execution
 - This project uses TypeScript - always build before running
 - Use `make start` (builds + runs) rather than direct `node` commands  
-- For debugging individual scrapers: `make run-debug-{restaurant}`
 - Never run TypeScript files directly with `node`
 
 ## Project Structure

@@ -10,6 +10,7 @@ This project is a web application that scrapes daily lunch menus from selected r
 - [Kantin](https://www.kantinlund.se/)
 - [Gränden](https://grendenlund.se/lunch/)
 - [Smakapåkina](https://smakapakina.se/lunch/)
+- [Eatery](https://eatery.se/anlaggningar/lund)
 
 ## Project Structure
 
@@ -22,7 +23,11 @@ lunch-menu-scraper
 │   │   ├── edison.ts       # Scraper for Edison restaurant
 │   │   ├── bricks.ts       # Scraper for Brick's Eatery
 │   │   ├── kantin.ts       # Scraper for Kantin
-│   │   └── ...             # More scrapers as needed
+│   │   ├── grenden.ts      # Scraper for Gränden
+│   │   ├── smakapakina.ts  # Scraper for Smakapåkina
+│   │   └── eatery.ts       # Scraper for Eatery
+│   ├── services
+│   │   └── menu-service.ts # Caching service for menu data
 │   ├── types
 │   │   └── menu.ts         # Type definitions for menu items
 │   ├── web
@@ -32,7 +37,8 @@ lunch-menu-scraper
 │   │   └── views
 │   │       └── index.html   # HTML template for displaying menus
 │   └── utils
-│       └── parser.ts       # Utility functions for data parsing
+│       ├── cache.ts        # In-memory cache with TTL support
+│       └── price.ts        # Price parsing utilities
 ├── package.json             # npm configuration file
 ├── tsconfig.json            # TypeScript configuration file
 └── README.md                # Project documentation
@@ -71,11 +77,6 @@ You can use the included Makefile for common tasks:
 | make clean                 | Remove build and dependency files |
 | make cache-status          | Check cache status                |
 | make refresh-cache         | Manually refresh menu cache       |
-| make run-debug-edison      | Run Edison debug script           |
-| make run-debug-bricks      | Run Bricks debug script           |
-| make run-debug-kantin      | Run Kantin debug script           |
-| make run-debug-grenden     | Run Grenden debug script          |
-| make run-debug-smakapakina | Run Smakapakina debug script      |
 | make deploy                | Deploy the app to Vercel          |
 
 All npm commands can still be used directly if preferred.

@@ -1,5 +1,4 @@
 import { scrapeBricksMenu } from '../../src/scrapers/bricks';
-import { loadFixture } from '../helpers/fixture-loader';
 import { setupAxiosMocks, createMockResponse } from '../helpers/mock-factory';
 import { sampleMenuItems } from '../helpers/test-data';
 
@@ -10,13 +9,8 @@ const mockAxios = setupAxiosMocks();
 describe('Bricks Scraper Integration', () => {
     describe('with valid HTML fixture', () => {
         beforeEach(() => {
-            // Mock successful HTTP response with fixture
-            try {
-                const htmlFixture = loadFixture('html/bricks-menu.html');
-                mockAxios.get.mockResolvedValue(createMockResponse(htmlFixture));
-            } catch (error) {
-                // If fixture doesn't exist, use a mock HTML structure
-                const mockHtml = `
+            // Mock successful HTTP response with mock HTML structure
+            const mockHtml = `
           <html>
             <body>
               <div class="menu-item">
@@ -32,8 +26,7 @@ describe('Bricks Scraper Integration', () => {
             </body>
           </html>
         `;
-                mockAxios.get.mockResolvedValue(createMockResponse(mockHtml));
-            }
+            mockAxios.get.mockResolvedValue(createMockResponse(mockHtml));
         });
 
         it('should parse menu items from HTML', async () => {

@@ -63,5 +63,8 @@ run-debug-grenden:
 run-debug-smakapakina:
 	npm run build && node dist/debug-smakapakina.js
 
+run-debug-eatery:
+	npm run build && node dist/debug-eatery.js
+
 deploy:
 	npx vercel --prod

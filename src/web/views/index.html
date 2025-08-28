@@ -175,6 +175,7 @@
                 { name: 'Bricks Eatery', data: data.bricks, url: 'https://brickseatery.se/lunch/' },
                 { name: 'Kantin', data: data.kantin, url: 'https://www.kantinlund.se/' },
                 { name: 'Smakapakina', data: data.smakapakina, url: 'https://www.smakapakina.se/meny' },
+                { name: 'Eatery', data: data.eatery, url: 'https://eatery.se/anlaggningar/lund' },
             ];
             days.forEach(daySv => {
                 let hasMenus = false;
@@ -244,7 +245,7 @@
                 }
             });
             // Show message if no menus available
-            if (!data.edison?.length && !data.bricks?.length && !data.kantin?.length && !data.smakapakina?.length && !data.grenden?.length) {
+            if (!data.edison?.length && !data.bricks?.length && !data.kantin?.length && !data.smakapakina?.length && !data.grenden?.length && !data.eatery?.length) {
                 content.innerHTML = '<div class="error">Inga menyer tillgängliga just nu. Försök igen senare.</div>';
             }
             // --- Automatic scroll to today's section ---

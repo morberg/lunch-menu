@@ -4,6 +4,7 @@ import { scrapeBricksMenu } from '../../scrapers/bricks';
 import { scrapeKantinMenu } from '../../scrapers/kantin';
 import { scrapeSmakapakina } from '../../scrapers/smakapakina';
 import { scrapeGrendenMenu } from '../../scrapers/grenden';
+import { scrapeEatery } from '../../scrapers/eatery';
 
 const router = express.Router();
 
@@ -11,12 +12,13 @@ router.get('/menus', async (req, res) => {
     try {
         console.log('Fetching menus from all restaurants...');
 
-        const [edisonMenu, bricksMenu, kantinMenu, smakapakinaMenu, grendenMenu] = await Promise.allSettled([
+        const [edisonMenu, bricksMenu, kantinMenu, smakapakinaMenu, grendenMenu, eateryMenu] = await Promise.allSettled([
             scrapeEdisonMenu(),
             scrapeBricksMenu(),
             scrapeKantinMenu(),
             scrapeSmakapakina(),
-            scrapeGrendenMenu()
+            scrapeGrendenMenu(),
+            scrapeEatery()
         ]);
 
         const result = {
@@ -25,6 +27,7 @@ router.get('/menus', async (req, res) => {
             kantin: kantinMenu.status === 'fulfilled' ? kantinMenu.value : [],
             smakapakina: smakapakinaMenu.status === 'fulfilled' ? smakapakinaMenu.value : [],
             grenden: grendenMenu.status === 'fulfilled' ? grendenMenu.value : [],
+            eatery: eateryMenu.status === 'fulfilled' ? eateryMenu.value : [],
         };
 
         // Log any errors
@@ -42,6 +45,9 @@ router.get('/menus', async (req, res) => {
         }
         if (grendenMenu.status === 'rejected') {
             console.error('Grenden scraper failed:', grendenMenu.reason);
+        }
+        if (eateryMenu.status === 'rejected') {
+            console.error('Eatery scraper failed:', eateryMenu.reason);
         }
 
         res.json(result);

@@ -1,14 +1,18 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
-    testMatch: ['**/test/**/*.test.ts'],
+    roots: ['<rootDir>/test'],
+    testMatch: [
+        '**/test/**/*.test.ts'
+    ],
     testPathIgnorePatterns: ['.*\\.manual\\.test\\.ts$'],
     collectCoverageFrom: [
         'src/**/*.ts',
         '!src/**/*.d.ts',
         '!src/debug-*.ts',
         '!src/test-*.ts',
-        '!src/test/**/*.manual.test.ts',
+        '!src/test/**',
     ],
-    testTimeout: 30000,
+    setupFilesAfterEnv: ['<rootDir>/test/setup/jest.setup.ts'],
+    testTimeout: 10000
 };

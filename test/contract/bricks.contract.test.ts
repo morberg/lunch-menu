@@ -4,12 +4,12 @@ describe('Bricks Contract Tests', () => {
     // These tests verify that the external service is still accessible
     // and has the expected structure. Run separately from main test suite.
 
-    const BRICKS_URL = 'https://bricks.se/lunch'; // Update with actual URL
+    const BRICKS_URL = 'https://brickseatery.se/lunch/'; // Correct URL from scraper
 
     it('should have accessible lunch menu page', async () => {
         try {
             const response = await axios.get(BRICKS_URL, {
-                timeout: 10000,
+                timeout: 5000,
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (compatible; LunchMenuBot/1.0)'
                 }
@@ -18,7 +18,7 @@ describe('Bricks Contract Tests', () => {
             expect(response.status).toBe(200);
             expect(response.headers['content-type']).toMatch(/text\/html/);
         } catch (error) {
-            console.warn('Bricks website may be down or changed:', error.message);
+            console.warn('Bricks website may be down or changed:', error instanceof Error ? error.message : String(error));
             // Don't fail the test suite for external service issues
             expect(true).toBe(true);
         }
@@ -26,7 +26,7 @@ describe('Bricks Contract Tests', () => {
 
     it('should contain expected DOM elements for menu parsing', async () => {
         try {
-            const response = await axios.get(BRICKS_URL, { timeout: 10000 });
+            const response = await axios.get(BRICKS_URL, { timeout: 5000 });
             const html = response.data;
 
             // Basic checks for elements our scraper expects
@@ -39,7 +39,7 @@ describe('Bricks Contract Tests', () => {
             // expect($('.menu-item')).toHaveLength.greaterThan(0);
 
         } catch (error) {
-            console.warn('Bricks website structure check failed:', error.message);
+            console.warn('Bricks website structure check failed:', error instanceof Error ? error.message : String(error));
             expect(true).toBe(true); // Don't fail for external issues
         }
     });
@@ -54,7 +54,7 @@ describe('Bricks Contract Tests', () => {
             expect(responseTime).toBeLessThan(5000);
             console.log(`Bricks response time: ${responseTime}ms`);
         } catch (error) {
-            console.warn('Bricks response time test failed:', error.message);
+            console.warn('Bricks response time test failed:', error instanceof Error ? error.message : String(error));
             expect(true).toBe(true);
         }
     });

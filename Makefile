@@ -1,6 +1,8 @@
 # Makefile for lunch-menu-scraper
 # See AGENTS.md for development guidelines
 
+.PHONY: install build start dev test test-watch test-coverage test-contract test-all cache-status refresh-cache clean deploy
+
 install:
 	npm install
 
@@ -15,6 +17,9 @@ dev:
 	npm run dev
 
 # Test commands
+# - test: Fast unit/integration/e2e tests (default)
+# - test-contract: Slow contract tests with external dependencies  
+# - test-all: Run both fast and contract tests
 test:
 	npm test
 
@@ -23,6 +28,14 @@ test-watch:
 
 test-coverage:
 	npm test -- --coverage
+
+test-contract:
+	@echo "Running contract tests (may be slow due to external dependencies)..."
+	npx jest --config jest.contract.config.js
+
+test-all:
+	@echo "Running all tests including contract tests..."
+	npx jest --config jest.contract.config.js && npm test
 
 # Cache management (requires server to be running)
 cache-status:

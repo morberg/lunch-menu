@@ -3,9 +3,9 @@ module.exports = {
     testEnvironment: 'node',
     roots: ['<rootDir>/test'],
     testMatch: [
-        '**/test/**/*.test.ts'
+        '**/test/contract/**/*.test.ts'
     ],
-    testPathIgnorePatterns: ['.*\\.manual\\.test\\.ts$', '.*\\.contract\\.test\\.ts$'],
+    testPathIgnorePatterns: ['.*\\.manual\\.test\\.ts$'],
     collectCoverageFrom: [
         'src/**/*.ts',
         '!src/**/*.d.ts',
@@ -14,5 +14,5 @@ module.exports = {
         '!src/test/**',
     ],
     setupFilesAfterEnv: ['<rootDir>/test/setup/jest.setup.ts'],
-    testTimeout: 10000
+    testTimeout: 30000 // Longer timeout for external dependencies
 };

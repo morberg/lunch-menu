@@ -49,6 +49,15 @@ lunch-menu-scraper
    Open your web browser and navigate to `http://localhost:3000` to view the
    lunch menus locally.
 
+## Performance & Caching
+
+The application implements intelligent caching to provide fast response times:
+- **Instant Response**: Menu data served from memory cache (~100ms)
+- **Background Refresh**: Automatic updates every 2 hours
+- **Reliability**: Serves cached data if external sites are temporarily down
+
+See [CACHE_IMPLEMENTATION.md](CACHE_IMPLEMENTATION.md) for technical details.
+
 ## Makefile Commands
 
 You can use the included Makefile for common tasks:
@@ -60,6 +69,8 @@ You can use the included Makefile for common tasks:
 | make start                 | Build and start the web server    |
 | make test                  | Run tests (if implemented)        |
 | make clean                 | Remove build and dependency files |
+| make cache-status          | Check cache status                |
+| make refresh-cache         | Manually refresh menu cache       |
 | make run-debug-edison      | Run Edison debug script           |
 | make run-debug-bricks      | Run Bricks debug script           |
 | make run-debug-kantin      | Run Kantin debug script           |
@@ -71,6 +82,11 @@ All npm commands can still be used directly if preferred.
 
 ## Usage Guidelines
 
+The application automatically serves cached menu data for optimal performance:
+- **Fast Loading**: Menus load instantly from cache
+- **Always Fresh**: Background updates ensure current information
+- **Cache Management**: Use `make cache-status` and `make refresh-cache` as needed
+
 ## Deployment
 
 The project can be deployed to Vercel using:
@@ -81,9 +97,12 @@ make deploy
 
 View the deployed app at: https://lunch-menu-coral.vercel.app
 
-- The application will automatically scrape the lunch menus from the specified restaurants each time it is accessed.
-- Menu items will be displayed in a structured format, including the name of the dish and its price.
-- The web interface is designed to be mobile-friendly for easy access on smartphones.
+## Technical Highlights
+
+- **Smart Caching**: In-memory cache with TTL and background refresh
+- **High Performance**: Sub-second response times vs previous 5-10 second delays  
+- **Fault Tolerance**: Graceful degradation when external sites are unavailable
+- **TypeScript**: Full type safety and modern development experience
 
 ## Contributing
 

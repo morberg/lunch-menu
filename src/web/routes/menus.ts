@@ -1,60 +1,33 @@
 import express from 'express';
-import { scrapeEdisonMenu } from '../../scrapers/edison';
-import { scrapeBricksMenu } from '../../scrapers/bricks';
-import { scrapeKantinMenu } from '../../scrapers/kantin';
-import { scrapeSmakapakina } from '../../scrapers/smakapakina';
-import { scrapeGrendenMenu } from '../../scrapers/grenden';
-import { scrapeEatery } from '../../scrapers/eatery';
+import { menuService } from '../../services/menu-service';
 
 const router = express.Router();
 
 router.get('/menus', async (req, res) => {
     try {
-        console.log('Fetching menus from all restaurants...');
-
-        const [edisonMenu, bricksMenu, kantinMenu, smakapakinaMenu, grendenMenu, eateryMenu] = await Promise.allSettled([
-            scrapeEdisonMenu(),
-            scrapeBricksMenu(),
-            scrapeKantinMenu(),
-            scrapeSmakapakina(),
-            scrapeGrendenMenu(),
-            scrapeEatery()
-        ]);
-
-        const result = {
-            edison: edisonMenu.status === 'fulfilled' ? edisonMenu.value : [],
-            bricks: bricksMenu.status === 'fulfilled' ? bricksMenu.value : [],
-            kantin: kantinMenu.status === 'fulfilled' ? kantinMenu.value : [],
-            smakapakina: smakapakinaMenu.status === 'fulfilled' ? smakapakinaMenu.value : [],
-            grenden: grendenMenu.status === 'fulfilled' ? grendenMenu.value : [],
-            eatery: eateryMenu.status === 'fulfilled' ? eateryMenu.value : [],
-        };
-
-        // Log any errors
-        if (edisonMenu.status === 'rejected') {
-            console.error('Edison scraper failed:', edisonMenu.reason);
-        }
-        if (bricksMenu.status === 'rejected') {
-            console.error('Bricks scraper failed:', bricksMenu.reason);
-        }
-        if (kantinMenu.status === 'rejected') {
-            console.error('Kantin scraper failed:', kantinMenu.reason);
-        }
-        if (smakapakinaMenu.status === 'rejected') {
-            console.error('Smakapakina scraper failed:', smakapakinaMenu.reason);
-        }
-        if (grendenMenu.status === 'rejected') {
-            console.error('Grenden scraper failed:', grendenMenu.reason);
-        }
-        if (eateryMenu.status === 'rejected') {
-            console.error('Eatery scraper failed:', eateryMenu.reason);
-        }
-
+        const result = await menuService.getMenus();
         res.json(result);
     } catch (error) {
         console.error('Error in /menus route:', error);
         res.status(500).json({ error: 'Failed to fetch menus' });
     }
+});
+
+// Admin endpoint to manually refresh cache
+router.post('/menus/refresh', async (req, res) => {
+    try {
+        const result = await menuService.refreshMenus();
+        res.json({ message: 'Menus refreshed successfully', data: result });
+    } catch (error) {
+        console.error('Error refreshing menus:', error);
+        res.status(500).json({ error: 'Failed to refresh menus' });
+    }
+});
+
+// Admin endpoint to check cache status
+router.get('/menus/cache-status', (req, res) => {
+    const stats = menuService.getCacheStats();
+    res.json(stats);
 });
 
 export default router;

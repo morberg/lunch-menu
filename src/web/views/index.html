@@ -7,7 +7,7 @@
     <title>Lund Lunch Menus</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
@@ -72,7 +72,6 @@
 
         .menu-item-price {
             color: #28a745;
-            font-weight: bold;
             float: right;
         }
 
@@ -126,8 +125,7 @@
 
 <body>
     <header>
-        <h1>🍽️ Lunchmenyer Lund</h1>
-        <p class="subtitle">Färska lunchmenyer från restauranger nära dig</p>
+        <h1>Dagens Lunch</h1>
     </header>
 
     <main>
@@ -201,7 +199,7 @@
                         // Restaurant name with price if uniform
                         let restaurantHeader = `<strong><a href="${r.url}" target="_blank" style="color: inherit; text-decoration: none;">${r.name}</a></strong>`;
                         if (hasUniformPrice && uniformPrice !== null) {
-                            restaurantHeader += ` <span style="color: #28a745; float: right;">${uniformPrice} kr</span>`;
+                            restaurantHeader += ` <span class="menu-item-price">${uniformPrice} kr</span>`;
                         }
                         // If uniformPrice is null, don't display anything
                         restaurantDiv.innerHTML = restaurantHeader;

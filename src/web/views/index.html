@@ -218,7 +218,7 @@
                 }
             });
             // Show message if no menus available
-            if (!data.edison?.length && !data.bricks?.length && !data.kantin?.length && !data.smakapakina?.length && !data.grenden?.length && !data.eatery?.length && !data.foodhall?.length) {
+            if (!Object.values(data).some(arr => Array.isArray(arr) && arr.length > 0)) {
                 content.innerHTML = '<div class="error">Inga menyer tillgängliga just nu. Försök igen senare.</div>';
             }
             // --- Automatic scroll to today's section ---

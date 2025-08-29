@@ -1,5 +1,5 @@
 # Lunch Menu Scraper
-<!-- See AGENTS.md for development guidelines -->
+<!-- See .github/copilot-instructions.md for development guidelines -->
 
 This project is a web application that scrapes daily lunch menus from selected restaurants in Lund, Sweden. The application retrieves menu items and their prices, presenting them in a user-friendly format accessible via a web interface.
 
@@ -68,16 +68,16 @@ See [CACHE_IMPLEMENTATION.md](CACHE_IMPLEMENTATION.md) for technical details.
 
 You can use the included Makefile for common tasks:
 
-| Command                    | Description                       |
-| -------------------------- | --------------------------------- |
-| make install               | Install dependencies              |
-| make build                 | Build the project                 |
-| make start                 | Build and start the web server    |
-| make test                  | Run tests (if implemented)        |
-| make clean                 | Remove build and dependency files |
-| make cache-status          | Check cache status                |
-| make refresh-cache         | Manually refresh menu cache       |
-| make deploy                | Deploy the app to Vercel          |
+| Command            | Description                       |
+| ------------------ | --------------------------------- |
+| make install       | Install dependencies              |
+| make build         | Build the project                 |
+| make start         | Build and start the web server    |
+| make test          | Run tests (if implemented)        |
+| make clean         | Remove build and dependency files |
+| make cache-status  | Check cache status                |
+| make refresh-cache | Manually refresh menu cache       |
+| make deploy        | Deploy the app to Vercel          |
 
 All npm commands can still be used directly if preferred.
 

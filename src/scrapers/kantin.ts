@@ -50,27 +50,14 @@ export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
             }
 
             // Check for special weekly items
-            if (line === 'Veckans vegetariska' && i + 1 < lines.length) {
+            if ((line === 'Veckans vegetariska' || line === 'Månadens alternativ') && i + 1 < lines.length) {
                 const description = lines[i + 1];
                 const price = parsePrice('Se restaurang');
 
                 const menuItem: MenuItem = {
-                    name: `Veckans vegetariska: ${description}`,
+                    name: `${line}: ${description}`,
                     price: price,
-                    day: 'Weekly Special'
-                };
-                menuItems.push(menuItem);
-                i++; // Skip the processed line
-            }
-
-            if (line === 'Månadens alternativ' && i + 1 < lines.length) {
-                const description = lines[i + 1];
-                const price = parsePrice('Se restaurang');
-
-                const menuItem: MenuItem = {
-                    name: `Månadens alternativ: ${description}`,
-                    price: price,
-                    day: 'Monthly Special'
+                    day: 'Hela veckan'
                 };
                 menuItems.push(menuItem);
                 i++; // Skip the processed line

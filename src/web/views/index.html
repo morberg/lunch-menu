@@ -141,16 +141,7 @@
             const content = document.getElementById('content');
             content.innerHTML = '';
             // Swedish day names
-            // Map day keys to Swedish labels for display and filtering
-            const dayMap = {
-                'Måndag': 'Måndag',
-                'Tisdag': 'Tisdag',
-                'Onsdag': 'Onsdag',
-                'Torsdag': 'Torsdag',
-                'Fredag': 'Fredag',
-                'Hela veckan': 'Hela veckan'
-            };
-            const days = Object.values(dayMap);
+            const days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Hela veckan'];
             const restaurants = [
                 { name: 'Edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
                 { name: 'Grenden', data: data.grenden, url: 'https://lund.pieplowsmat.se/grenden/' },
@@ -165,9 +156,8 @@
                 dayDiv.className = 'day-section';
                 dayDiv.innerHTML = `<div class="day-title">${daySv}</div>`;
                 restaurants.forEach(r => {
-                    // Find the key for this Swedish label
-                    const dayKey = Object.keys(dayMap).find(key => dayMap[key] === daySv);
-                    const items = (r.data || []).filter(item => item.day === daySv || item.day === dayKey);
+                    // Filter items for this day directly
+                    const items = (r.data || []).filter(item => item.day === daySv);
                     if (items.length > 0) {
                         hasMenus = true;
 

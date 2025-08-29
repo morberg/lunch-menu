@@ -4,7 +4,7 @@ describe('Kantin Integration Tests', () => {
     it('should correctly combine weekly specials', async () => {
         const menuItems = await scrapeKantinMenu();
 
-        const weeklySpecials = menuItems.filter(item => item.day === 'Weekly Special');
+        const weeklySpecials = menuItems.filter(item => item.day === 'Hela veckan');
 
         expect(weeklySpecials).toEqual(
             expect.arrayContaining([

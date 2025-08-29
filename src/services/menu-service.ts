@@ -4,6 +4,7 @@ import { scrapeKantinMenu } from '../scrapers/kantin';
 import { scrapeSmakapakina } from '../scrapers/smakapakina';
 import { scrapeGrendenMenu } from '../scrapers/grenden';
 import { scrapeEatery } from '../scrapers/eatery';
+import { scrapeFoodHallMenu } from '../scrapers/foodhall';
 import { MenuItem } from '../types/menu';
 import MemoryCache from '../utils/cache';
 
@@ -14,6 +15,7 @@ interface RestaurantMenus {
     smakapakina: MenuItem[];
     grenden: MenuItem[];
     eatery: MenuItem[];
+    foodhall: MenuItem[];
 }
 
 class MenuService {
@@ -48,13 +50,14 @@ class MenuService {
         try {
             console.log('Fetching menus from all restaurants...');
 
-            const [edisonMenu, bricksMenu, kantinMenu, smakapakinaMenu, grendenMenu, eateryMenu] = await Promise.allSettled([
+            const [edisonMenu, bricksMenu, kantinMenu, smakapakinaMenu, grendenMenu, eateryMenu, foodhallMenu] = await Promise.allSettled([
                 scrapeEdisonMenu(),
                 scrapeBricksMenu(),
                 scrapeKantinMenu(),
                 scrapeSmakapakina(),
                 scrapeGrendenMenu(),
-                scrapeEatery()
+                scrapeEatery(),
+                scrapeFoodHallMenu()
             ]);
 
             const result: RestaurantMenus = {
@@ -64,6 +67,7 @@ class MenuService {
                 smakapakina: smakapakinaMenu.status === 'fulfilled' ? smakapakinaMenu.value : [],
                 grenden: grendenMenu.status === 'fulfilled' ? grendenMenu.value : [],
                 eatery: eateryMenu.status === 'fulfilled' ? eateryMenu.value : [],
+                foodhall: foodhallMenu.status === 'fulfilled' ? foodhallMenu.value : [],
             };
 
             // Log any errors
@@ -73,7 +77,8 @@ class MenuService {
                 { name: 'Kantin', result: kantinMenu },
                 { name: 'Smakapakina', result: smakapakinaMenu },
                 { name: 'Grenden', result: grendenMenu },
-                { name: 'Eatery', result: eateryMenu }
+                { name: 'Eatery', result: eateryMenu },
+                { name: 'Food Hall', result: foodhallMenu }
             ]);
 
             // Cache the result

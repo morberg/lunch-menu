@@ -11,6 +11,7 @@ This project is a web application that scrapes daily lunch menus from selected r
 - [Gränden](https://grendenlund.se/lunch/)
 - [Smakapåkina](https://smakapakina.se/lunch/)
 - [Eatery](https://eatery.se/anlaggningar/lund)
+- [Food Hall](https://www.nordrest.se/restaurang/food-hall/)
 
 ## Project Structure
 
@@ -25,7 +26,8 @@ lunch-menu-scraper
 │   │   ├── kantin.ts       # Scraper for Kantin
 │   │   ├── grenden.ts      # Scraper for Gränden
 │   │   ├── smakapakina.ts  # Scraper for Smakapåkina
-│   │   └── eatery.ts       # Scraper for Eatery
+│   │   ├── eatery.ts       # Scraper for Eatery
+│   │   └── foodhall.ts     # Scraper for Food Hall
 │   ├── services
 │   │   └── menu-service.ts # Caching service for menu data
 │   ├── types

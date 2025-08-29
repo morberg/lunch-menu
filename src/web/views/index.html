@@ -149,6 +149,7 @@
                 { name: 'Kantin', data: data.kantin, url: 'https://www.kantinlund.se/' },
                 { name: 'Smakapakina', data: data.smakapakina, url: 'https://www.smakapakina.se/meny' },
                 { name: 'Eatery', data: data.eatery, url: 'https://eatery.se/anlaggningar/lund' },
+                { name: 'Food Hall', data: data.foodhall, url: 'https://www.nordrest.se/restaurang/food-hall/' },
             ];
             days.forEach(daySv => {
                 let hasMenus = false;
@@ -217,12 +218,12 @@
                 }
             });
             // Show message if no menus available
-            if (!data.edison?.length && !data.bricks?.length && !data.kantin?.length && !data.smakapakina?.length && !data.grenden?.length && !data.eatery?.length) {
+            if (!data.edison?.length && !data.bricks?.length && !data.kantin?.length && !data.smakapakina?.length && !data.grenden?.length && !data.eatery?.length && !data.foodhall?.length) {
                 content.innerHTML = '<div class="error">Inga menyer tillgängliga just nu. Försök igen senare.</div>';
             }
             // --- Automatic scroll to today's section ---
             const today = new Date();
-            const swedishDays = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
+            const swedishDays = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'];
             const todayName = swedishDays[today.getDay()];
             // Only scroll if today is a weekday (Måndag-Fredag)
             if (['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'].includes(todayName)) {

@@ -70,16 +70,17 @@ See [CACHE_IMPLEMENTATION.md](CACHE_IMPLEMENTATION.md) for technical details.
 
 You can use the included Makefile for common tasks:
 
-| Command            | Description                       |
-| ------------------ | --------------------------------- |
-| make install       | Install dependencies              |
-| make build         | Build the project                 |
-| make start         | Build and start the web server    |
-| make test          | Run tests (if implemented)        |
-| make clean         | Remove build and dependency files |
-| make cache-status  | Check cache status                |
-| make refresh-cache | Manually refresh menu cache       |
-| make deploy        | Deploy the app to Vercel          |
+| Command            | Description                           |
+| ------------------ | ------------------------------------- |
+| make install       | Install dependencies                  |
+| make build         | Build the project                     |
+| make start         | Build and start the web server        |
+| make test          | Run tests (if implemented)            |
+| make clean         | Remove build and dependency files     |
+| make cache-status  | Check cache status                    |
+| make refresh-cache | Manually refresh menu cache           |
+| make deploy        | Deploy the app to Vercel              |
+| make debug eatery  | Debug the Eatery scraper individually |
 
 All npm commands can still be used directly if preferred.
 
@@ -100,17 +101,6 @@ make deploy
 
 View the deployed app at: https://lunch-menu-coral.vercel.app
 
-## Technical Highlights
-
-- **Smart Caching**: In-memory cache with TTL and background refresh
-- **High Performance**: Sub-second response times vs previous 5-10 second delays  
-- **Fault Tolerance**: Graceful degradation when external sites are unavailable
-- **TypeScript**: Full type safety and modern development experience
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue for any suggestions or improvements.
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for more details.

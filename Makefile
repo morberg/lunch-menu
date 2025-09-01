@@ -46,6 +46,22 @@ refresh-cache:
 	@echo "Manually refreshing menu cache..."
 	@curl -s -X POST http://localhost:3000/api/menus/refresh | jq '.' || echo "Server may not be running on port 3000"
 
+# Debug targets for individual scrapers
+# The 'eatery' and 'edison' targets are placeholders to allow 'make debug eatery' or 'make debug edison'.
+# The actual debug logic is handled by the 'debug' target above, which checks which scraper was requested.
+debug:
+	@if [ "$(filter eatery,$(MAKECMDGOALS))" ]; then \
+		npx ts-node --transpile-only test/eatery-scraper-debug.ts; \
+	elif [ "$(filter edison,$(MAKECMDGOALS))" ]; then \
+		echo "Debug script for edison not implemented yet."; \
+	else \
+		echo "Usage: make debug <scraper> (e.g. eatery, edison)"; \
+	fi
+
+eatery:
+
+edison:
+
 clean:
 	rm -rf node_modules dist
 

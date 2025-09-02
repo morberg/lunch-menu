@@ -1,5 +1,4 @@
 # Makefile for lunch-menu-scraper
-# See AGENTS.md for development guidelines
 
 .PHONY: install build start dev test test-watch test-coverage test-contract test-all cache-status refresh-cache clean deploy
 
@@ -65,5 +64,5 @@ edison:
 clean:
 	rm -rf node_modules dist
 
-deploy:
+deploy: build
 	npx vercel --prod

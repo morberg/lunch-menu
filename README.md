@@ -8,7 +8,6 @@ This project is a web application that scrapes daily lunch menus from selected r
 - [Edison](https://restaurangedison.se/lunch/)
 - [Brick's Eatery](https://brickseatery.se/lunch/)
 - [Kantin](https://www.kantinlund.se/)
-- [Gränden](https://grendenlund.se/lunch/)
 - [Smakapåkina](https://smakapakina.se/lunch/)
 - [Eatery](https://eatery.se/anlaggningar/lund)
 - [Food Hall](https://www.nordrest.se/restaurang/food-hall/)
@@ -24,7 +23,6 @@ lunch-menu-scraper
 │   │   ├── edison.ts       # Scraper for Edison restaurant
 │   │   ├── bricks.ts       # Scraper for Brick's Eatery
 │   │   ├── kantin.ts       # Scraper for Kantin
-│   │   ├── grenden.ts      # Scraper for Gränden
 │   │   ├── smakapakina.ts  # Scraper for Smakapåkina
 │   │   ├── eatery.ts       # Scraper for Eatery
 │   │   └── foodhall.ts     # Scraper for Food Hall

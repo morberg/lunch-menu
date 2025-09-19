@@ -1,0 +1,92 @@
+[
+  {
+    "name": "Green: Shakshuka-paprika & tomatgryta från mellanöstern med stekt ägg, fetaost, vårlök & koriander",
+    "price": 115,
+    "day": "Måndag"
+  },
+  {
+    "name": "Local: Köttbullar med potatismos, gräddsås, pressgurka och lingon",
+    "price": 115,
+    "day": "Måndag"
+  },
+  {
+    "name": "World wide: Ramen med kyckling, sojamarinerat ägg, äggnudlar, pak choi, champinjoner och nori",
+    "price": 115,
+    "day": "Måndag"
+  },
+  {
+    "name": "Green: Okonomiyaki (japansk kål pannkaka) med sesamcoleslaw, BBQ-sås och sojabönor",
+    "price": 115,
+    "day": "Tisdag"
+  },
+  {
+    "name": "World wide: Pulled pork taco med salsa, ris, nachos, picklad lök och jalapenomajonnäs",
+    "price": 115,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Pizza: Mozzarella, tomatsås, bacon, lök och svartpepparmajonnäs",
+    "price": 115,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Bonus: Kom in så berättar vi mer!",
+    "price": 115,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Green: Vegetarisk kålpudding med gräddsås, potatis, variation på kål och lingon",
+    "price": 115,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Local: Lax med örtslungad potatis, gräslöksmajonnäs, rödbetor, spetskål och dill",
+    "price": 115,
+    "day": "Onsdag"
+  },
+  {
+    "name": "World wide: Röd thaicurry med kyckling, grönsaker, kokosmjölk, papadums och koriander",
+    "price": 115,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Pizza: Mozzarella, tomatsås, bacon, lök och svartpepparmajonnäs",
+    "price": 115,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Green: Tofu teriyaki med grönsaker, stekt ägg, ris, krispiga nudlar och chili",
+    "price": 115,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Local: Raggmunk med stekt fläsk, lingon, råkostsallad och senapsvinegrette",
+    "price": 115,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Pizza: Mozzarella, tomatsås, bacon, lök och svartpepparmajonnäs",
+    "price": 115,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Bonus: Kom in så berättar vi mer!",
+    "price": 115,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Green: Misobakat spetskål med risnudlar cashewnötter, gochujang aioli och koriander",
+    "price": 115,
+    "day": "Fredag"
+  },
+  {
+    "name": "Local: Kålpudding med gräddsås, potatis, variation på kål, lingon och persilja",
+    "price": 115,
+    "day": "Fredag"
+  },
+  {
+    "name": "World wide: Bricks “Tuna melt sandwich\" med cheddar, brynt lök, chilimajonnäs och friterad smashed potatoes",
+    "price": 115,
+    "day": "Fredag"
+  }
+]

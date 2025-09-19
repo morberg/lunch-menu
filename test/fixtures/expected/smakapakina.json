@@ -1,0 +1,27 @@
+[
+  {
+    "name": "General Tsos kyckling, Fläsk med grönabönor, Snabbstekt blomkål",
+    "day": "Måndag",
+    "price": 100
+  },
+  {
+    "name": "Biff med tomat och ägg, Kryddig grillad kycklingvingar, Snabbstekt spetskål",
+    "day": "Tisdag",
+    "price": 100
+  },
+  {
+    "name": "Rött bräserat sidfläsk, Kyckling med chili olja sås, Potatis strimlor med paprika, Snabbstekt zucchini",
+    "day": "Onsdag",
+    "price": 100
+  },
+  {
+    "name": "Ångkokt fläsk med senapskål, Spicy pot mix, Homestyle tofu",
+    "day": "Torsdag",
+    "price": 100
+  },
+  {
+    "name": "Sötsur fläsk med anannas, Gult bräserad kyckling, Selleri med cashewnötter och liljalök",
+    "day": "Fredag",
+    "price": 100
+  }
+]

@@ -1,0 +1,77 @@
+[
+  {
+    "name": "Green: Tortellini med svamp, tryffelcreme, syltad rotselleri & senapsört",
+    "price": 115,
+    "day": "Måndag"
+  },
+  {
+    "name": "Local: Fläskfärslimpa med senapssås, äpple & hasselnötter",
+    "price": 115,
+    "day": "Måndag"
+  },
+  {
+    "name": "World Wide: Biffgryta med svamp, majs, salvia & rostad potatis",
+    "price": 115,
+    "day": "Måndag"
+  },
+  {
+    "name": "Green: Shakshuka; tomatgryta med paprika, aubergine, bakat ägg, ris, hummus & persilja",
+    "price": 115,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Local: Stekt panerad sill med potatismos, lingon, dill & rödlök",
+    "price": 115,
+    "day": "Tisdag"
+  },
+  {
+    "name": "World Wide: Thaifärsbiff med grön curry/kokossås, ris & salladskål",
+    "price": 115,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Green: Gulärtsbiff med vitlöksmajo, saltgurka, rostad potatis & picklad rättika",
+    "price": 115,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Local: Grillad karre med tryffelmajo, haricot verts & rostad potatis",
+    "price": 115,
+    "day": "Onsdag"
+  },
+  {
+    "name": "World Wide: Batterfriterad kyckling med sötsur sås, ris & morot/jordnötsallad",
+    "price": 115,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Green: Pannoumiburgare med sockerstekt lök, briochebröd, chipotlemajo & crispsallad",
+    "price": 115,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Local: Fiskfärsbiff med potatispuré, ärtor, brynt smör & dill",
+    "price": 115,
+    "day": "Torsdag"
+  },
+  {
+    "name": "World Wide: Mexikanskt fläsk (carnitas) med apelsin, oregano, tomatsalsa & potatisklyftor",
+    "price": 115,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Green: Panerad zucchini med tomatsås, saffransris & ruccola",
+    "price": 115,
+    "day": "Fredag"
+  },
+  {
+    "name": "Local: Lättrökt kyckling med äppleslaw, cidersky & örtbakad potatis",
+    "price": 115,
+    "day": "Fredag"
+  },
+  {
+    "name": "World Wide: Bhan mi; Vietnamesisk baguette med fläskfärs, fisksås, picklade grönsaker, koriander & srirachamajjo",
+    "price": 115,
+    "day": "Fredag"
+  }
+]

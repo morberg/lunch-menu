@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Citron och rosmarin bakad kyckling med krämig dragonvelouté, timjanrostad potatis, citronmarinerad morot",
+    "day": "Måndag",
+    "price": 135
+  },
+  {
+    "name": "Vitvinspocherad kolja med bakad fänkål, Sandefjord sås och potatismos",
+    "day": "Måndag",
+    "price": 135
+  },
+  {
+    "name": "Marockans kikärtsgryta med aubergine, tomat, torkade aprikoser & russin, picklad kålrot & kryddigt ris",
+    "day": "Måndag",
+    "price": 135
+  },
+  {
+    "name": "Biff Lindström med fänkålsrostade betor, krämig senapssås, örtbakade klyftpotatis",
+    "day": "Tisdag",
+    "price": 135
+  },
+  {
+    "name": "Pecorino & spenat gratinerad sej med vitvinssås, krossad potatis & citron",
+    "day": "Tisdag",
+    "price": 135
+  },
+  {
+    "name": "Ricotta & spenatfylld canneloni med zucchin, tomat och spenatragu, lagrad ost och ruccola",
+    "day": "Tisdag",
+    "price": 135
+  },
+  {
+    "name": "BBQ revben med rostad sötpotatis och pumpa, pico de gallo, chipotlemajo och potatis",
+    "day": "Onsdag",
+    "price": 135
+  },
+  {
+    "name": "Sesamstekt sej med sojabakad broccoli, sojasås med honung, chili och ingefära, jasminris med lime",
+    "day": "Onsdag",
+    "price": 135
+  },
+  {
+    "name": "Kikärtsbiffar med klyftpotatis, tabbouleh, tahiniyoghurt, chili och morotssallad",
+    "day": "Onsdag",
+    "price": 135
+  },
+  {
+    "name": "Örtbakad pluma med medelhavssallad, basilikakräm och rostad potatis",
+    "day": "Torsdag",
+    "price": 135
+  },
+  {
+    "name": "Bakad kungsfisk med dillhollandaise, rotselleri och fänkålssallad, potatismos",
+    "day": "Torsdag",
+    "price": 135
+  },
+  {
+    "name": "Spenat och zucchini frittata med paprikakräm, ruccola, kapris och tomatsallad",
+    "day": "Torsdag",
+    "price": 135
+  },
+  {
+    "name": "Ärtsoppa medrimmad bog",
+    "day": "Torsdag",
+    "price": 135
+  },
+  {
+    "name": "Nattbakat högrev med svamp, bakad lök, morot, pepparrotskräm och rostad potatis med persilja och fänkål",
+    "day": "Fredag",
+    "price": 135
+  },
+  {
+    "name": "Bakad sej med pesto, tomat och ruccola, vit bönpuré med rostad vitlök och citron, rostad potatis",
+    "day": "Fredag",
+    "price": 135
+  },
+  {
+    "name": "Friterad polenta med tryffelmajo, ört och krassesallad och bakad zucchini",
+    "day": "Fredag",
+    "price": 135
+  }
+]

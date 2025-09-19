@@ -2,7 +2,6 @@ import { scrapeEdisonMenu } from '../scrapers/edison';
 import { scrapeBricksMenu } from '../scrapers/bricks';
 import { scrapeKantinMenu } from '../scrapers/kantin';
 import { scrapeSmakapakina } from '../scrapers/smakapakina';
-import { scrapeGrendenMenu } from '../scrapers/grenden';
 import { scrapeEatery } from '../scrapers/eatery';
 import { scrapeFoodHallMenu } from '../scrapers/foodhall';
 import { MenuItem } from '../types/menu';
@@ -13,7 +12,6 @@ interface RestaurantMenus {
     bricks: MenuItem[];
     kantin: MenuItem[];
     smakapakina: MenuItem[];
-    grenden: MenuItem[];
     eatery: MenuItem[];
     foodhall: MenuItem[];
 }
@@ -50,12 +48,11 @@ class MenuService {
         try {
             console.log('Fetching menus from all restaurants...');
 
-            const [edisonMenu, bricksMenu, kantinMenu, smakapakinaMenu, grendenMenu, eateryMenu, foodhallMenu] = await Promise.allSettled([
+            const [edisonMenu, bricksMenu, kantinMenu, smakapakinaMenu, eateryMenu, foodhallMenu] = await Promise.allSettled([
                 scrapeEdisonMenu(),
                 scrapeBricksMenu(),
                 scrapeKantinMenu(),
                 scrapeSmakapakina(),
-                scrapeGrendenMenu(),
                 scrapeEatery(),
                 scrapeFoodHallMenu()
             ]);
@@ -65,7 +62,6 @@ class MenuService {
                 bricks: bricksMenu.status === 'fulfilled' ? bricksMenu.value : [],
                 kantin: kantinMenu.status === 'fulfilled' ? kantinMenu.value : [],
                 smakapakina: smakapakinaMenu.status === 'fulfilled' ? smakapakinaMenu.value : [],
-                grenden: grendenMenu.status === 'fulfilled' ? grendenMenu.value : [],
                 eatery: eateryMenu.status === 'fulfilled' ? eateryMenu.value : [],
                 foodhall: foodhallMenu.status === 'fulfilled' ? foodhallMenu.value : [],
             };
@@ -76,7 +72,6 @@ class MenuService {
                 { name: 'Bricks', result: bricksMenu },
                 { name: 'Kantin', result: kantinMenu },
                 { name: 'Smakapakina', result: smakapakinaMenu },
-                { name: 'Grenden', result: grendenMenu },
                 { name: 'Eatery', result: eateryMenu },
                 { name: 'Food Hall', result: foodhallMenu }
             ]);

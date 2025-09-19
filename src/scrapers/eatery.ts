@@ -68,72 +68,108 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
         'fredag': 'Fredag'
     };
 
-    // Split by day names to get sections, but preserve line structure
-    const dayPattern = new RegExp(`(${dayNames.join('|')})`, 'gi');
-    const sections = pdfText.split(dayPattern);
+    // Clean the text and split into lines
+    const lines = pdfText
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n')
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
 
-    for (let i = 1; i < sections.length; i += 2) {
-        const dayName = sections[i].toLowerCase().trim();
-        const content = sections[i + 1] ? sections[i + 1].trim() : '';
+    let currentDay = '';
+    let currentDish = '';
 
-        if (dayNames.includes(dayName) && content.length > 20) {
-            // Split content into lines and process each line as a potential dish
-            const lines = content.split('\n')
-                .map(line => line.trim())
-                .filter(line => line.length > 0);
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // Check if this line is a day name
+        const dayFound = dayNames.find(day => line.toLowerCase().includes(day));
+        if (dayFound) {
+            // Save any pending dish before switching days
+            if (currentDish && currentDay && currentDish.length > 15) {
+                const cleanDish = currentDish
+                    .replace(/\s+/g, ' ')
+                    .replace(/,\s*,/g, ',')
+                    .replace(/^\s*,\s*/, '')
+                    .replace(/\s*,\s*$/, '')
+                    .trim();
 
-            let currentDish = '';
-
-            for (const line of lines) {
-                // Skip non-dish lines
-                if (line.match(/^(Sweet Tuesday|Pancake Thursday|Vi bjuder|•|\d+%|Med reservation)/i)) {
-                    continue;
-                }
-
-                // If line starts with capital letter and we have accumulated dish content,
-                // it's likely a new dish starting
-                if (line.match(/^[A-ZÅÄÖ]/) && currentDish.length > 30) {
-                    // Save the completed dish
-                    const cleanDish = currentDish
-                        .replace(/\s+/g, ' ') // Replace multiple spaces with single space
-                        .replace(/,\s*,/g, ',') // Remove double commas
-                        .replace(/^\s*,\s*/, '') // Remove leading comma
-                        .replace(/\s*,\s*$/, '') // Remove trailing comma
-                        .trim();
-
+                if (!cleanDish.match(/^(Generös salladsbuffé|ar Ta mer|Byta rätt|Ta mer om|Något sött|kaffet)/i)) {
                     menuItems.push({
                         name: cleanDish,
-                        day: dayMap[dayName],
+                        day: dayMap[currentDay],
                         price: 135
                     });
-
-                    // Start new dish
-                    currentDish = line;
-                } else {
-                    // Continue building current dish (handle multi-line dishes)
-                    if (currentDish) {
-                        currentDish += ' ' + line;
-                    } else {
-                        currentDish = line;
-                    }
                 }
             }
 
-            // Don't forget the last dish for this day
-            if (currentDish.length > 30) {
-                const cleanDish = currentDish
-                    .replace(/\s+/g, ' ') // Replace multiple spaces with single space
-                    .replace(/,\s*,/g, ',') // Remove double commas
-                    .replace(/^\s*,\s*/, '') // Remove leading comma
-                    .replace(/\s*,\s*$/, '') // Remove trailing comma
-                    .trim();
+            currentDay = dayFound;
+            currentDish = '';
+            continue;
+        }
 
+        // Skip junk lines
+        if (line.match(/^(Sweet Tuesday|Pancake Thursday|Vi bjuder|•|\d+%|Med reservation|Generös salladsbuffé|ar Ta mer|Byta rätt|Ta mer om|Något sött|kaffet)/i)) {
+            continue;
+        }
+
+        // Skip lines that are numbers only
+        if (line.match(/^\d+$/)) {
+            continue;
+        }
+
+        // Check if this looks like the start of a new dish
+        // A new dish typically starts with a capital letter and contains certain patterns
+        const isNewDish = line.match(/^[A-ZÅÄÖ][a-zåäöüé\s]+/);
+        const hasMainIngredient = line.match(/(kött|fisk|kyckling|lax|torsk|kolja|biff|anka|lamm|fläsk|räka|krabba|mussla|pasta|pizza|soppa|sallad|gryta|curry|paj|tart|burgare|wrap|quesadilla|risotto|revben|pluma|kungsfisk|frittata|polenta|högrev|sej|canneloni|kikärts)/i);
+        
+        // Check if this line is likely a continuation (like "morot") - starts with lowercase and is short
+        const isContinuation = line.match(/^[a-zåäöüé]/) && line.trim().split(' ').length <= 3;
+
+        if (isNewDish && hasMainIngredient && currentDish && currentDay && !isContinuation) {
+            // Save the current dish before starting a new one
+            const cleanDish = currentDish
+                .replace(/\s+/g, ' ')
+                .replace(/,\s*,/g, ',')
+                .replace(/^\s*,\s*/, '')
+                .replace(/\s*,\s*$/, '')
+                .trim();
+
+            if (cleanDish.length > 15 && !cleanDish.match(/^(Generös salladsbuffé|ar Ta mer|Byta rätt|Ta mer om|Något sött|kaffet)/i)) {
                 menuItems.push({
                     name: cleanDish,
-                    day: dayMap[dayName],
+                    day: dayMap[currentDay],
                     price: 135
                 });
             }
+
+            // Start new dish
+            currentDish = line;
+        } else if (currentDay) {
+            // Continue building the current dish
+            if (currentDish) {
+                currentDish += ' ' + line;
+            } else {
+                currentDish = line;
+            }
+        }
+    }
+
+    // Don't forget the last dish
+    if (currentDish && currentDay && currentDish.length > 15) {
+        const cleanDish = currentDish
+            .replace(/\s+/g, ' ')
+            .replace(/,\s*,/g, ',')
+            .replace(/^\s*,\s*/, '')
+            .replace(/\s*,\s*$/, '')
+            .trim();
+
+        if (!cleanDish.match(/^(Generös salladsbuffé|ar Ta mer|Byta rätt|Ta mer om|Något sött|kaffet)/i)) {
+            menuItems.push({
+                name: cleanDish,
+                day: dayMap[currentDay],
+                price: 135
+            });
         }
     }
 

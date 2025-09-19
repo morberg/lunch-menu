@@ -4,6 +4,7 @@ import { scrapeKantinMenu } from '../../src/scrapers/kantin';
 import { scrapeSmakapakina } from '../../src/scrapers/smakapakina';
 import { scrapeEatery } from '../../src/scrapers/eatery';
 import { scrapeFoodHallMenu } from '../../src/scrapers/foodhall';
+import { scrapeGrendenMenu } from '../../src/scrapers/grenden';
 import { MenuItem } from '../../src/types/menu';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -28,7 +29,7 @@ function validateMenuStructure(items: MenuItem[], restaurantName: string) {
         expect(item.name.length).toBeGreaterThan(0);
 
         expect(typeof item.day).toBe('string');
-        expect(['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Hela veckan'].includes(item.day)).toBe(true);
+        expect(['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Hela veckan', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].includes(item.day)).toBe(true);
 
         expect(typeof item.price === 'number' || item.price === null).toBe(true);
         if (item.price !== null) {
@@ -140,6 +141,20 @@ describe('Scraper Acceptance Tests', () => {
         }
     });
 
+    test('Grenden scraper should return expected menu structure', async () => {
+        const result = await scrapeGrendenMenu();
+        validateMenuStructure(result, 'Grenden');
+
+        const expected = loadExpected('grenden.json');
+        expect(result.length).toBeGreaterThanOrEqual(expected.length);
+
+        if (expected.length > 0) {
+            expect(result[0].name).toBe(expected[0].name);
+            expect(result[0].day).toBe(expected[0].day);
+            expect(result[0].price).toBe(expected[0].price);
+        }
+    });
+
     test('All scrapers should return valid menu data', async () => {
         // This test runs all scrapers and ensures they all return valid data
         const scrapers = [
@@ -149,6 +164,7 @@ describe('Scraper Acceptance Tests', () => {
             { name: 'Smakapakina', fn: scrapeSmakapakina },
             { name: 'Eatery', fn: scrapeEatery },
             { name: 'Food Hall', fn: scrapeFoodHallMenu },
+            { name: 'Grenden', fn: scrapeGrendenMenu },
         ];
 
         for (const scraper of scrapers) {

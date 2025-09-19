@@ -82,6 +82,16 @@ mockedAxios.get.mockImplementation((url: string, config?: any) => {
         });
     }
 
+    if (url.includes('nordrest.se/restaurang/grenden')) {
+        return Promise.resolve({
+            data: loadFixture('grenden.html'),
+            status: 200,
+            statusText: 'OK',
+            headers: {},
+            config: config || {}
+        });
+    }
+
     // Handle PDF downloads for Eatery
     if (url.includes('.pdf')) {
         const responseType = config?.responseType;

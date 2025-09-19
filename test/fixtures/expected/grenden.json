@@ -1,0 +1,77 @@
+[
+    {
+        "name": "Thai pumpkin stew – tofu | holy basil | springonion | rice",
+        "price": 105,
+        "day": "Monday"
+    },
+    {
+        "name": "Today´s catch – baked rootcelery | soybutter | potatoepuré | dill",
+        "price": 105,
+        "day": "Monday"
+    },
+    {
+        "name": "Veal – meatloaf | lingonberries | gravy | pickled cucumber | potatoes",
+        "price": 105,
+        "day": "Monday"
+    },
+    {
+        "name": "Taco – beef | pico de gallo | avocado | cheese | onion | salad | lime | tortilla",
+        "price": 105,
+        "day": "Monday"
+    },
+    {
+        "name": "Fried rice – gingeroumph | carrots | peppers | soysauce | beansprout | coriander",
+        "price": 105,
+        "day": "Tuesday"
+    },
+    {
+        "name": "Today´s catch – beetroothummus | fried chickpeas | onion | peashoots",
+        "price": 105,
+        "day": "Tuesday"
+    },
+    {
+        "name": "Baked porkloin – green beans | spicy butter | gruyerepotatoes",
+        "price": 105,
+        "day": "Tuesday"
+    },
+    {
+        "name": "Broccolitortilla – avocado | corn | onion | limeyoghurt | salad",
+        "price": 105,
+        "day": "Wednesday"
+    },
+    {
+        "name": "Pasta – bacon | pecorino | mushrooms | parsley | garlic",
+        "price": 105,
+        "day": "Wednesday"
+    },
+    {
+        "name": "Butterbean in tomatoes – raisins | hazelnuts | spinach | garlicbread",
+        "price": 105,
+        "day": "Thursday"
+    },
+    {
+        "name": "Fried cod – tempura | tartarsauce | mushy peas | dill | potatoes",
+        "price": 105,
+        "day": "Thursday"
+    },
+    {
+        "name": "Baked beef in oyster – couliflower | soy | lime | springonion | rice",
+        "price": 105,
+        "day": "Thursday"
+    },
+    {
+        "name": "Fried Haloumi – couscous | onions | peppers | spinash | lemonvinegrette",
+        "price": 105,
+        "day": "Friday"
+    },
+    {
+        "name": "Fishstew – coconut | kefirlime | chili | mushroom | tomatoe | coriander | rice",
+        "price": 105,
+        "day": "Friday"
+    },
+    {
+        "name": "Chicken in red wine – pearlonions | carrots | baked potatoes",
+        "price": 105,
+        "day": "Friday"
+    }
+]

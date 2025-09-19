@@ -142,6 +142,17 @@
             content.innerHTML = '';
             // Swedish day names
             const days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Hela veckan'];
+
+            // Day mapping from English to Swedish
+            const dayMapping = {
+                'Monday': 'Måndag',
+                'Tuesday': 'Tisdag',
+                'Wednesday': 'Onsdag',
+                'Thursday': 'Torsdag',
+                'Friday': 'Fredag',
+                'Hela veckan': 'Hela veckan'
+            };
+
             const restaurants = [
                 { name: 'Edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
                 { name: 'Bricks Eatery', data: data.bricks, url: 'https://brickseatery.se/lunch/' },
@@ -149,6 +160,7 @@
                 { name: 'Smakapakina', data: data.smakapakina, url: 'https://www.smakapakina.se/meny' },
                 { name: 'Eatery', data: data.eatery, url: 'https://eatery.se/anlaggningar/lund' },
                 { name: 'Food Hall', data: data.foodhall, url: 'https://www.nordrest.se/restaurang/food-hall/' },
+                { name: 'Grenden', data: data.grenden, url: 'https://www.nordrest.se/restaurang/grenden/' },
             ];
             days.forEach(daySv => {
                 let hasMenus = false;
@@ -156,8 +168,10 @@
                 dayDiv.className = 'day-section';
                 dayDiv.innerHTML = `<div class="day-title">${daySv}</div>`;
                 restaurants.forEach(r => {
-                    // Filter items for this day directly
-                    const items = (r.data || []).filter(item => item.day === daySv);
+                    // Filter items for this day - check both Swedish and English day names
+                    const items = (r.data || []).filter(item => {
+                        return item.day === daySv || dayMapping[item.day] === daySv;
+                    });
                     if (items.length > 0) {
                         hasMenus = true;
 

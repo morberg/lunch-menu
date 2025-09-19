@@ -81,7 +81,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        
+
         // Check if this line is a day name
         const dayFound = dayNames.find(day => line.toLowerCase().includes(day));
         if (dayFound) {
@@ -122,7 +122,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
         // A new dish typically starts with a capital letter and contains certain patterns
         const isNewDish = line.match(/^[A-ZÅÄÖ][a-zåäöüé\s]+/);
         const hasMainIngredient = line.match(/(kött|fisk|kyckling|lax|torsk|kolja|biff|anka|lamm|fläsk|räka|krabba|mussla|pasta|pizza|soppa|sallad|gryta|curry|paj|tart|burgare|wrap|quesadilla|risotto|revben|pluma|kungsfisk|frittata|polenta|högrev|sej|canneloni|kikärts)/i);
-        
+
         // Check if this line is likely a continuation (like "morot") - starts with lowercase and is short
         const isContinuation = line.match(/^[a-zåäöüé]/) && line.trim().split(' ').length <= 3;
 

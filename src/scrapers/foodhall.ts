@@ -25,37 +25,28 @@ export async function scrapeFoodHallMenu(): Promise<MenuItem[]> {
                 // Look for a wider container that might contain both restaurant info and menu
                 while (container.length > 0) {
                     const lunchMenuHeading = container.find('h3:contains("Lunch menu")');
-                    const strongElements = container.find('strong');
+                    const menuItemElements = container.find('.axis-menu__item');
 
-                    if (lunchMenuHeading.length > 0 && strongElements.length > 0) {
-                        // Found a container with both lunch menu and strong elements (dishes)
+                    if (lunchMenuHeading.length > 0 && menuItemElements.length > 0) {
+                        // Found a container with both lunch menu and menu items
 
-                        // Extract price (default to 105)
-                        let price = 105;
-                        const priceText = container.find('p:contains("PRICE:")').text();
-                        const priceMatch = priceText.match(/PRICE:\s*(\d+)KR/i);
-                        if (priceMatch) {
-                            price = parseInt(priceMatch[1]);
-                        }
+                        // Extract dishes from menu items
+                        menuItemElements.each((index: number, element: cheerio.Element) => {
+                            const nameEl = $(element).find('.axis-menu__name');
+                            const priceEl = $(element).find('.axis-menu__price');
+                            const descEl = $(element).find('.axis-menu__desc');
 
-                        // Extract dishes from strong elements
-                        strongElements.each((index: number, element: cheerio.Element) => {
-                            const dishName = $(element).text().trim();
+                            if (nameEl.length > 0) {
+                                const dishName = nameEl.text().trim();
+                                const description = descEl.length > 0 ? descEl.text().trim() : '';
+                                const priceText = priceEl.length > 0 ? priceEl.text().trim() : '';
 
-                            // Filter out non-dish content (time, phone numbers, etc.)
-                            if (dishName.length > 5 &&
-                                !dishName.match(/^\d+[\.\:\-]/) && // Not time format
-                                !dishName.match(/^\d{10,}/) && // Not phone number
-                                !dishName.toLowerCase().includes('order here')) {
-
-                                // Get description from the parent paragraph
-                                const parentP = $(element).closest('p');
-                                const fullText = parentP.text().trim();
-
-                                // Extract description after the dish name
-                                const dishNameRegex = new RegExp(`${dishName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*[–-]\\s*(.+?)(?=\\s*[A-Z][a-z]+\\s*[–-]|$)`);
-                                const descriptionMatch = fullText.match(dishNameRegex);
-                                const description = descriptionMatch ? descriptionMatch[1].trim() : '';
+                                // Extract price from text like "105 SEK"
+                                let price = 105; // Default price
+                                const priceMatch = priceText.match(/(\d+)\s*SEK/i);
+                                if (priceMatch) {
+                                    price = parseInt(priceMatch[1]);
+                                }
 
                                 // Combine name and description
                                 const fullDishName = description ? `${dishName} – ${description}` : dishName;

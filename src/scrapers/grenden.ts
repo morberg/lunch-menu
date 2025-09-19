@@ -51,7 +51,13 @@ export async function scrapeGrendenMenu(): Promise<MenuItem[]> {
 }
 
 function extractMenuItems(accordionWrapper: any, $: any, basePrice: number): MenuItem[] {
-    const items: MenuItem[] = [];
+    const items: Array<MenuItem & { dishText?: string }> = [];
+    const dishCount: { [key: string]: number } = {};
+
+    // Extract special pricing information from the page - target specifically the "grill & fusion special" price
+    const specialPriceText = $('*:contains("grill & fusion special")').text();
+    const specialPriceMatch = specialPriceText.match(/grill\s*&\s*fusion\s*special\s*(\d+)\s*SEK/i);
+    const specialPrice = specialPriceMatch ? parseInt(specialPriceMatch[1]) : 125;
 
     // Find all weekday accordion items within this wrapper
     const weekdayItems = accordionWrapper.find('.weekday-item');
@@ -71,6 +77,9 @@ function extractMenuItems(accordionWrapper: any, $: any, basePrice: number): Men
                 // Clean up the dish text and extract name/description
                 const cleanDish = dishText.replace(/\s+/g, ' ').trim();
 
+                // Count occurrences of each dish to identify weekly specials
+                dishCount[cleanDish] = (dishCount[cleanDish] || 0) + 1;
+
                 // Split by | to separate name and ingredients
                 const parts = cleanDish.split('|').map((part: string) => part.trim());
 
@@ -81,24 +90,61 @@ function extractMenuItems(accordionWrapper: any, $: any, basePrice: number): Men
                     items.push({
                         name: `${name} – ${description}`,
                         price: basePrice,
-                        day: dayName
+                        day: dayName,
+                        dishText: cleanDish
                     });
                 } else if (cleanDish.length > 10) {
                     // Handle dishes without | separator
                     items.push({
                         name: cleanDish,
                         price: basePrice,
-                        day: dayName
+                        day: dayName,
+                        dishText: cleanDish
                     });
                 }
             }
         });
     });
 
-    // Remove duplicates (some dishes appear on multiple days)
-    const uniqueItems = items.filter((item, index, self) =>
-        index === self.findIndex(t => t.name === item.name)
-    );
+    // Identify dishes that appear on multiple days (weekly specials)
+    const weeklySpecials = new Set<string>();
+    const totalDays = weekdayItems.length;
 
-    return uniqueItems;
+    for (const [dishText, count] of Object.entries(dishCount)) {
+        if (count >= Math.max(3, Math.floor(totalDays * 0.6))) { // Appears on 60% or more of days
+            weeklySpecials.add(dishText);
+        }
+    }
+
+    // Process items: remove duplicates and handle weekly specials
+    const processedItems: MenuItem[] = [];
+    const seenDishes = new Set<string>();
+
+    for (const item of items) {
+        const dishText = item.dishText!;
+
+        if (weeklySpecials.has(dishText)) {
+            // This is a weekly special - only add once with special pricing
+            if (!seenDishes.has(dishText)) {
+                processedItems.push({
+                    name: item.name,
+                    price: specialPrice,
+                    day: "Hela veckan"
+                });
+                seenDishes.add(dishText);
+            }
+        } else {
+            // Regular daily dish
+            if (!seenDishes.has(dishText)) {
+                processedItems.push({
+                    name: item.name,
+                    price: item.price,
+                    day: item.day
+                });
+                seenDishes.add(dishText);
+            }
+        }
+    }
+
+    return processedItems;
 }

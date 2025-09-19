@@ -70,17 +70,16 @@ See [CACHE_IMPLEMENTATION.md](CACHE_IMPLEMENTATION.md) for technical details.
 
 You can use the included Makefile for common tasks:
 
-| Command            | Description                           |
-| ------------------ | ------------------------------------- |
-| make install       | Install dependencies                  |
-| make build         | Build the project                     |
-| make start         | Build and start the web server        |
-| make test          | Run tests (if implemented)            |
-| make clean         | Remove build and dependency files     |
-| make cache-status  | Check cache status                    |
-| make refresh-cache | Manually refresh menu cache           |
-| make deploy        | Deploy the app to Vercel              |
-| make debug eatery  | Debug the Eatery scraper individually |
+| Command            | Description                               |
+| ------------------ | ----------------------------------------- |
+| make install       | Install dependencies                      |
+| make build         | Build the project                         |
+| make start         | Build and start the web server            |
+| make dev           | Start development server with auto-reload |
+| make clean         | Remove build and dependency files         |
+| make cache-status  | Check cache status                        |
+| make refresh-cache | Manually refresh menu cache               |
+| make deploy        | Deploy the app to Vercel                  |
 
 All npm commands can still be used directly if preferred.
 

@@ -118,15 +118,10 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
             continue;
         }
 
-        // Check if this looks like the start of a new dish
-        // A new dish typically starts with a capital letter and contains certain patterns
+        // A new dish starts with a capital letter
         const isNewDish = line.match(/^[A-ZÅÄÖ][a-zåäöüé\s]+/);
-        const hasMainIngredient = line.match(/(kött|fisk|kyckling|lax|torsk|kolja|biff|anka|lamm|fläsk|räka|krabba|mussla|pasta|pizza|soppa|sallad|gryta|curry|paj|tart|burgare|wrap|quesadilla|risotto|revben|pluma|kungsfisk|frittata|polenta|högrev|sej|canneloni|kikärts)/i);
 
-        // Check if this line is likely a continuation (like "morot") - starts with lowercase and is short
-        const isContinuation = line.match(/^[a-zåäöüé]/) && line.trim().split(' ').length <= 3;
-
-        if (isNewDish && hasMainIngredient && currentDish && currentDay && !isContinuation) {
+        if (isNewDish && currentDish && currentDay) {
             // Save the current dish before starting a new one
             const cleanDish = currentDish
                 .replace(/\s+/g, ' ')

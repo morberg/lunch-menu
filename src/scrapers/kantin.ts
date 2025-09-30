@@ -10,37 +10,62 @@ export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
         const $ = cheerio.load(response.data);
         const menuItems: MenuItem[] = [];
 
-        // List of Swedish day names
-        const swedishDays = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'];
-
         const bodyText = $('body').text();
         const lines = bodyText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
 
-        let currentDay = '';
+        // Handle both live website format and fixtures format
+        const swedishDays = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'];
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
 
-            // Check if line is a Swedish day name
-            if (swedishDays.includes(line)) {
-                currentDay = line;
+            // Check for lines that start with Swedish day names followed by " –" (live website format)
+            const dayRegex = /^(Måndag|Tisdag|Onsdag|Torsdag|Fredag)\s*–\s*(.+)$/;
+            const dayMatch = line.match(dayRegex);
+
+            if (dayMatch) {
+                const day = dayMatch[1];
+                const description = dayMatch[2];
+
+                // Skip lines that are clearly not menu items
+                if (description &&
+                    !description.includes('11.00') &&  // Opening hours
+                    !description.includes('16.00') &&  // Opening hours
+                    description.length > 10) {
+
+                    // Parse price from description, keep null if not found
+                    const price = parsePrice(description);
+
+                    const menuItem: MenuItem = {
+                        name: description,
+                        price: price,
+                        day: day
+                    };
+
+                    menuItems.push(menuItem);
+                }
+            }
+            // Check for separate day names (fixtures format)
+            else if (swedishDays.includes(line)) {
+                const day = line;
                 // Next line should be the menu description
                 if (i + 1 < lines.length) {
                     const description = lines[i + 1];
 
-                    // Skip lines that are not menu descriptions (section headers, etc.)
-                    if (!description.includes('buffé') &&
-                        !description.includes('Kantins') &&
+                    // Skip lines that are not menu descriptions
+                    if (description &&
+                        !description.includes('11.00') &&  // Opening hours
+                        !description.includes('16.00') &&  // Opening hours
+                        !description.includes('buffé') &&
                         !description.includes('Vi skickar') &&
                         description.length > 10) {
 
-                        // Parse price from description or use fallback
                         const price = parsePrice(description);
 
                         const menuItem: MenuItem = {
                             name: description,
                             price: price,
-                            day: currentDay
+                            day: day
                         };
 
                         menuItems.push(menuItem);
@@ -49,13 +74,30 @@ export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
                 }
             }
 
-            // Check for special weekly items
-            if ((line === 'Veckans vegetariska' || line === 'Månadens alternativ') && i + 1 < lines.length) {
-                const description = lines[i + 1];
-                const price = parsePrice('Se restaurang');
+            // Check for special weekly items with " – " format (live website)
+            const weeklyRegex = /^(Veckans vegetariska|Månadens.*?)\s*–\s*(.+)$/;
+            const weeklyMatch = line.match(weeklyRegex);
+
+            if (weeklyMatch) {
+                const itemType = weeklyMatch[1];
+                const description = weeklyMatch[2];
+                const price = parsePrice(description);
 
                 const menuItem: MenuItem = {
-                    name: `${line}: ${description}`,
+                    name: `${itemType}: ${description}`,
+                    price: price,
+                    day: 'Hela veckan'
+                };
+                menuItems.push(menuItem);
+            }
+            // Check for separate weekly items (fixtures format)
+            else if ((line === 'Veckans vegetariska' || line.startsWith('Månadens')) && i + 1 < lines.length) {
+                const itemType = line;
+                const description = lines[i + 1];
+                const price = parsePrice(description);
+
+                const menuItem: MenuItem = {
+                    name: `${itemType}: ${description}`,
                     price: price,
                     day: 'Hela veckan'
                 };

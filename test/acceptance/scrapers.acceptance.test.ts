@@ -241,7 +241,9 @@ describe('Scraper Acceptance Tests', () => {
     });
 
     test('Smakapakina scraper should return expected menu structure', async () => {
-        const result = await scrapeSmakapakina();
+        // Use fixture file for testing instead of live website
+        const fixturePath = path.join(__dirname, '..', 'fixtures', 'smakapakina.html');
+        const result = await scrapeSmakapakina(`file://${fixturePath}`);
         validateMenuStructure(result, 'Smakapakina');
 
         const expected = loadExpected('smakapakina.json');
@@ -301,8 +303,14 @@ describe('Scraper Acceptance Tests', () => {
         const scrapers = [
             { name: 'Edison', fn: scrapeEdisonMenu },
             { name: 'Bricks', fn: scrapeBricksMenu },
-            { name: 'Kantin', fn: scrapeKantinMenu },
-            { name: 'Smakapakina', fn: scrapeSmakapakina },
+            { 
+                name: 'Kantin', 
+                fn: async () => testKantinWithFixture(path.join(__dirname, '../fixtures/kantin.html'))
+            },
+            { 
+                name: 'Smakapakina', 
+                fn: async () => scrapeSmakapakina(`file://${path.join(__dirname, '../fixtures/smakapakina.html')}`)
+            },
             { name: 'Eatery', fn: scrapeEatery },
             { name: 'Food Hall', fn: scrapeFoodHallMenu },
             { name: 'Grenden', fn: scrapeGrendenMenu },

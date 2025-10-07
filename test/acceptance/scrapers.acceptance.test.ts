@@ -303,12 +303,12 @@ describe('Scraper Acceptance Tests', () => {
         const scrapers = [
             { name: 'Edison', fn: scrapeEdisonMenu },
             { name: 'Bricks', fn: scrapeBricksMenu },
-            { 
-                name: 'Kantin', 
+            {
+                name: 'Kantin',
                 fn: async () => testKantinWithFixture(path.join(__dirname, '../fixtures/kantin.html'))
             },
-            { 
-                name: 'Smakapakina', 
+            {
+                name: 'Smakapakina',
                 fn: async () => scrapeSmakapakina(`file://${path.join(__dirname, '../fixtures/smakapakina.html')}`)
             },
             { name: 'Eatery', fn: scrapeEatery },
@@ -324,6 +324,21 @@ describe('Scraper Acceptance Tests', () => {
             } catch (error) {
                 throw new Error(`${scraper.name} scraper failed: ${error}`);
             }
+        }
+    });
+
+    test('Smakapakina scraper (v2) should return expected menu structure', async () => {
+        const fixturePath = path.join(__dirname, '..', 'fixtures', 'smakapakina_v2.html');
+        const result = await scrapeSmakapakina(`file://${fixturePath}`);
+        validateMenuStructure(result, 'Smakapakina v2');
+        const expected = loadExpected('smakapakina_v2.json');
+        expect(result.length).toBe(expected.length);
+        // Normalize day capitalization for comparison
+        const normalizeDay = (d: string) => d.charAt(0).toUpperCase() + d.slice(1).toLowerCase();
+        for (let i = 0; i < expected.length; i++) {
+            expect(normalizeDay(result[i].day)).toBe(expected[i].day);
+            expect(result[i].name).toBe(expected[i].name);
+            expect(result[i].price).toBe(expected[i].price);
         }
     });
 });

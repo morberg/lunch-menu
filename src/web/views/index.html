@@ -129,6 +129,43 @@
             margin-top: 4px;
         }
 
+        .restaurant-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .restaurant-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: 1px solid #588157;
+            color: #344e41;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 12px;
+            cursor: pointer;
+            line-height: 1.2;
+        }
+
+        .toggle-btn:hover {
+            background: #588157;
+            color: #fff;
+        }
+
+        .restaurant.collapsed .restaurant-content {
+            display: none;
+        }
+
+        .restaurant.collapsed {
+            opacity: 0.7;
+        }
+
         @media (max-width: 600px) {
             body {
                 padding: 6px;
@@ -188,6 +225,40 @@
             const restaurantsWithAnyItems = new Set();
             restaurants.forEach(r => { if (Array.isArray(r.data) && r.data.length > 0) restaurantsWithAnyItems.add(r.key); });
 
+            const collapsedKey = 'collapsedRestaurantsV1';
+            const collapsed = new Set(JSON.parse(localStorage.getItem(collapsedKey) || '[]'));
+            function persist() { localStorage.setItem(collapsedKey, JSON.stringify([...collapsed])); }
+            function buildRestaurantHeader(r, hasUniformPrice, uniformPrice) {
+                const isCollapsed = collapsed.has(r.key);
+                const priceSpan = (hasUniformPrice && uniformPrice !== null) ? `<span class="menu-item-price">${uniformPrice} kr</span>` : '';
+                return `<div class="restaurant-header">
+  <div class="restaurant-title-wrap">
+    <button class="toggle-btn" data-rest="${r.key}" aria-expanded="${!isCollapsed}">${isCollapsed ? '+' : '−'}</button>
+    <strong><a href="${r.url}" target="_blank" class="restaurant-link">${r.name}</a></strong>${priceSpan}
+  </div>
+</div>`;
+            }
+            function applyToggleHandlers(scope) {
+                scope.querySelectorAll('.toggle-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const key = btn.getAttribute('data-rest');
+                        if (collapsed.has(key)) collapsed.delete(key); else collapsed.add(key);
+                        persist();
+                        // Update all instances
+                        document.querySelectorAll(`.restaurant[data-rest='${key}']`).forEach(div => {
+                            if (collapsed.has(key)) div.classList.add('collapsed'); else div.classList.remove('collapsed');
+                            // Update button symbol & aria
+                            div.querySelectorAll(`.toggle-btn[data-rest='${key}']`).forEach(b => {
+                                const isCol = collapsed.has(key);
+                                b.textContent = isCol ? '+' : '−';
+                                b.setAttribute('aria-expanded', String(!isCol));
+                            });
+                        });
+                    });
+                });
+            }
+
+            content.innerHTML = '';
             days.forEach(daySv => {
                 let anyRestaurantShown = false;
                 const dayDiv = document.createElement('div');
@@ -198,19 +269,19 @@
                         return; // Skip Food Hall for weekday sections
                     }
                     const items = (r.data || []).filter(item => item.day === daySv || dayMapping[item.day] === daySv);
+                    const restaurantDiv = document.createElement('div');
+                    restaurantDiv.className = 'restaurant';
+                    restaurantDiv.dataset.rest = r.key;
+                    const isCollapsed = collapsed.has(r.key);
                     if (items.length > 0) {
                         anyRestaurantShown = true;
                         const prices = items.map(i => i.price);
                         const uniquePrices = [...new Set(prices)];
                         const hasUniformPrice = uniquePrices.length === 1;
                         const uniformPrice = hasUniformPrice ? uniquePrices[0] : null;
-                        const restaurantDiv = document.createElement('div');
-                        restaurantDiv.className = 'restaurant';
-                        let restaurantHeader = `<strong><a href="${r.url}" target="_blank" class="restaurant-link">${r.name}</a></strong>`;
-                        if (hasUniformPrice && uniformPrice !== null) {
-                            restaurantHeader += ` <span class="menu-item-price">${uniformPrice} kr</span>`;
-                        }
-                        restaurantDiv.innerHTML = restaurantHeader;
+                        restaurantDiv.innerHTML = buildRestaurantHeader(r, hasUniformPrice, uniformPrice);
+                        const contentWrap = document.createElement('div');
+                        contentWrap.className = 'restaurant-content';
                         const table = document.createElement('table');
                         table.className = 'menu-table';
                         table.innerHTML = '<tbody></tbody>';
@@ -225,18 +296,20 @@
                             }
                             tbody.appendChild(tr);
                         });
-                        restaurantDiv.appendChild(table);
-                        dayDiv.appendChild(restaurantDiv);
+                        contentWrap.appendChild(table);
+                        restaurantDiv.appendChild(contentWrap);
+                    } else if (['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'].includes(daySv)) {
+                        anyRestaurantShown = true;
+                        restaurantDiv.innerHTML = buildRestaurantHeader(r, false, null);
+                        const contentWrap = document.createElement('div');
+                        contentWrap.className = 'restaurant-content';
+                        contentWrap.innerHTML = `<div class="placeholder-note">Ingen meny hittades för ${daySv.toLowerCase()}. Klicka för att besöka.</div>`;
+                        restaurantDiv.appendChild(contentWrap);
                     } else {
-                        // Show placeholder for restaurant with no items that day (only for weekday sections)
-                        if (['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'].includes(daySv)) {
-                            anyRestaurantShown = true; // ensure day section appears
-                            const placeholderDiv = document.createElement('div');
-                            placeholderDiv.className = 'restaurant';
-                            placeholderDiv.innerHTML = `<strong><a href="${r.url}" target="_blank" class="restaurant-link">${r.name}</a></strong><div class="placeholder-note">Ingen meny hittades för ${daySv.toLowerCase()}. Klicka för att besöka.</div>`;
-                            dayDiv.appendChild(placeholderDiv);
-                        }
+                        return; // skip adding empty weekly section entries
                     }
+                    if (isCollapsed) restaurantDiv.classList.add('collapsed');
+                    dayDiv.appendChild(restaurantDiv);
                 });
                 if (anyRestaurantShown) content.appendChild(dayDiv);
             });
@@ -250,11 +323,16 @@
                 emptyRestaurants.forEach(r => {
                     const div = document.createElement('div');
                     div.className = 'restaurant';
-                    div.innerHTML = `<strong><a href="${r.url}" target="_blank" class="restaurant-link">${r.name}</a></strong><div class="placeholder-note">Ingen meny kunde hämtas. Klicka för att besöka deras sida.</div>`;
+                    div.dataset.rest = r.key;
+                    const isCollapsed = collapsed.has(r.key);
+                    div.innerHTML = buildRestaurantHeader(r, false, null) + `<div class="restaurant-content"><div class="placeholder-note">Ingen meny kunde hämtas. Klicka för att besöka deras sida.</div></div>`;
+                    if (isCollapsed) div.classList.add('collapsed');
                     section.appendChild(div);
                 });
                 content.appendChild(section);
             }
+
+            applyToggleHandlers(document);
 
             // Auto-scroll remains same
             const today = new Date();

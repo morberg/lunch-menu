@@ -140,115 +140,98 @@
         function displayMenus(data) {
             const content = document.getElementById('content');
             content.innerHTML = '';
-            // Swedish day names
             const days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Hela veckan'];
-
-            // Day mapping from English to Swedish
-            const dayMapping = {
-                'Monday': 'Måndag',
-                'Tuesday': 'Tisdag',
-                'Wednesday': 'Onsdag',
-                'Thursday': 'Torsdag',
-                'Friday': 'Fredag',
-                'Hela veckan': 'Hela veckan'
-            };
-
+            const dayMapping = { 'Monday': 'Måndag', 'Tuesday': 'Tisdag', 'Wednesday': 'Onsdag', 'Thursday': 'Torsdag', 'Friday': 'Fredag', 'Hela veckan': 'Hela veckan' };
             const restaurants = [
-                { name: 'Edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
-                { name: 'Grenden', data: data.grenden, url: 'https://www.nordrest.se/restaurang/grenden/' },
-                { name: 'Food Hall', data: data.foodhall, url: 'https://www.nordrest.se/restaurang/food-hall/' },
-                { name: 'Bricks Eatery', data: data.bricks, url: 'https://brickseatery.se/lunch/' },
-                { name: 'Kantin', data: data.kantin, url: 'https://www.kantinlund.se/' },
-                { name: 'Smakapakina', data: data.smakapakina, url: 'https://www.smakapakina.se/meny' },
-                { name: 'Eatery', data: data.eatery, url: 'https://eatery.se/anlaggningar/lund' },
+                { name: 'Edison', key: 'edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
+                { name: 'Grenden', key: 'grenden', data: data.grenden, url: 'https://www.nordrest.se/restaurang/grenden/' },
+                { name: 'Food Hall', key: 'foodhall', data: data.foodhall, url: 'https://www.nordrest.se/restaurang/food-hall/', weeklyOnly: true },
+                { name: 'Bricks Eatery', key: 'bricks', data: data.bricks, url: 'https://brickseatery.se/lunch/' },
+                { name: 'Kantin', key: 'kantin', data: data.kantin, url: 'https://www.kantinlund.se/' },
+                { name: 'Smakapakina', key: 'smakapakina', data: data.smakapakina, url: 'https://www.smakapakina.se/meny' },
+                { name: 'Eatery', key: 'eatery', data: data.eatery, url: 'https://eatery.se/anlaggningar/lund' },
             ];
+
+            const restaurantsWithAnyItems = new Set();
+            restaurants.forEach(r => { if (Array.isArray(r.data) && r.data.length > 0) restaurantsWithAnyItems.add(r.key); });
+
             days.forEach(daySv => {
-                let hasMenus = false;
+                let anyRestaurantShown = false;
                 const dayDiv = document.createElement('div');
                 dayDiv.className = 'day-section';
                 dayDiv.innerHTML = `<div class="day-title">${daySv}</div>`;
                 restaurants.forEach(r => {
-                    // Filter items for this day - check both Swedish and English day names
-                    const items = (r.data || []).filter(item => {
-                        return item.day === daySv || dayMapping[item.day] === daySv;
-                    });
+                    if (r.weeklyOnly && daySv !== 'Hela veckan') {
+                        return; // Skip Food Hall for weekday sections
+                    }
+                    const items = (r.data || []).filter(item => item.day === daySv || dayMapping[item.day] === daySv);
                     if (items.length > 0) {
-                        hasMenus = true;
-
-                        // Check if all items have the same price
-                        const prices = items.map(item => item.price);
+                        anyRestaurantShown = true;
+                        const prices = items.map(i => i.price);
                         const uniquePrices = [...new Set(prices)];
                         const hasUniformPrice = uniquePrices.length === 1;
                         const uniformPrice = hasUniformPrice ? uniquePrices[0] : null;
-
                         const restaurantDiv = document.createElement('div');
                         restaurantDiv.className = 'restaurant';
-
-                        // Restaurant name with price if uniform
                         let restaurantHeader = `<strong><a href="${r.url}" target="_blank" style="color: inherit; text-decoration: none;">${r.name}</a></strong>`;
                         if (hasUniformPrice && uniformPrice !== null) {
                             restaurantHeader += ` <span class="menu-item-price">${uniformPrice} kr</span>`;
                         }
-                        // If uniformPrice is null, don't display anything
                         restaurantDiv.innerHTML = restaurantHeader;
-
-                        // Table for all menu items of this restaurant for this day
                         const table = document.createElement('table');
-                        table.style.width = '100%';
-                        table.style.borderCollapse = 'collapse';
-                        table.style.marginBottom = '4px';
-                        table.innerHTML = `<tbody></tbody>`;
+                        table.innerHTML = '<tbody></tbody>';
                         const tbody = table.querySelector('tbody');
                         items.forEach(item => {
                             const tr = document.createElement('tr');
-
                             if (hasUniformPrice) {
-                                // Only show dish name when all prices are the same
-                                tr.innerHTML = `
-                                    <td style="padding:4px 6px;vertical-align:top;">${item.name}</td>
-                                `;
+                                tr.innerHTML = `<td style="padding:4px 6px;vertical-align:top;">${item.name}</td>`;
                             } else {
-                                // Show both dish name and individual price when prices differ
-                                let price;
-                                if (item.price !== null && item.price !== undefined) {
-                                    price = `${item.price} kr`;
-                                } else {
-                                    price = '-';
-                                }
-                                tr.innerHTML = `
-                                    <td style="padding:4px 6px;vertical-align:top;">${item.name}</td>
-                                    <td style="padding:4px 6px;text-align:right;vertical-align:top;color:#28a745;">${price}</td>
-                                `;
+                                const price = (item.price !== null && item.price !== undefined) ? `${item.price} kr` : '-';
+                                tr.innerHTML = `<td style="padding:4px 6px;vertical-align:top;">${item.name}</td><td style="padding:4px 6px;text-align:right;vertical-align:top;color:#28a745;">${price}</td>`;
                             }
                             tbody.appendChild(tr);
                         });
                         restaurantDiv.appendChild(table);
                         dayDiv.appendChild(restaurantDiv);
+                    } else {
+                        // Show placeholder for restaurant with no items that day (only for weekday sections)
+                        if (['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'].includes(daySv)) {
+                            anyRestaurantShown = true; // ensure day section appears
+                            const placeholderDiv = document.createElement('div');
+                            placeholderDiv.className = 'restaurant';
+                            placeholderDiv.innerHTML = `<strong><a href="${r.url}" target="_blank" style="color: inherit; text-decoration: none;">${r.name}</a></strong><div style="font-size:13px;color:#666;margin-top:4px;">Ingen meny hittades för ${daySv.toLowerCase()}. Klicka för att besöka.</div>`;
+                            dayDiv.appendChild(placeholderDiv);
+                        }
                     }
                 });
-                if (hasMenus) {
-                    content.appendChild(dayDiv);
-                }
+                if (anyRestaurantShown) content.appendChild(dayDiv);
             });
-            // Show message if no menus available
-            if (!Object.values(data).some(arr => Array.isArray(arr) && arr.length > 0)) {
-                content.innerHTML = '<div class="error">Inga menyer tillgängliga just nu. Försök igen senare.</div>';
+
+            // Section listing restaurants with zero items all week
+            const emptyRestaurants = restaurants.filter(r => !(restaurantsWithAnyItems.has(r.key)));
+            if (emptyRestaurants.length) {
+                const section = document.createElement('div');
+                section.className = 'day-section';
+                section.innerHTML = `<div class="day-title">Restauranger utan menydata</div>`;
+                emptyRestaurants.forEach(r => {
+                    const div = document.createElement('div');
+                    div.className = 'restaurant';
+                    div.innerHTML = `<strong><a href="${r.url}" target="_blank" style="color: inherit; text-decoration:none;">${r.name}</a></strong><div style="font-size:13px;color:#666;margin-top:4px;">Ingen meny kunde hämtas. Klicka för att besöka deras sida.</div>`;
+                    section.appendChild(div);
+                });
+                content.appendChild(section);
             }
-            // --- Automatic scroll to today's section ---
+
+            if (!Object.values(data).some(arr => Array.isArray(arr) && arr.length > 0)) {
+                // Keep placeholder but already have per-restaurant placeholders above.
+            }
+            // Auto-scroll remains same
             const today = new Date();
-            // getDay() returns 0 for Sunday, 1 for Monday, ..., 6 for Saturday
             const swedishDays = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
             const todayName = swedishDays[today.getDay()];
-            // Only scroll if today is a weekday (Måndag-Fredag)
             if (['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'].includes(todayName)) {
-                // Find the first .day-title matching today
                 const dayTitles = document.querySelectorAll('.day-title');
-                for (const el of dayTitles) {
-                    if (el.textContent.trim() === todayName) {
-                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        break;
-                    }
-                }
+                for (const el of dayTitles) { if (el.textContent.trim() === todayName) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); break; } }
             }
         }
         window.addEventListener('DOMContentLoaded', loadMenus);

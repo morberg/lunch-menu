@@ -12,6 +12,9 @@ This project is a web application that scrapes daily lunch menus from selected r
 - [Eatery](https://eatery.se/anlaggningar/lund)
 - [Food Hall](https://www.nordrest.se/restaurang/food-hall/)
 
+## Placeholder Behavior
+If a scraper temporarily fails or returns no data, the restaurant is still displayed. A placeholder message is shown (e.g., “Ingen meny hittades” or a list under “Restauranger utan menydata”) with a direct link so users can visit the restaurant site manually. This ensures visibility and usability even during transient scraping issues.
+
 ## Project Structure
 
 The project is organized as follows:

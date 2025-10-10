@@ -96,6 +96,39 @@
             border-top: 1px solid #eee;
         }
 
+        .hidden {
+            display: none !important;
+        }
+
+        .restaurant-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .menu-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 4px;
+        }
+
+        .cell {
+            padding: 4px 6px;
+            vertical-align: top;
+        }
+
+        .cell-price {
+            padding: 4px 6px;
+            text-align: right;
+            vertical-align: top;
+            color: #28a745;
+        }
+
+        .placeholder-note {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
         @media (max-width: 600px) {
             body {
                 padding: 6px;
@@ -118,9 +151,7 @@
             Laddar menyer...
         </div>
 
-        <div id="content" style="display: none;">
-            <!-- Menu content will be loaded here -->
-        </div>
+        <div id="content" class="hidden"></div>
     </main>
 
     <script>
@@ -128,15 +159,17 @@
             try {
                 const response = await fetch('/api/menus');
                 const data = await response.json();
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
+                document.getElementById('loading').classList.add('hidden');
+                const contentEl = document.getElementById('content');
+                contentEl.classList.remove('hidden');
                 displayMenus(data);
             } catch (error) {
-                document.getElementById('loading').innerHTML =
-                    '<div class="error">Kunde inte ladda menyer. Försök igen senare.</div>';
+                const loading = document.getElementById('loading');
+                loading.innerHTML = '<div class="error">Kunde inte ladda menyer. Försök igen senare.</div>';
                 console.error('Error loading menus:', error);
             }
         }
+
         function displayMenus(data) {
             const content = document.getElementById('content');
             content.innerHTML = '';
@@ -173,21 +206,22 @@
                         const uniformPrice = hasUniformPrice ? uniquePrices[0] : null;
                         const restaurantDiv = document.createElement('div');
                         restaurantDiv.className = 'restaurant';
-                        let restaurantHeader = `<strong><a href="${r.url}" target="_blank" style="color: inherit; text-decoration: none;">${r.name}</a></strong>`;
+                        let restaurantHeader = `<strong><a href="${r.url}" target="_blank" class="restaurant-link">${r.name}</a></strong>`;
                         if (hasUniformPrice && uniformPrice !== null) {
                             restaurantHeader += ` <span class="menu-item-price">${uniformPrice} kr</span>`;
                         }
                         restaurantDiv.innerHTML = restaurantHeader;
                         const table = document.createElement('table');
+                        table.className = 'menu-table';
                         table.innerHTML = '<tbody></tbody>';
                         const tbody = table.querySelector('tbody');
                         items.forEach(item => {
                             const tr = document.createElement('tr');
                             if (hasUniformPrice) {
-                                tr.innerHTML = `<td style="padding:4px 6px;vertical-align:top;">${item.name}</td>`;
+                                tr.innerHTML = `<td class="cell">${item.name}</td>`;
                             } else {
                                 const price = (item.price !== null && item.price !== undefined) ? `${item.price} kr` : '-';
-                                tr.innerHTML = `<td style="padding:4px 6px;vertical-align:top;">${item.name}</td><td style="padding:4px 6px;text-align:right;vertical-align:top;color:#28a745;">${price}</td>`;
+                                tr.innerHTML = `<td class="cell">${item.name}</td><td class="cell-price">${price}</td>`;
                             }
                             tbody.appendChild(tr);
                         });
@@ -199,7 +233,7 @@
                             anyRestaurantShown = true; // ensure day section appears
                             const placeholderDiv = document.createElement('div');
                             placeholderDiv.className = 'restaurant';
-                            placeholderDiv.innerHTML = `<strong><a href="${r.url}" target="_blank" style="color: inherit; text-decoration: none;">${r.name}</a></strong><div style="font-size:13px;color:#666;margin-top:4px;">Ingen meny hittades för ${daySv.toLowerCase()}. Klicka för att besöka.</div>`;
+                            placeholderDiv.innerHTML = `<strong><a href="${r.url}" target="_blank" class="restaurant-link">${r.name}</a></strong><div class="placeholder-note">Ingen meny hittades för ${daySv.toLowerCase()}. Klicka för att besöka.</div>`;
                             dayDiv.appendChild(placeholderDiv);
                         }
                     }
@@ -212,19 +246,16 @@
             if (emptyRestaurants.length) {
                 const section = document.createElement('div');
                 section.className = 'day-section';
-                section.innerHTML = `<div class="day-title">Restauranger utan menydata</div>`;
+                section.innerHTML = '<div class="day-title">Restauranger utan menydata</div>';
                 emptyRestaurants.forEach(r => {
                     const div = document.createElement('div');
                     div.className = 'restaurant';
-                    div.innerHTML = `<strong><a href="${r.url}" target="_blank" style="color: inherit; text-decoration:none;">${r.name}</a></strong><div style="font-size:13px;color:#666;margin-top:4px;">Ingen meny kunde hämtas. Klicka för att besöka deras sida.</div>`;
+                    div.innerHTML = `<strong><a href="${r.url}" target="_blank" class="restaurant-link">${r.name}</a></strong><div class="placeholder-note">Ingen meny kunde hämtas. Klicka för att besöka deras sida.</div>`;
                     section.appendChild(div);
                 });
                 content.appendChild(section);
             }
 
-            if (!Object.values(data).some(arr => Array.isArray(arr) && arr.length > 0)) {
-                // Keep placeholder but already have per-restaurant placeholders above.
-            }
             // Auto-scroll remains same
             const today = new Date();
             const swedishDays = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];

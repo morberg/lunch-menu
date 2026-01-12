@@ -178,7 +178,9 @@ describe('Scraper Acceptance Tests', () => {
     });
 
     test('Bricks scraper should return expected menu structure', async () => {
-        const result = await scrapeBricksMenu();
+        // Use fixture file for testing instead of live website
+        const fixturePath = path.join(__dirname, '..', 'fixtures', 'bricks.html');
+        const result = await scrapeBricksMenu(`file://${fixturePath}`);
         validateMenuStructure(result, 'Bricks');
 
         const expected = loadExpected('bricks.json');

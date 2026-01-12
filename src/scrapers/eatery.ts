@@ -19,7 +19,11 @@ export const scrapeEatery = async (): Promise<MenuItem[]> => {
             const href = $(element).attr('href');
 
             if (linkText.toLowerCase().includes('lunchmeny') && href && href.includes('.pdf')) {
-                lunchMenuUrl = href;
+                try {
+                    lunchMenuUrl = new URL(href, 'https://eatery.se').toString();
+                } catch {
+                    lunchMenuUrl = href;
+                }
                 return false; // Break the loop
             }
         });

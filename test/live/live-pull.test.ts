@@ -1,5 +1,6 @@
 import { scrapeBricksMenu } from '../../src/scrapers/bricks';
 import { scrapeEatery } from '../../src/scrapers/eatery';
+import { scrapeKantinMenu } from '../../src/scrapers/kantin';
 
 const liveDescribe = process.env.LIVE === '1' ? describe : describe.skip;
 
@@ -15,6 +16,11 @@ liveDescribe('Live menu pull checks (set LIVE=1)', () => {
 
     test('Eatery live pull returns items', async () => {
         const items = await scrapeEatery();
+        expect(items.length).toBeGreaterThan(0);
+    });
+
+    test('Kantin live pull returns items', async () => {
+        const items = await scrapeKantinMenu();
         expect(items.length).toBeGreaterThan(0);
     });
 });

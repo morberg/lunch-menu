@@ -26,22 +26,23 @@ const isWeeklyLabel = (text: string): boolean =>
 
 const isDayLabel = (text: string): boolean => swedishDays.includes(text);
 
+const getLeadingLabel = (text: string, labels: string[]): string | null =>
+    labels.find(label => text.startsWith(label)) ?? null;
+
 const parseKantinFromLines = (lines: string[]): MenuItem[] => {
     const menuItems: MenuItem[] = [];
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
 
-        const dayRegex = /^(Måndag|Tisdag|Onsdag|Torsdag|Fredag)\b\s*(?:–|-|:)?\s*(.+)?$/;
-        const dayMatch = line.match(dayRegex);
-
-        if (dayMatch) {
-            const day = dayMatch[1];
-            let description = dayMatch[2] ? dayMatch[2].trim() : '';
+        const dayLabel = getLeadingLabel(line, swedishDays);
+        if (dayLabel) {
+            let description = stripLeadingSeparators(line.slice(dayLabel.length));
 
             if (!description && i + 1 < lines.length) {
                 const nextLine = lines[i + 1];
-                if (!dayRegex.test(nextLine) && !isWeeklyLabel(nextLine)) {
+                const nextDayLabel = getLeadingLabel(nextLine, swedishDays);
+                if (!nextDayLabel && !isWeeklyLabel(nextLine)) {
                     description = nextLine;
                     i++;
                 }
@@ -52,19 +53,18 @@ const parseKantinFromLines = (lines: string[]): MenuItem[] => {
                 menuItems.push({
                     name: description,
                     price: price,
-                    day: day
+                    day: dayLabel
                 });
             }
 
             continue;
         }
 
-        const weeklyRegex = /^(Veckans vegetariska|Månadens[^–:-]*)\s*(?:–|-|:)?\s*(.+)?$/;
-        const weeklyMatch = line.match(weeklyRegex);
-
-        if (weeklyMatch) {
-            const itemType = weeklyMatch[1];
-            let description = weeklyMatch[2] ? weeklyMatch[2].trim() : '';
+        if (isWeeklyLabel(line)) {
+            const weeklyLabel = line.startsWith('Veckans vegetariska')
+                ? 'Veckans vegetariska'
+                : 'Månadens alternativ';
+            let description = stripLeadingSeparators(line.slice(weeklyLabel.length));
 
             if (!description && i + 1 < lines.length) {
                 description = lines[i + 1];
@@ -74,7 +74,7 @@ const parseKantinFromLines = (lines: string[]): MenuItem[] => {
             if (isMenuDescription(description)) {
                 const price = parsePrice(description);
                 menuItems.push({
-                    name: `${itemType}: ${description}`,
+                    name: `${weeklyLabel}: ${description}`,
                     price: price,
                     day: 'Hela veckan'
                 });
@@ -106,11 +106,31 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
                 continue;
             }
 
-            const strongTextRaw = normalizeText($(paragraph).find('strong').first().text());
+            const strongElement = $(paragraph).find('strong').first();
+            const strongTextRaw = normalizeText(strongElement.text());
 
             if (strongTextRaw) {
                 if (isDayLabel(strongTextRaw)) {
-                    let description = stripLeadingSeparators(paragraphText.replace(strongTextRaw, ''));
+                    let description = '';
+                    const spanText = normalizeText(strongElement.parent().find('span').first().text());
+                    if (spanText) {
+                        description = stripLeadingSeparators(spanText);
+                    }
+
+                    if (!description) {
+                        const parts = strongElement.parent().contents().toArray().flatMap((node) => {
+                            if (node.type === 'text') {
+                                return [normalizeText(node.data ?? '')];
+                            }
+
+                            if (node.type === 'tag' && node.name !== 'strong') {
+                                return [normalizeText($(node).text())];
+                            }
+
+                            return [];
+                        }).filter(text => text.length > 0);
+                        description = stripLeadingSeparators(parts.join(' '));
+                    }
 
                     if (!description && i + 1 < paragraphs.length) {
                         const nextText = normalizeText($(paragraphs[i + 1]).text());
@@ -133,8 +153,29 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
                 }
 
                 if (isWeeklyLabel(strongTextRaw)) {
-                    const label = normalizeText(strongTextRaw.replace(/[–-]\s*$/, ''));
-                    let description = stripLeadingSeparators(paragraphText.replace(strongTextRaw, ''));
+                    const weeklyLabel = strongTextRaw.startsWith('Veckans vegetariska')
+                        ? 'Veckans vegetariska'
+                        : 'Månadens alternativ';
+                    let description = '';
+                    const spanText = normalizeText(strongElement.find('span').first().text());
+                    if (spanText) {
+                        description = stripLeadingSeparators(spanText);
+                    }
+
+                    if (!description) {
+                        const siblingParts = strongElement.parent().contents().toArray().flatMap((node) => {
+                            if (node.type === 'text') {
+                                return [normalizeText(node.data ?? '')];
+                            }
+
+                            if (node.type === 'tag' && node.name !== 'strong') {
+                                return [normalizeText($(node).text())];
+                            }
+
+                            return [];
+                        }).filter(text => text.length > 0);
+                        description = stripLeadingSeparators(siblingParts.join(' '));
+                    }
 
                     if (!description && i + 1 < paragraphs.length) {
                         description = normalizeText($(paragraphs[i + 1]).text());
@@ -144,7 +185,7 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
                     if (isMenuDescription(description)) {
                         const price = parsePrice(description);
                         menuItems.push({
-                            name: `${label}: ${description}`,
+                            name: `${weeklyLabel}: ${description}`,
                             price: price,
                             day: 'Hela veckan'
                         });
@@ -154,16 +195,33 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
                 continue;
             }
 
-            const inlineDayMatch = paragraphText.match(/^(Måndag|Tisdag|Onsdag|Torsdag|Fredag)\b\s*(?:–|-|:)?\s*(.+)$/);
-            if (inlineDayMatch) {
-                const description = inlineDayMatch[2].trim();
+            const inlineDayLabel = getLeadingLabel(paragraphText, swedishDays);
+            if (inlineDayLabel) {
+                const description = stripLeadingSeparators(paragraphText.slice(inlineDayLabel.length));
 
                 if (isMenuDescription(description)) {
                     const price = parsePrice(description);
                     menuItems.push({
                         name: description,
                         price: price,
-                        day: inlineDayMatch[1]
+                        day: inlineDayLabel
+                    });
+                }
+                continue;
+            }
+
+            if (isWeeklyLabel(paragraphText)) {
+                const weeklyLabel = paragraphText.startsWith('Veckans vegetariska')
+                    ? 'Veckans vegetariska'
+                    : 'Månadens alternativ';
+                const description = stripLeadingSeparators(paragraphText.slice(weeklyLabel.length));
+
+                if (isMenuDescription(description)) {
+                    const price = parsePrice(description);
+                    menuItems.push({
+                        name: `${weeklyLabel}: ${description}`,
+                        price: price,
+                        day: 'Hela veckan'
                     });
                 }
             }

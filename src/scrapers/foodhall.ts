@@ -43,7 +43,7 @@ export function parseFoodHallMenuFromHtml(html: string): MenuItem[] {
             price = parseInt(priceMatch[1]);
         }
 
-        const fullDishName = description ? `${dishName} – ${description}` : dishName;
+        const fullDishName = description || dishName;
 
         items.push({
             name: fullDishName,

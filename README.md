@@ -81,6 +81,7 @@ You can use the included Makefile for common tasks:
 | make cache-status  | Check cache status                        |
 | make refresh-cache | Manually refresh menu cache               |
 | make deploy        | Deploy the app to Vercel                  |
+| make snapshots     | Update latest HTML/PDF snapshots          |
 
 All npm commands can still be used directly if preferred.
 
@@ -90,6 +91,17 @@ The application automatically serves cached menu data for optimal performance:
 - **Fast Loading**: Menus load instantly from cache
 - **Always Fresh**: Background updates ensure current information
 - **Cache Management**: Use `make cache-status` and `make refresh-cache` as needed
+
+## Snapshot Testing
+
+Tests use only the latest live snapshots stored in [test/fixtures](test/fixtures).
+
+Workflow:
+1. Update snapshots from live sites:
+   - `make snapshots`
+2. Update expected outputs in [test/expected](test/expected) to match any changes.
+3. Run tests:
+   - `make test`
 
 ## Deployment
 

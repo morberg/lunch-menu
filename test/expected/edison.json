@@ -1,0 +1,77 @@
+[
+  {
+    "name": "Green: Halloumistroganoff med pumpa, ris, persilja & haricots verts",
+    "price": 115,
+    "day": "Måndag"
+  },
+  {
+    "name": "Local: Färslimpa med svampsås, kokt potatis, bakad morot & syltade vinbär",
+    "price": 115,
+    "day": "Måndag"
+  },
+  {
+    "name": "World Wide: Indisk kycklinggryta med mangoraita, kokoskokt basmatiris, chilipickles & koriander",
+    "price": 115,
+    "day": "Måndag"
+  },
+  {
+    "name": "Green: Svampsoppa med tryffelcreme, scones, sellerisallad & frön",
+    "price": 115,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Local: Ugnsbakad falukorv med potatismos, äpple, bakad lök & senap",
+    "price": 115,
+    "day": "Tisdag"
+  },
+  {
+    "name": "World Wide: Kalkonstek med plommonsås, ris & rättika",
+    "price": 115,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Green: Veg mexbiff med svart bönsalsa, quesadilla, koriander & vårlök",
+    "price": 115,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Local: Grillad karré med choronsås, vitlöksrostad potatis & rotisar",
+    "price": 115,
+    "day": "Onsdag"
+  },
+  {
+    "name": "World Wide: Batterfriterad fisk med tartarsås, mushypeas & rostad potatis",
+    "price": 115,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Green: Pankopanerad getost med rostade rödbetor, solroskärnor, ruccola & honungsyoghurt",
+    "price": 115,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Local: Ärtsoppa med fläsk & korv, senap samt pannkaka med sylt & grädde",
+    "price": 115,
+    "day": "Torsdag"
+  },
+  {
+    "name": "World Wide: Bibimbap med kimchikål, gochujangmajo, sesamgurka, ris & ägg64",
+    "price": 115,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Green: Smördegspizza med ricotta, bakad tomat, rostad svamp & gremolata",
+    "price": 115,
+    "day": "Fredag"
+  },
+  {
+    "name": "Local: Fisk “wallenberg” med potatispuré, brynt smör, picklad lök & dill",
+    "price": 115,
+    "day": "Fredag"
+  },
+  {
+    "name": "World Wide: Bhan mi med pulled pork, misodressing, syrade grönsaker & böngroddar",
+    "price": 115,
+    "day": "Fredag"
+  }
+]

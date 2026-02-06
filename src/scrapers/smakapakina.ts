@@ -221,5 +221,5 @@ function sortByWeekday(items: MenuItem[]): MenuItem[] {
 }
 
 // Extract the first dumpling filling variant (used to append to Friday per expected v2 JSON)
-export { parseFixtureHtml as _parseSmakapakinaFixtureHtml }; // for potential unit testing
+export { parseFixtureHtml as parseSmakapakinaMenuFromHtml };
 // end

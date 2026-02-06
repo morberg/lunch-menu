@@ -9,8 +9,7 @@
     "build": "tsc && npm run copy-assets",
     "copy-assets": "cp -r src/web/views dist/web/",
     "vercel-build": "npm run build",
-    "test": "jest",
-    "test:acceptance": "jest test/acceptance"
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.21.1",

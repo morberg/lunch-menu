@@ -1,0 +1,27 @@
+[
+  {
+    "day": "Måndag",
+    "name": "Krispig saltade kyckling, Peking fläskstrimlor, Yuxiang aubergine",
+    "price": 110
+  },
+  {
+    "day": "Tisdag",
+    "name": "Wokade kyckling med chili, Sötsur kamben, Snabbstekd spetskål med glasnudlar",
+    "price": 110
+  },
+  {
+    "day": "Onsdag",
+    "name": "Dongpo sidfläsk, Yuxiang kyckling, Bakad pumpa med saltad ankäggula, Spenat med tofu",
+    "price": 110
+  },
+  {
+    "day": "Torsdag",
+    "name": "Bondes stekt fläsk, Ångkokt fisk, Snabbstekt pak choi med shitake",
+    "price": 110
+  },
+  {
+    "day": "Fredag",
+    "name": "Chili kyckling, Biff med ostronsås, gul lök och paprika, Snabbstekt champinjon",
+    "price": 110
+  }
+]

@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Mushroom risoni, gremolata, Grana Padano, rocket salad",
+        "price": 105,
+        "day": "Monday"
+    },
+    {
+        "name": "Breaded saithe, apple- and curry slaw, pea salad with mint, boiled potatoes",
+        "price": 105,
+        "day": "Monday"
+    },
+    {
+        "name": "Chicken Vindaloo, carrot- and cabbage salad, basmati rice, raita",
+        "price": 105,
+        "day": "Monday"
+    },
+    {
+        "name": "Korean deep fried chicken, gochujangmayo, rice, pickles",
+        "price": 125,
+        "day": "Hela veckan"
+    },
+    {
+        "name": "Falafel, roasted potatoes, tabbouleh, tahini- and garlic dressing",
+        "price": 105,
+        "day": "Tuesday"
+    },
+    {
+        "name": "\"Moqueca\" Brasilian fish stew with coconut, tomatoes and lime with garlic rice",
+        "price": 105,
+        "day": "Tuesday"
+    },
+    {
+        "name": "Pork Bulgogi, Ssämjang sauce, rice, korean pickled vegetables",
+        "price": 105,
+        "day": "Tuesday"
+    },
+    {
+        "name": "Veg. Schnitzel. german potato salad with capers, onions and lemon",
+        "price": 105,
+        "day": "Wednesday"
+    },
+    {
+        "name": "Breaded plaice, german remoulade sauce, cucumeber with dill, boiled potatoes",
+        "price": 105,
+        "day": "Wednesday"
+    },
+    {
+        "name": "Bratwurst, sauerkraut, mashed potatoes, mustard",
+        "price": 105,
+        "day": "Wednesday"
+    },
+    {
+        "name": "Tagine with soy chunks, lemon, olives, dried fruits, yoghurt, couscous",
+        "price": 105,
+        "day": "Thursday"
+    },
+    {
+        "name": "Fillet of plaice, bouillabaisse vinaigrette, vegetables, boiled potatoes, aioli",
+        "price": 105,
+        "day": "Thursday"
+    },
+    {
+        "name": "Chicken tagine with lemon, olives, dried fruits, yoghurt and couscous",
+        "price": 105,
+        "day": "Thursday"
+    },
+    {
+        "name": "Fried rice with mixed vegetables, soy mince, sweet ketjap and fried egg",
+        "price": 105,
+        "day": "Friday"
+    },
+    {
+        "name": "Salmon patties, fennel salad, dill creamed potatoes, mustard vinaigrette",
+        "price": 105,
+        "day": "Friday"
+    },
+    {
+        "name": "Pork loin with sage, saffron risotto, roasted broccoli, tomato sauce",
+        "price": 105,
+        "day": "Friday"
+    }
+]

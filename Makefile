@@ -1,6 +1,6 @@
 # Makefile for lunch-menu-scraper
 
-.PHONY: install build start dev cache-status refresh-cache clean deploy test test-acceptance
+.PHONY: install build start dev cache-status refresh-cache clean deploy test snapshots
 
 install:
 	npm install
@@ -19,8 +19,8 @@ dev:
 test:
 	npm test
 
-test-acceptance:
-	npm run test:acceptance
+snapshots: build
+	node dist/scripts/update-snapshots.js
 
 # Cache management (requires server to be running)
 cache-status:

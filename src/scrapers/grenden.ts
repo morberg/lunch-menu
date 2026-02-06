@@ -2,42 +2,16 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 
-export async function scrapeGrendenMenu(): Promise<MenuItem[]> {
+export async function scrapeGrendenMenu(fixtureUrl?: string): Promise<MenuItem[]> {
     try {
-        const response = await axios.get('https://www.nordrest.se/restaurang/grenden/');
-        const $ = cheerio.load(response.data);
-
-        const items: MenuItem[] = [];
-
-        // Extract base price - look for "PRICE: 105KR" pattern
-        const priceText = $('*:contains("PRICE:")').text();
-        const priceMatch = priceText.match(/PRICE:\s*(\d+)KR/i);
-        const basePrice = priceMatch ? parseInt(priceMatch[1]) : 105;
-
-        // Find the currently visible accordion wrapper (the one with display: block)
-        const visibleAccordion = $('.accordion-wrapper').filter((index, element) => {
-            const style = $(element).attr('style');
-            return Boolean(style && style.includes('display: block'));
-        });
-
-        if (visibleAccordion.length === 0) {
-            // Fallback to first accordion wrapper if none explicitly visible
-            const firstAccordion = $('.accordion-wrapper').first();
-            if (firstAccordion.length > 0) {
-                return extractMenuItems(firstAccordion, $, basePrice);
-            }
-        } else {
-            return extractMenuItems(visibleAccordion, $, basePrice);
+        if (fixtureUrl && fixtureUrl.startsWith('file://')) {
+            const fs = await import('fs');
+            const html = fs.readFileSync(fixtureUrl.replace('file://', ''), 'utf8');
+            return parseGrendenMenuFromHtml(html);
         }
 
-        return [
-            {
-                name: 'Dagens lunch – Dagligt växlande meny med svenska klassiker och moderna gröna rätter',
-                price: 105,
-                day: "Hela veckan"
-            }
-        ];
-
+        const response = await axios.get('https://www.nordrest.se/restaurang/grenden/');
+        return parseGrendenMenuFromHtml(response.data);
     } catch (error) {
         console.error('Error scraping Grenden menu:', error);
         return [
@@ -48,6 +22,39 @@ export async function scrapeGrendenMenu(): Promise<MenuItem[]> {
             }
         ];
     }
+}
+
+export function parseGrendenMenuFromHtml(html: string): MenuItem[] {
+    const $ = cheerio.load(html);
+
+    // Extract base price - look for "PRICE: 105KR" pattern
+    const priceText = $('*:contains("PRICE:")').text();
+    const priceMatch = priceText.match(/PRICE:\s*(\d+)KR/i);
+    const basePrice = priceMatch ? parseInt(priceMatch[1]) : 105;
+
+    // Find the currently visible accordion wrapper (the one with display: block)
+    const visibleAccordion = $('.accordion-wrapper').filter((index, element) => {
+        const style = $(element).attr('style');
+        return Boolean(style && style.includes('display: block'));
+    });
+
+    if (visibleAccordion.length === 0) {
+        // Fallback to first accordion wrapper if none explicitly visible
+        const firstAccordion = $('.accordion-wrapper').first();
+        if (firstAccordion.length > 0) {
+            return extractMenuItems(firstAccordion, $, basePrice);
+        }
+    } else {
+        return extractMenuItems(visibleAccordion, $, basePrice);
+    }
+
+    return [
+        {
+            name: 'Dagens lunch – Dagligt växlande meny med svenska klassiker och moderna gröna rätter',
+            price: 105,
+            day: "Hela veckan"
+        }
+    ];
 }
 
 function extractMenuItems(accordionWrapper: any, $: any, basePrice: number): MenuItem[] {

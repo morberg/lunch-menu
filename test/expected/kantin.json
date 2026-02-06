@@ -1,37 +1,37 @@
 [
-  {
-    "name": "Veckans vegetariska: Kikärtsfondant – vitlökssmetana – rostade rotfrukter – pickles – rostade pumpakärnor – hjärtsallad",
-    "price": null,
-    "day": "Hela veckan"
-  },
-  {
-    "name": "Månadens alternativ: Nötfärslimpa med ajvar – fetaost – rostad potatis – bakad paprika – skysås – rostad lök – krasse",
-    "price": null,
-    "day": "Hela veckan"
-  },
-  {
-    "name": "Kyckling steak – general tso glaze – ris – sesammajo – picklad morot – krasse",
-    "price": null,
-    "day": "Måndag"
-  },
-  {
-    "name": "Nattbakad oxkind – krämig svampsås – kokt potatis – svartvinbäsrgele – ångad grönkål -pickles – persilja",
-    "price": null,
-    "day": "Tisdag"
-  },
-  {
-    "name": "BBQ glacad fläskkarré – chilimajo – rostad sötpotatis – majs – parmesanost – picklad gurka",
-    "price": null,
-    "day": "Onsdag"
-  },
-  {
-    "name": "Oxtartar – chimichurrimajo – rostad paprika – rostad zuchini – picklad lök – rostfruktschips – oregano",
-    "price": null,
-    "day": "Torsdag"
-  },
-  {
-    "name": "Strimlad entrecote yakiniku – ris – kimcheemajo – picklad rödkål – salladslök – rostad lök – koriander",
-    "price": null,
-    "day": "Fredag"
-  }
+    {
+        "name": "Veckans vegetariska: Kikärtsfondant – vitlökssmetana – rostade rotfrukter – pickles – rostade pumpakärnor – hjärtsallad",
+        "price": null,
+        "day": "Hela veckan"
+    },
+    {
+        "name": "Månadens alternativ: Nötfärslimpa med ajvar – fetaost – rostad potatis – bakad paprika – skysås – rostad lök – krasse",
+        "price": null,
+        "day": "Hela veckan"
+    },
+    {
+        "name": "Kyckling steak – general tso glaze – ris – sesammajo – picklad morot – krasse",
+        "price": null,
+        "day": "Måndag"
+    },
+    {
+        "name": "Nattbakad oxkind – krämig svampsås – kokt potatis – svartvinbäsrgele – ångad grönkål -pickles – persilja",
+        "price": null,
+        "day": "Tisdag"
+    },
+    {
+        "name": "BBQ glacad fläskkarré – chilimajo – rostad sötpotatis – majs – parmesanost – picklad gurka",
+        "price": null,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Oxtartar – chimichurrimajo – rostad paprika – rostad zuchini – picklad lök – rostfruktschips – oregano",
+        "price": null,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Strimlad entrecote yakiniku – ris – kimcheemajo – picklad rödkål – salladslök – rostad lök – koriander",
+        "price": null,
+        "day": "Fredag"
+    }
 ]

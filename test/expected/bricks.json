@@ -1,82 +1,82 @@
 [
-  {
-    "name": "Green: Morotsbiff med currysås, ris, rostad morot, äpple och kikärtor",
-    "price": 115,
-    "day": "Måndag"
-  },
-  {
-    "name": "Local: Pytt Bellman- bechamelsås, stekt ägg, picklad rödbeta och kruspersilja",
-    "price": 115,
-    "day": "Måndag"
-  },
-  {
-    "name": "Worldwide: Indisk curry med kyckling, kokosmjölk, limeyoghurt, spenat, jordnötter och ris",
-    "price": 115,
-    "day": "Måndag"
-  },
-  {
-    "name": "Green: Tariks falafel med bulgursallad, vitlöksbröd, tzatziki, picklad lök och chilisås",
-    "price": 115,
-    "day": "Tisdag"
-  },
-  {
-    "name": "World Wide: Dallasburgare- coleslaw, vitlöksrostad potatis, ättiksgurka och rostad lök",
-    "price": 115,
-    "day": "Tisdag"
-  },
-  {
-    "name": "Pizza: Mozzarella, tomatsås, bacon, grönkål och lagrad italiensk hårdost",
-    "price": 115,
-    "day": "Tisdag"
-  },
-  {
-    "name": "Green: Blomkålssoppa med rostad blomkål, krasse, ägg, hasselnötter och liten dessert",
-    "price": 115,
-    "day": "Onsdag"
-  },
-  {
-    "name": "Local: Röding med vitvinssås, blåmusslor, ärtor, inkokt fänkål, purjolök, dill och potatis",
-    "price": 115,
-    "day": "Onsdag"
-  },
-  {
-    "name": "World wide: Kyckling enchiladas med ris, salsa, jalapenomajonnäs, nachos och picklad lök",
-    "price": 115,
-    "day": "Onsdag"
-  },
-  {
-    "name": "Pizza: Mozzarella, tomatsås, bacon, grönkål och lagrad italiensk hårdost",
-    "price": 115,
-    "day": "Onsdag"
-  },
-  {
-    "name": "Green: Vegetarisk schnitzel på oumph färs, kryddsmör, stekt potatis, gröna ärtor och skysås",
-    "price": 115,
-    "day": "Torsdag"
-  },
-  {
-    "name": "World Wide: Crispy beef med ris, brynt lök, chili, ostronsås, sesam, vårlök och koriander",
-    "price": 115,
-    "day": "Torsdag"
-  },
-  {
-    "name": "Pizza: Mozzarella, tomatsås, bacon, grönkål och lagrad italiensk hårdost",
-    "price": 115,
-    "day": "Torsdag"
-  },
-  {
-    "name": "Green: Grönsakswok med soja, stekt ägg, chili, cashewnötter och ris",
-    "price": 115,
-    "day": "Fredag"
-  },
-  {
-    "name": "Local: Lammfärslimpa med aioli, rostade rotfrukter, kaprissky och bladspenat",
-    "price": 115,
-    "day": "Fredag"
-  },
-  {
-    "name": "Worldwide: Carnitas- mörkokt fläskkarre med tortillabröd, majs, avokado, ananas, limemajonnäs, bönor och ris",
-    "price": 115,
-    "day": "Fredag"
-  }
+    {
+        "name": "Green: Morotsbiff med currysås, ris, rostad morot, äpple och kikärtor",
+        "price": 115,
+        "day": "Måndag"
+    },
+    {
+        "name": "Local: Pytt Bellman- bechamelsås, stekt ägg, picklad rödbeta och kruspersilja",
+        "price": 115,
+        "day": "Måndag"
+    },
+    {
+        "name": "Worldwide: Indisk curry med kyckling, kokosmjölk, limeyoghurt, spenat, jordnötter och ris",
+        "price": 115,
+        "day": "Måndag"
+    },
+    {
+        "name": "Green: Tariks falafel med bulgursallad, vitlöksbröd, tzatziki, picklad lök och chilisås",
+        "price": 115,
+        "day": "Tisdag"
+    },
+    {
+        "name": "World Wide: Dallasburgare- coleslaw, vitlöksrostad potatis, ättiksgurka och rostad lök",
+        "price": 115,
+        "day": "Tisdag"
+    },
+    {
+        "name": "Pizza: Mozzarella, tomatsås, bacon, grönkål och lagrad italiensk hårdost",
+        "price": 115,
+        "day": "Tisdag"
+    },
+    {
+        "name": "Green: Blomkålssoppa med rostad blomkål, krasse, ägg, hasselnötter och liten dessert",
+        "price": 115,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Local: Röding med vitvinssås, blåmusslor, ärtor, inkokt fänkål, purjolök, dill och potatis",
+        "price": 115,
+        "day": "Onsdag"
+    },
+    {
+        "name": "World wide: Kyckling enchiladas med ris, salsa, jalapenomajonnäs, nachos och picklad lök",
+        "price": 115,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Pizza: Mozzarella, tomatsås, bacon, grönkål och lagrad italiensk hårdost",
+        "price": 115,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Green: Vegetarisk schnitzel på oumph färs, kryddsmör, stekt potatis, gröna ärtor och skysås",
+        "price": 115,
+        "day": "Torsdag"
+    },
+    {
+        "name": "World Wide: Crispy beef med ris, brynt lök, chili, ostronsås, sesam, vårlök och koriander",
+        "price": 115,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Pizza: Mozzarella, tomatsås, bacon, grönkål och lagrad italiensk hårdost",
+        "price": 115,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Green: Grönsakswok med soja, stekt ägg, chili, cashewnötter och ris",
+        "price": 115,
+        "day": "Fredag"
+    },
+    {
+        "name": "Local: Lammfärslimpa med aioli, rostade rotfrukter, kaprissky och bladspenat",
+        "price": 115,
+        "day": "Fredag"
+    },
+    {
+        "name": "Worldwide: Carnitas- mörkokt fläskkarre med tortillabröd, majs, avokado, ananas, limemajonnäs, bönor och ris",
+        "price": 115,
+        "day": "Fredag"
+    }
 ]

@@ -1,6 +1,6 @@
 # Makefile for lunch-menu-scraper
 
-.PHONY: install build start dev cache-status refresh-cache clean deploy test snapshots
+.PHONY: install build start dev clean deploy test snapshots
 
 install:
 	npm install
@@ -21,15 +21,6 @@ test:
 
 snapshots: build
 	node dist/scripts/update-snapshots.js
-
-# Cache management (requires server to be running)
-cache-status:
-	@echo "Checking cache status..."
-	@curl -s http://localhost:3000/api/menus/cache-status | jq '.' || echo "Server may not be running on port 3000"
-
-refresh-cache:
-	@echo "Manually refreshing menu cache..."
-	@curl -s -X POST http://localhost:3000/api/menus/refresh | jq '.' || echo "Server may not be running on port 3000"
 
 clean:
 	rm -rf node_modules dist

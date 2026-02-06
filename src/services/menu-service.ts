@@ -41,11 +41,6 @@ class MenuService {
         return await this.fetchAndCacheMenus();
     }
 
-    async refreshMenus(): Promise<RestaurantMenus> {
-        console.log('Manually refreshing menus');
-        return await this.fetchAndCacheMenus();
-    }
-
     private async fetchAndCacheMenus(): Promise<RestaurantMenus> {
         try {
             console.log('Fetching menus from all restaurants...');
@@ -132,13 +127,6 @@ class MenuService {
             clearInterval(this.refreshInterval);
             this.refreshInterval = null;
         }
-    }
-
-    getCacheStats(): { hasData: boolean; size: number } {
-        return {
-            hasData: this.cache.has(this.CACHE_KEY),
-            size: this.cache.size()
-        };
     }
 }
 

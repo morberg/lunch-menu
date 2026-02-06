@@ -31,4 +31,12 @@ Workflow:
 - make dev
 - make test
 - make snapshots
+
+## Debug scripts
+Build first, then run from repo root:
+- make build
+- node debug/debug-eatery.js
+- node debug/debug-foodhall.js
+- node debug/debug-pdf.js
+- node debug/debug-detailed.js
  

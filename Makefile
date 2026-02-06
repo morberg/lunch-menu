@@ -17,6 +17,7 @@ dev:
 
 # Test commands
 test:
+	@echo "Tip: run 'make snapshots' to refresh fixtures/expected outputs when tests fail."
 	npm test
 
 snapshots: build

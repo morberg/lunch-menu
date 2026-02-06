@@ -30,6 +30,11 @@
         "price": 135
     },
     {
+        "name": "Sweet Tuesday: Vi bjuder på något sött till kaffet!",
+        "day": "Tisdag",
+        "price": 135
+    },
+    {
         "name": "Stekt rimmat fläsk med löksås & kokt potatis, lingon",
         "day": "Onsdag",
         "price": 135
@@ -45,7 +50,12 @@
         "price": 135
     },
     {
-        "name": "Kycklingcurry rendang med limeblad, chili, citrongräs, kokosmjölk, stjärnanis och basmatiris Krämig laxpasta med kallrökt lax, spenat och soltorkad tomat, ört och rotfruktscrudité",
+        "name": "Kycklingcurry rendang med limeblad, chili, citrongräs, kokosmjölk, stjärnanis och basmatiris",
+        "day": "Torsdag",
+        "price": 135
+    },
+    {
+        "name": "Krämig laxpasta med kallrökt lax, spenat och soltorkad tomat, ört och rotfruktscrudité",
         "day": "Torsdag",
         "price": 135
     },
@@ -56,6 +66,11 @@
     },
     {
         "name": "Bonus: Ärtsoppa med rimmad bog",
+        "day": "Torsdag",
+        "price": 135
+    },
+    {
+        "name": "Pancake Thursday: Vi bjuder på pannkakor, lättvispad grädde och hemmagjord sylt!",
         "day": "Torsdag",
         "price": 135
     },
@@ -72,11 +87,6 @@
     {
         "name": "Tomat och örtrisotto med krispig palsternacka, lagrad ost och basilika olja",
         "day": "Fredag",
-        "price": 135
-    },
-    {
-        "name": "LUNCH MENY V06 LUND",
-        "day": "Tisdag",
         "price": 135
     }
 ]

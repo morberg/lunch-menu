@@ -1,6 +1,6 @@
 # Makefile for lunch-menu-scraper
 
-.PHONY: install build start dev clean deploy test snapshots
+.PHONY: install build start dev clean deploy test snapshots debug-%
 
 install:
 	npm install
@@ -21,6 +21,9 @@ test:
 
 snapshots: build
 	node dist/scripts/update-snapshots.js
+
+debug-%:
+	npx tsx debug/debug-$*.ts
 
 clean:
 	rm -rf node_modules dist

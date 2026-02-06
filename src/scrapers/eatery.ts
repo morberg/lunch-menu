@@ -2,7 +2,6 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import pdfParse from 'pdf-parse';
 import { MenuItem } from '../types/menu';
-import { parsePrice } from '../utils/price';
 
 export const scrapeEatery = async (): Promise<MenuItem[]> => {
     try {
@@ -62,9 +61,7 @@ export const scrapeEatery = async (): Promise<MenuItem[]> => {
 export function parsePdfMenu(pdfText: string): MenuItem[] {
     const menuItems: MenuItem[] = [];
 
-    // Swedish day names to look for
-    const dayNames = ['måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag'];
-    const dayMap: { [key: string]: string } = {
+    const dayMap: Record<string, string> = {
         'måndag': 'Måndag',
         'tisdag': 'Tisdag',
         'onsdag': 'Onsdag',
@@ -77,102 +74,138 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
         .replace(/\r\n/g, '\n')
         .replace(/\r/g, '\n')
         .split('\n')
-        .map(line => line.trim())
-        .filter(line => line.length > 0);
+        .map((line) => normalizeLine(line))
+        .filter((line) => line.length > 0);
 
     let currentDay = '';
+
     let currentDish = '';
+    let pendingPrefix = '';
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
 
-        // Check if this line is a day name
-        const dayFound = dayNames.find(day => line.toLowerCase().includes(day));
+        const dayFound = findDay(line, dayMap);
         if (dayFound) {
-            // Save any pending dish before switching days
-            if (currentDish && currentDay && currentDish.length > 15) {
-                const cleanDish = currentDish
-                    .replace(/\s+/g, ' ')
-                    .replace(/,\s*,/g, ',')
-                    .replace(/^\s*,\s*/, '')
-                    .replace(/\s*,\s*$/, '')
-                    .trim();
-
-                if (!cleanDish.match(/^(Generös salladsbuffé|ar Ta mer|Byta rätt|Ta mer om|Något sött|kaffet)/i)) {
-                    menuItems.push({
-                        name: cleanDish,
-                        day: dayMap[currentDay],
-                        price: 135
-                    });
-                }
-            }
-
-            currentDay = dayFound;
-            currentDish = '';
-            continue;
-        }
-
-        // Skip junk lines
-        if (line.match(/^(Sweet Tuesday|Pancake Thursday|Vi bjuder|•|\d+%|Med reservation|Generös salladsbuffé|ar Ta mer|Byta rätt|Ta mer om|Något sött|kaffet)/i)) {
-            continue;
-        }
-
-        // Skip lines that are numbers only
-        if (line.match(/^\d+$/)) {
-            continue;
-        }
-
-        // A new dish starts with a capital letter
-        const isNewDish = line.match(/^[A-ZÅÄÖ][a-zåäöüé\s]+/);
-
-        if (isNewDish && currentDish && currentDay) {
-            // Save the current dish before starting a new one
-            const cleanDish = currentDish
-                .replace(/\s+/g, ' ')
-                .replace(/,\s*,/g, ',')
-                .replace(/^\s*,\s*/, '')
-                .replace(/\s*,\s*$/, '')
-                .trim();
-
-            if (cleanDish.length > 15 && !cleanDish.match(/^(Generös salladsbuffé|ar Ta mer|Byta rätt|Ta mer om|Något sött|kaffet)/i)) {
+            if (currentDish) {
                 menuItems.push({
-                    name: cleanDish,
-                    day: dayMap[currentDay],
+                    name: currentDish,
+                    day: dayMap[currentDay] ?? dayMap[dayFound],
                     price: 135
                 });
+                currentDish = '';
             }
-
-            // Start new dish
-            currentDish = line;
-        } else if (currentDay) {
-            // Continue building the current dish
-            if (currentDish) {
-                currentDish += ' ' + line;
-            } else {
-                currentDish = line;
-            }
+            currentDay = dayFound;
+            continue;
         }
-    }
 
-    // Don't forget the last dish
-    if (currentDish && currentDay && currentDish.length > 15) {
-        const cleanDish = currentDish
-            .replace(/\s+/g, ' ')
-            .replace(/,\s*,/g, ',')
-            .replace(/^\s*,\s*/, '')
-            .replace(/\s*,\s*$/, '')
-            .trim();
+        if (!currentDay) {
+            continue;
+        }
 
-        if (!cleanDish.match(/^(Generös salladsbuffé|ar Ta mer|Byta rätt|Ta mer om|Något sött|kaffet)/i)) {
+        if (startsFooterBlock(line)) {
+            break;
+        }
+
+        const adjusted = adjustTrailingCapital(line, lines[i + 1]);
+        const lineWithPrefix = pendingPrefix
+            ? `${pendingPrefix} ${adjusted.line}`.trim()
+            : adjusted.line;
+        const startsNew = pendingPrefix.length > 0 || startsWithCapital(lineWithPrefix);
+        pendingPrefix = adjusted.nextPrefix;
+
+        if (!currentDish) {
+            currentDish = lineWithPrefix;
+            continue;
+        }
+
+        if (startsNew) {
             menuItems.push({
-                name: cleanDish,
+                name: currentDish,
                 day: dayMap[currentDay],
                 price: 135
             });
+            currentDish = lineWithPrefix;
+        } else {
+            currentDish = `${currentDish} ${lineWithPrefix}`.trim();
         }
     }
 
+    if (currentDish && currentDay) {
+        menuItems.push({
+            name: currentDish,
+            day: dayMap[currentDay],
+            price: 135
+        });
+    }
+
     return menuItems;
+}
+
+function findDay(line: string, dayMap: Record<string, string>): string | null {
+    const normalized = normalizeLine(line).toLowerCase();
+    if (!normalized) {
+        return null;
+    }
+
+    const tokens = normalized.split(' ').filter(Boolean);
+    for (const token of tokens) {
+        if (dayMap[token]) {
+            return token;
+        }
+    }
+
+    return null;
+}
+
+function normalizeLine(line: string): string {
+    return line.replace(/\s+/g, ' ').trim();
+}
+
+function startsFooterBlock(line: string): boolean {
+    const normalized = normalizeLine(line);
+    return normalized.startsWith('GENERÖS');
+}
+
+function startsWithCapital(line: string): boolean {
+    const trimmed = line.trim();
+    if (!trimmed) {
+        return false;
+    }
+    const firstChar = trimmed[0];
+    const lower = firstChar.toLowerCase();
+    const upper = firstChar.toUpperCase();
+    if (lower === upper) {
+        return false;
+    }
+    return firstChar === upper;
+}
+
+function adjustTrailingCapital(line: string, nextLine?: string): { line: string; nextPrefix: string } {
+    const trimmed = line.trim();
+    if (!nextLine) {
+        return { line: trimmed, nextPrefix: '' };
+    }
+
+    const nextTrimmed = nextLine.trim();
+    if (!nextTrimmed || startsWithCapital(nextTrimmed)) {
+        return { line: trimmed, nextPrefix: '' };
+    }
+
+    const words = trimmed.split(' ').filter(Boolean);
+    if (words.length < 2) {
+        return { line: trimmed, nextPrefix: '' };
+    }
+
+    const lastWord = words[words.length - 1];
+    if (!startsWithCapital(lastWord)) {
+        return { line: trimmed, nextPrefix: '' };
+    }
+
+    return {
+        line: words.slice(0, -1).join(' '),
+        nextPrefix: lastWord
+    };
 }
 
 export function splitIntoDishes(content: string): string[] {
@@ -186,11 +219,6 @@ export function splitIntoDishes(content: string): string[] {
     let currentDish = '';
 
     for (const line of lines) {
-        // Skip lines that are clearly not dish content
-        if (line.match(/^(Sweet Tuesday|Pancake Thursday|Vi bjuder|•|\d+%)/i)) {
-            continue;
-        }
-
         // If line starts with capital letter and we have accumulated dish content,
         // it's likely a new dish
         if (line.match(/^[A-ZÅÄÖ]/) && currentDish.length > 15) {

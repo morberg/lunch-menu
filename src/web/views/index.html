@@ -43,9 +43,12 @@
 
         .tabs {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 8px;
             margin-bottom: 16px;
+            justify-content: center;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .day-tab {
@@ -206,6 +209,13 @@
                 padding: 7px;
             }
         }
+
+        @media (max-width: 430px) {
+            .day-tab {
+                padding: 5px 8px;
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 
@@ -350,7 +360,7 @@
 
                 const daySection = document.createElement('div');
                 daySection.className = 'day-section';
-                daySection.innerHTML = `<div class="day-title">${daySv}</div>`;
+                daySection.innerHTML = '';
 
                 restaurants.forEach(r => {
                     if (r.weeklyOnly) return;

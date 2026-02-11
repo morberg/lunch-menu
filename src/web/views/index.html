@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lund Lunch Menus</title>
+    <title>Dagens Lunch</title>
     <style>
         body {
             font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -39,6 +39,37 @@
 
         .day-section {
             margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .day-tab {
+            border: 1px solid #588157;
+            background: #faf7ed;
+            color: #344e41;
+            padding: 6px 10px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .day-tab[aria-selected="true"] {
+            background: #588157;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .day-panel {
+            display: none;
+        }
+
+        .day-panel.active {
+            display: block;
         }
 
         .day-title {
@@ -210,7 +241,7 @@
         function displayMenus(data) {
             const content = document.getElementById('content');
             content.innerHTML = '';
-            const days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Hela veckan'];
+            const days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'];
             const dayMapping = { 'Monday': 'Måndag', 'Tuesday': 'Tisdag', 'Wednesday': 'Onsdag', 'Thursday': 'Torsdag', 'Friday': 'Fredag', 'Hela veckan': 'Hela veckan' };
             const restaurants = [
                 { name: 'Edison', key: 'edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
@@ -228,6 +259,7 @@
             const collapsedKey = 'collapsedRestaurantsV1';
             const collapsed = new Set(JSON.parse(localStorage.getItem(collapsedKey) || '[]'));
             function persist() { localStorage.setItem(collapsedKey, JSON.stringify([...collapsed])); }
+            function normalizeDay(day) { return dayMapping[day] || day; }
             function buildRestaurantHeader(r, hasUniformPrice, uniformPrice) {
                 const isCollapsed = collapsed.has(r.key);
                 const priceSpan = (hasUniformPrice && uniformPrice !== null) ? `<span class="menu-item-price">${uniformPrice} kr</span>` : '';
@@ -258,61 +290,113 @@
                 });
             }
 
-            content.innerHTML = '';
-            days.forEach(daySv => {
-                let anyRestaurantShown = false;
-                const dayDiv = document.createElement('div');
-                dayDiv.className = 'day-section';
-                dayDiv.innerHTML = `<div class="day-title">${daySv}</div>`;
-                restaurants.forEach(r => {
-                    if (r.weeklyOnly && daySv !== 'Hela veckan') {
-                        return; // Skip Food Hall for weekday sections
-                    }
-                    const items = (r.data || []).filter(item => item.day === daySv || dayMapping[item.day] === daySv);
-                    const restaurantDiv = document.createElement('div');
-                    restaurantDiv.className = 'restaurant';
-                    restaurantDiv.dataset.rest = r.key;
-                    const isCollapsed = collapsed.has(r.key);
-                    if (items.length > 0) {
-                        anyRestaurantShown = true;
-                        const prices = items.map(i => i.price);
-                        const uniquePrices = [...new Set(prices)];
-                        const hasUniformPrice = uniquePrices.length === 1;
-                        const uniformPrice = hasUniformPrice ? uniquePrices[0] : null;
-                        restaurantDiv.innerHTML = buildRestaurantHeader(r, hasUniformPrice, uniformPrice);
-                        const contentWrap = document.createElement('div');
-                        contentWrap.className = 'restaurant-content';
-                        const table = document.createElement('table');
-                        table.className = 'menu-table';
-                        table.innerHTML = '<tbody></tbody>';
-                        const tbody = table.querySelector('tbody');
-                        items.forEach(item => {
-                            const tr = document.createElement('tr');
-                            if (hasUniformPrice) {
-                                tr.innerHTML = `<td class="cell">${item.name}</td>`;
-                            } else {
-                                const price = (item.price !== null && item.price !== undefined) ? `${item.price} kr` : '-';
-                                tr.innerHTML = `<td class="cell">${item.name}</td><td class="cell-price">${price}</td>`;
-                            }
-                            tbody.appendChild(tr);
-                        });
-                        contentWrap.appendChild(table);
-                        restaurantDiv.appendChild(contentWrap);
-                    } else if (['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'].includes(daySv)) {
-                        anyRestaurantShown = true;
-                        restaurantDiv.innerHTML = buildRestaurantHeader(r, false, null);
-                        const contentWrap = document.createElement('div');
-                        contentWrap.className = 'restaurant-content';
-                        contentWrap.innerHTML = `<div class="placeholder-note">Ingen meny hittades för ${daySv.toLowerCase()}. Klicka för att besöka.</div>`;
-                        restaurantDiv.appendChild(contentWrap);
+            const tabs = document.createElement('div');
+            tabs.className = 'tabs';
+            tabs.setAttribute('role', 'tablist');
+
+            const panels = document.createElement('div');
+
+            function createMenuTable(items, hasUniformPrice) {
+                const table = document.createElement('table');
+                table.className = 'menu-table';
+                table.innerHTML = '<tbody></tbody>';
+                const tbody = table.querySelector('tbody');
+                items.forEach(item => {
+                    const tr = document.createElement('tr');
+                    if (hasUniformPrice) {
+                        tr.innerHTML = `<td class="cell">${item.name}</td>`;
                     } else {
-                        return; // skip adding empty weekly section entries
+                        const price = (item.price !== null && item.price !== undefined) ? `${item.price} kr` : '-';
+                        tr.innerHTML = `<td class="cell">${item.name}</td><td class="cell-price">${price}</td>`;
                     }
-                    if (isCollapsed) restaurantDiv.classList.add('collapsed');
-                    dayDiv.appendChild(restaurantDiv);
+                    tbody.appendChild(tr);
                 });
-                if (anyRestaurantShown) content.appendChild(dayDiv);
+                return table;
+            }
+
+            function appendRestaurantBlock(target, r, items, showPlaceholder, placeholderText) {
+                if (!items.length && !showPlaceholder) return;
+                const restaurantDiv = document.createElement('div');
+                restaurantDiv.className = 'restaurant';
+                restaurantDiv.dataset.rest = r.key;
+                const isCollapsed = collapsed.has(r.key);
+                if (items.length > 0) {
+                    const prices = items.map(i => i.price);
+                    const uniquePrices = [...new Set(prices)];
+                    const hasUniformPrice = uniquePrices.length === 1;
+                    const uniformPrice = hasUniformPrice ? uniquePrices[0] : null;
+                    restaurantDiv.innerHTML = buildRestaurantHeader(r, hasUniformPrice, uniformPrice);
+                    const contentWrap = document.createElement('div');
+                    contentWrap.className = 'restaurant-content';
+                    contentWrap.appendChild(createMenuTable(items, hasUniformPrice));
+                    restaurantDiv.appendChild(contentWrap);
+                } else {
+                    restaurantDiv.innerHTML = buildRestaurantHeader(r, false, null);
+                    const contentWrap = document.createElement('div');
+                    contentWrap.className = 'restaurant-content';
+                    contentWrap.innerHTML = `<div class="placeholder-note">${placeholderText}</div>`;
+                    restaurantDiv.appendChild(contentWrap);
+                }
+                if (isCollapsed) restaurantDiv.classList.add('collapsed');
+                target.appendChild(restaurantDiv);
+            }
+
+            function buildDayPanel(daySv) {
+                const dayKey = daySv.toLowerCase().replace(/\s+/g, '-');
+                const panel = document.createElement('div');
+                panel.className = 'day-panel';
+                panel.id = `panel-${dayKey}`;
+                panel.setAttribute('role', 'tabpanel');
+
+                const daySection = document.createElement('div');
+                daySection.className = 'day-section';
+                daySection.innerHTML = `<div class="day-title">${daySv}</div>`;
+
+                restaurants.forEach(r => {
+                    if (r.weeklyOnly) return;
+                    const items = (r.data || []).filter(item => normalizeDay(item.day) === daySv);
+                    appendRestaurantBlock(
+                        daySection,
+                        r,
+                        items,
+                        true,
+                        `Ingen meny hittades för ${daySv.toLowerCase()}. Klicka för att besöka.`
+                    );
+                });
+
+                const weeklyItemsSection = document.createElement('div');
+                weeklyItemsSection.className = 'day-section';
+                weeklyItemsSection.innerHTML = '<div class="day-title">Hela veckan</div>';
+                let anyWeekly = false;
+                restaurants.forEach(r => {
+                    const weeklyItems = (r.data || []).filter(item => normalizeDay(item.day) === 'Hela veckan');
+                    if (!weeklyItems.length) return;
+                    anyWeekly = true;
+                    appendRestaurantBlock(weeklyItemsSection, r, weeklyItems, false, '');
+                });
+                if (anyWeekly) {
+                    daySection.appendChild(weeklyItemsSection);
+                }
+
+                panel.appendChild(daySection);
+                return panel;
+            }
+
+            days.forEach(daySv => {
+                const dayKey = daySv.toLowerCase().replace(/\s+/g, '-');
+                const tab = document.createElement('button');
+                tab.className = 'day-tab';
+                tab.setAttribute('role', 'tab');
+                tab.setAttribute('aria-selected', 'false');
+                tab.setAttribute('aria-controls', `panel-${dayKey}`);
+                tab.dataset.day = daySv;
+                tab.textContent = daySv;
+                tabs.appendChild(tab);
+                panels.appendChild(buildDayPanel(daySv));
             });
+
+            content.appendChild(tabs);
+            content.appendChild(panels);
 
             // Section listing restaurants with zero items all week
             const emptyRestaurants = restaurants.filter(r => !(restaurantsWithAnyItems.has(r.key)));
@@ -334,14 +418,29 @@
 
             applyToggleHandlers(document);
 
-            // Auto-scroll remains same
+            function setActiveDay(daySv) {
+                document.querySelectorAll('.day-tab').forEach(tab => {
+                    const isActive = tab.dataset.day === daySv;
+                    tab.setAttribute('aria-selected', String(isActive));
+                });
+                document.querySelectorAll('.day-panel').forEach(panel => {
+                    if (panel.id === `panel-${daySv.toLowerCase().replace(/\s+/g, '-')}`) {
+                        panel.classList.add('active');
+                    } else {
+                        panel.classList.remove('active');
+                    }
+                });
+            }
+
+            tabs.querySelectorAll('.day-tab').forEach(tab => {
+                tab.addEventListener('click', () => setActiveDay(tab.dataset.day));
+            });
+
             const today = new Date();
             const swedishDays = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
             const todayName = swedishDays[today.getDay()];
-            if (['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'].includes(todayName)) {
-                const dayTitles = document.querySelectorAll('.day-title');
-                for (const el of dayTitles) { if (el.textContent.trim() === todayName) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); break; } }
-            }
+            const defaultDay = days.includes(todayName) ? todayName : days[0];
+            setActiveDay(defaultDay);
         }
         window.addEventListener('DOMContentLoaded', loadMenus);
     </script>

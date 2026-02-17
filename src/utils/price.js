@@ -12,19 +12,6 @@ exports.formatPrice = exports.parsePrice = void 0;
 function parsePrice(priceText) {
     // Normalize the text
     const normalized = priceText.trim();
-    // Handle special cases where no numerical price is available
-    const noPricePatterns = [
-        /se restaurang/i,
-        /kontakta restaurang/i,
-        /ring restaurangen/i,
-        /^-+$/,
-        /^n\/?a$/i
-    ];
-    for (const pattern of noPricePatterns) {
-        if (pattern.test(normalized)) {
-            return null;
-        }
-    }
     // Extract numerical price
     const priceMatch = normalized.match(/(\d+(?:[.,]\d{2})?)\s*(?:kr|:-|sek)?/i);
     if (priceMatch) {

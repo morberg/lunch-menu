@@ -94,7 +94,10 @@ function extractPriceData(html: string): Map<string, number> {
         let match;
         while ((match = nameWithPriceRegex.exec(html)) !== null) {
             const name = match[1].toLowerCase();
-            const price = parseInt(match[2], 10);
+            const price = parsePrice(match[2]);
+            if (price === null) {
+                continue;
+            }
 
             // Map Swedish weekday names to our expected format
             if (name.includes('måndag')) priceMap.set('måndag', price);
@@ -139,7 +142,7 @@ function parseModernMainPage(html: string): MenuItem[] {
 
         // Get price for this day from the extracted price map
         const rawPrice = priceMap.get(dayLower);
-        const dayPrice = rawPrice ? parsePrice(rawPrice.toString()) : null;
+        const dayPrice = rawPrice ?? null;
         results.push({ day: capitalizeSv(dayLower), name: joinDishes(dishes), price: dayPrice });
     }
     return sortByWeekday(results);

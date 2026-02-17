@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
+import { parsePrice } from '../utils/price';
 
 export async function scrapeGrendenMenu(fixtureUrl?: string): Promise<MenuItem[]> {
     try {
@@ -17,7 +18,7 @@ export async function scrapeGrendenMenu(fixtureUrl?: string): Promise<MenuItem[]
         return [
             {
                 name: 'Dagens lunch – Meny inte tillgänglig för tillfället',
-                price: 105,
+                price: null,
                 day: "Hela veckan"
             }
         ];
@@ -27,10 +28,8 @@ export async function scrapeGrendenMenu(fixtureUrl?: string): Promise<MenuItem[]
 export function parseGrendenMenuFromHtml(html: string): MenuItem[] {
     const $ = cheerio.load(html);
 
-    // Extract base price - look for "PRICE: 105KR" pattern
-    const priceText = $('*:contains("PRICE:")').text();
-    const priceMatch = priceText.match(/PRICE:\s*(\d+)KR/i);
-    const basePrice = priceMatch ? parseInt(priceMatch[1]) : 105;
+    // Extract base price from visible price list (e.g. "Lunchpris: 105 kr")
+    const basePrice = extractBasePrice($);
 
     // Find the currently visible accordion wrapper (the one with display: block)
     const visibleAccordion = $('.accordion-wrapper').filter((index, element) => {
@@ -51,20 +50,20 @@ export function parseGrendenMenuFromHtml(html: string): MenuItem[] {
     return [
         {
             name: 'Dagens lunch – Dagligt växlande meny med svenska klassiker och moderna gröna rätter',
-            price: 105,
+            price: null,
             day: "Hela veckan"
         }
     ];
 }
 
-function extractMenuItems(accordionWrapper: any, $: any, basePrice: number): MenuItem[] {
+function extractMenuItems(accordionWrapper: any, $: any, basePrice: number | null): MenuItem[] {
     const items: Array<MenuItem & { dishText?: string }> = [];
     const dishCount: { [key: string]: number } = {};
 
     // Extract special pricing information from the page - target specifically the "grill & fusion special" price
     const specialPriceText = $('*:contains("grill & fusion special")').text();
     const specialPriceMatch = specialPriceText.match(/grill\s*&\s*fusion\s*special\s*(\d+)\s*SEK/i);
-    const specialPrice = specialPriceMatch ? parseInt(specialPriceMatch[1]) : 125;
+    const specialPrice = specialPriceMatch ? parsePrice(specialPriceMatch[1]) : null;
 
     // Find all weekday accordion items within this wrapper
     const weekdayItems = accordionWrapper.find('.weekday-item');
@@ -154,4 +153,19 @@ function extractMenuItems(accordionWrapper: any, $: any, basePrice: number): Men
     }
 
     return processedItems;
+}
+
+function extractBasePrice($: cheerio.Root): number | null {
+    const priceListItems = $('ul.pris-list li').toArray();
+    for (const item of priceListItems) {
+        const text = $(item).text().replace(/\s+/g, ' ').trim();
+        const parsed = parsePrice(text);
+        if (parsed !== null) {
+            return parsed;
+        }
+    }
+
+    // Fallback for alternate page shapes where lunch price appears in generic text.
+    const lunchPriceText = $('*:contains("Lunchpris")').first().text().replace(/\s+/g, ' ').trim();
+    return parsePrice(lunchPriceText);
 }

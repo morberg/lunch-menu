@@ -1,9 +1,9 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
-import { parsePrice } from '../utils/price';
 
 const swedishDays = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'];
+const KANTIN_LUNCH_PRICE = 145;
 
 const normalizeText = (text: string): string => text.replace(/\s+/g, ' ').trim();
 
@@ -49,10 +49,9 @@ const parseKantinFromLines = (lines: string[]): MenuItem[] => {
             }
 
             if (isMenuDescription(description)) {
-                const price = parsePrice(description);
                 menuItems.push({
                     name: description,
-                    price: price,
+                    price: KANTIN_LUNCH_PRICE,
                     day: dayLabel
                 });
             }
@@ -72,10 +71,9 @@ const parseKantinFromLines = (lines: string[]): MenuItem[] => {
             }
 
             if (isMenuDescription(description)) {
-                const price = parsePrice(description);
                 menuItems.push({
                     name: `${weeklyLabel}: ${description}`,
-                    price: price,
+                    price: KANTIN_LUNCH_PRICE,
                     day: 'Hela veckan'
                 });
             }
@@ -141,10 +139,9 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
                     }
 
                     if (isMenuDescription(description)) {
-                        const price = parsePrice(description);
                         menuItems.push({
                             name: description,
-                            price: price,
+                            price: KANTIN_LUNCH_PRICE,
                             day: strongTextRaw
                         });
                     }
@@ -183,10 +180,9 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
                     }
 
                     if (isMenuDescription(description)) {
-                        const price = parsePrice(description);
                         menuItems.push({
                             name: `${weeklyLabel}: ${description}`,
-                            price: price,
+                            price: KANTIN_LUNCH_PRICE,
                             day: 'Hela veckan'
                         });
                     }
@@ -200,10 +196,9 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
                 const description = stripLeadingSeparators(paragraphText.slice(inlineDayLabel.length));
 
                 if (isMenuDescription(description)) {
-                    const price = parsePrice(description);
                     menuItems.push({
                         name: description,
-                        price: price,
+                        price: KANTIN_LUNCH_PRICE,
                         day: inlineDayLabel
                     });
                 }
@@ -217,10 +212,9 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
                 const description = stripLeadingSeparators(paragraphText.slice(weeklyLabel.length));
 
                 if (isMenuDescription(description)) {
-                    const price = parsePrice(description);
                     menuItems.push({
                         name: `${weeklyLabel}: ${description}`,
-                        price: price,
+                        price: KANTIN_LUNCH_PRICE,
                         day: 'Hela veckan'
                     });
                 }

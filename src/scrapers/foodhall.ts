@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
+import { parsePrice } from '../utils/price';
 
 export async function scrapeFoodHallMenu(fixtureUrl?: string): Promise<MenuItem[]> {
     try {
@@ -37,11 +38,7 @@ export function parseFoodHallMenuFromHtml(html: string): MenuItem[] {
         const description = descEl.length > 0 ? descEl.text().trim() : '';
         const priceText = priceEl.length > 0 ? priceEl.text().trim() : '';
 
-        let price = 105;
-        const priceMatch = priceText.match(/(\d+)\s*SEK/i);
-        if (priceMatch) {
-            price = parseInt(priceMatch[1]);
-        }
+        const price = parsePrice(priceText);
 
         const fullDishName = description || dishName;
 

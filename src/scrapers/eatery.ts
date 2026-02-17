@@ -3,6 +3,8 @@ import * as cheerio from 'cheerio';
 import pdfParse from 'pdf-parse';
 import { MenuItem } from '../types/menu';
 
+const EATERY_LUNCH_PRICE = 139;
+
 export const scrapeEatery = async (): Promise<MenuItem[]> => {
     try {
         console.log('Fetching Eatery main page...');
@@ -91,7 +93,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
                 menuItems.push({
                     name: currentDish,
                     day: dayMap[currentDay] ?? dayMap[dayFound],
-                    price: 135
+                    price: EATERY_LUNCH_PRICE
                 });
                 currentDish = '';
             }
@@ -123,7 +125,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
             menuItems.push({
                 name: currentDish,
                 day: dayMap[currentDay],
-                price: 135
+                price: EATERY_LUNCH_PRICE
             });
             currentDish = lineWithPrefix;
         } else {
@@ -135,7 +137,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
         menuItems.push({
             name: currentDish,
             day: dayMap[currentDay],
-            price: 135
+            price: EATERY_LUNCH_PRICE
         });
     }
 

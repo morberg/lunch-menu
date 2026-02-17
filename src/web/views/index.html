@@ -89,7 +89,7 @@
             margin-bottom: 4px;
         }
 
-        .menu-item-price {
+        .price {
             color: #344e41;
             float: right;
         }
@@ -148,13 +148,6 @@
         .cell {
             padding: 4px 6px;
             vertical-align: top;
-        }
-
-        .cell-price {
-            padding: 4px 6px;
-            text-align: right;
-            vertical-align: top;
-            color: #28a745;
         }
 
         .placeholder-note {
@@ -292,7 +285,7 @@
             function normalizeDay(day) { return dayMapping[day] || day; }
             function buildRestaurantHeader(r, hasUniformPrice, uniformPrice) {
                 const isCollapsed = collapsed.has(r.key);
-                const priceSpan = (hasUniformPrice && uniformPrice !== null) ? `<span class="menu-item-price">${uniformPrice} kr</span>` : '';
+                const priceSpan = (hasUniformPrice && uniformPrice !== null) ? `<span class="price">${uniformPrice} kr</span>` : '';
                 return `<div class="restaurant-header">
   <div class="restaurant-title-wrap">
     <button class="toggle-btn" data-rest="${r.key}" aria-expanded="${!isCollapsed}">${isCollapsed ? '+' : '−'}</button>
@@ -337,7 +330,7 @@
                         tr.innerHTML = `<td class="cell">${item.name}</td>`;
                     } else {
                         const price = (item.price !== null && item.price !== undefined) ? `${item.price} kr` : '-';
-                        tr.innerHTML = `<td class="cell">${item.name}</td><td class="cell-price">${price}</td>`;
+                        tr.innerHTML = `<td class="cell">${item.name}</td><td class="price">${price}</td>`;
                     }
                     tbody.appendChild(tr);
                 });

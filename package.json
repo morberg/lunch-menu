@@ -7,14 +7,16 @@
     "start": "npm run build && node dist/web/app.js",
     "dev": "ts-node src/web/app.ts",
     "build": "tsc && npm run copy-assets",
-    "copy-assets": "cp -r src/web/views dist/web/",
+    "copy-assets": "cp -r src/web/views dist/web/ && cp API.md dist/",
     "vercel-build": "npm run build",
     "test": "jest"
   },
   "dependencies": {
+    "@types/marked": "^5.0.2",
     "axios": "^1.13.5",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
+    "marked": "^17.0.2",
     "pdf-parse": "^1.1.1"
   },
   "devDependencies": {

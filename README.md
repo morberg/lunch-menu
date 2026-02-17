@@ -12,6 +12,10 @@ Restaurants:
 - Food Hall
 - Grenden
 
+## API Documentation
+
+The lunch menus are available via a public API. See [API.md](API.md) for complete documentation, or visit `/api/docs` when running the application.
+
 ## Quick start
 - Run app: make start
 - Tests: make test

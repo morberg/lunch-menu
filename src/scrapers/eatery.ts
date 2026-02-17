@@ -4,6 +4,13 @@ import pdfParse from 'pdf-parse';
 import { MenuItem } from '../types/menu';
 
 const EATERY_LUNCH_PRICE = 139;
+const EATERY_DAY_MAP: Record<string, string> = {
+    'måndag': 'Måndag',
+    'tisdag': 'Tisdag',
+    'onsdag': 'Onsdag',
+    'torsdag': 'Torsdag',
+    'fredag': 'Fredag'
+};
 
 export const scrapeEatery = async (): Promise<MenuItem[]> => {
     try {
@@ -63,14 +70,6 @@ export const scrapeEatery = async (): Promise<MenuItem[]> => {
 export function parsePdfMenu(pdfText: string): MenuItem[] {
     const menuItems: MenuItem[] = [];
 
-    const dayMap: Record<string, string> = {
-        'måndag': 'Måndag',
-        'tisdag': 'Tisdag',
-        'onsdag': 'Onsdag',
-        'torsdag': 'Torsdag',
-        'fredag': 'Fredag'
-    };
-
     // Clean the text and split into lines
     const lines = pdfText
         .replace(/\r\n/g, '\n')
@@ -87,14 +86,10 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
 
-        const dayFound = findDay(line, dayMap);
+        const dayFound = findDay(line);
         if (dayFound) {
             if (currentDish) {
-                menuItems.push({
-                    name: currentDish,
-                    day: dayMap[currentDay] ?? dayMap[dayFound],
-                    price: EATERY_LUNCH_PRICE
-                });
+                pushDish(menuItems, currentDish, EATERY_DAY_MAP[currentDay] ?? EATERY_DAY_MAP[dayFound]);
                 currentDish = '';
             }
             currentDay = dayFound;
@@ -122,11 +117,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
         }
 
         if (startsNew) {
-            menuItems.push({
-                name: currentDish,
-                day: dayMap[currentDay],
-                price: EATERY_LUNCH_PRICE
-            });
+            pushDish(menuItems, currentDish, EATERY_DAY_MAP[currentDay]);
             currentDish = lineWithPrefix;
         } else {
             currentDish = `${currentDish} ${lineWithPrefix}`.trim();
@@ -134,17 +125,25 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
     }
 
     if (currentDish && currentDay) {
-        menuItems.push({
-            name: currentDish,
-            day: dayMap[currentDay],
-            price: EATERY_LUNCH_PRICE
-        });
+        pushDish(menuItems, currentDish, EATERY_DAY_MAP[currentDay]);
     }
 
     return menuItems;
 }
 
-function findDay(line: string, dayMap: Record<string, string>): string | null {
+function pushDish(menuItems: MenuItem[], name: string, day: string | undefined): void {
+    if (!name || !day) {
+        return;
+    }
+
+    menuItems.push({
+        name,
+        day,
+        price: EATERY_LUNCH_PRICE
+    });
+}
+
+function findDay(line: string): string | null {
     const normalized = normalizeLine(line).toLowerCase();
     if (!normalized) {
         return null;
@@ -152,7 +151,7 @@ function findDay(line: string, dayMap: Record<string, string>): string | null {
 
     const tokens = normalized.split(' ').filter(Boolean);
     for (const token of tokens) {
-        if (dayMap[token]) {
+        if (EATERY_DAY_MAP[token]) {
             return token;
         }
     }
@@ -208,38 +207,4 @@ function adjustTrailingCapital(line: string, nextLine?: string): { line: string;
         line: words.slice(0, -1).join(' '),
         nextPrefix: lastWord
     };
-}
-
-export function splitIntoDishes(content: string): string[] {
-    // The PDF preserves line breaks between dishes - much simpler and more reliable!
-    // Split by newlines and filter out empty lines and non-dish content
-    const lines = content.split('\n')
-        .map(line => line.trim())
-        .filter(line => line.length > 0);
-
-    const dishes: string[] = [];
-    let currentDish = '';
-
-    for (const line of lines) {
-        // If line starts with capital letter and we have accumulated dish content,
-        // it's likely a new dish
-        if (line.match(/^[A-ZÅÄÖ]/) && currentDish.length > 15) {
-            dishes.push(currentDish.trim());
-            currentDish = line;
-        } else {
-            // Continue building current dish (handle multi-line dishes)
-            if (currentDish) {
-                currentDish += ' ' + line;
-            } else {
-                currentDish = line;
-            }
-        }
-    }
-
-    // Don't forget the last dish
-    if (currentDish.length > 15) {
-        dishes.push(currentDish.trim());
-    }
-
-    return dishes.filter(dish => dish.length > 15);
 }

@@ -2,91 +2,91 @@
     {
         "name": "BBQ glazed revben med friterad majs, chipotle och honungsmajo, klyftpotatis med lagrad ost",
         "day": "Måndag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Prästost bakad sej med äpple, spenat och fänkålsallad, krämig potatis med senap och persilja, citron och krassekräm",
         "day": "Måndag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Krispig polenta med aubergine caponata, ruccola och bakad salladsost, örtpesto",
         "day": "Måndag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Nattbakad fläskkarré med pepparsås & potatisgratäng, rostade rotfrukter med dragon och timjan",
         "day": "Tisdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Kolja peri peri med sotad purjolök, picklad gulbeta, limeyoghurt, kokt potatis med smör och citron",
         "day": "Tisdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Tomat- & fetaostpaj med kronärtskocka, oliver & ruccola",
         "day": "Tisdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Sweet Tuesday: Vi bjuder på något sött till kaffet!",
         "day": "Tisdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Stekt rimmat fläsk med löksås & kokt potatis, lingon",
         "day": "Onsdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Pocherad kummel med hummersås, potatismos & citrondressad kålsallad",
         "day": "Onsdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Halloumiburgare med jalapeno, coleslaw med ingefära och sesam, asiatisk ketchup, klyftpotatis",
         "day": "Onsdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Kycklingcurry rendang med limeblad, chili, citrongräs, kokosmjölk, stjärnanis och basmatiris",
         "day": "Torsdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Krämig laxpasta med kallrökt lax, spenat och soltorkad tomat, ört och rotfruktscrudité",
         "day": "Torsdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Gratinerad cannelloni med ricotta & spenat, rostad zucchini med tomat och , lagrad ost och örtolja",
         "day": "Torsdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Bonus: Ärtsoppa med rimmad bog",
         "day": "Torsdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Pancake Thursday: Vi bjuder på pannkakor, lättvispad grädde och hemmagjord sylt!",
         "day": "Torsdag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Krispig kycklingburgare med inlagd ingefärsgurka, soja & chilimajo, pepper jack ost & klyftpotatis",
         "day": "Fredag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Thai fishcakes med chili, ingefära & röd curry, sweet chili sås, jasminris med sesam och salladslök",
         "day": "Fredag",
-        "price": 135
+        "price": 139
     },
     {
         "name": "Tomat och örtrisotto med krispig palsternacka, lagrad ost och basilika olja",
         "day": "Fredag",
-        "price": 135
+        "price": 139
     }
 ]

@@ -24,10 +24,8 @@ const isMenuDescription = (description: string): boolean => {
 const isWeeklyLabel = (text: string): boolean =>
     text.startsWith('Veckans vegetariska') || text.startsWith('Månadens');
 
-const isDayLabel = (text: string): boolean => swedishDays.includes(text);
-
-const getLeadingLabel = (text: string, labels: string[]): string | null =>
-    labels.find(label => text.startsWith(label)) ?? null;
+const getLeadingDayLabel = (text: string): string | null =>
+    swedishDays.find(label => text.startsWith(label)) ?? null;
 
 const parseKantinFromLines = (lines: string[]): MenuItem[] => {
     const menuItems: MenuItem[] = [];
@@ -35,13 +33,13 @@ const parseKantinFromLines = (lines: string[]): MenuItem[] => {
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
 
-        const dayLabel = getLeadingLabel(line, swedishDays);
+        const dayLabel = getLeadingDayLabel(line);
         if (dayLabel) {
             let description = stripLeadingSeparators(line.slice(dayLabel.length));
 
             if (!description && i + 1 < lines.length) {
                 const nextLine = lines[i + 1];
-                const nextDayLabel = getLeadingLabel(nextLine, swedishDays);
+                const nextDayLabel = getLeadingDayLabel(nextLine);
                 if (!nextDayLabel && !isWeeklyLabel(nextLine)) {
                     description = nextLine;
                     i++;
@@ -108,8 +106,9 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
             const strongTextRaw = normalizeText(strongElement.text());
 
             if (strongTextRaw) {
-                if (isDayLabel(strongTextRaw)) {
-                    let description = '';
+                const strongDayLabel = getLeadingDayLabel(strongTextRaw);
+                if (strongDayLabel) {
+                    let description = stripLeadingSeparators(strongTextRaw.slice(strongDayLabel.length));
                     const spanText = normalizeText(strongElement.parent().find('span').first().text());
                     if (spanText) {
                         description = stripLeadingSeparators(spanText);
@@ -132,7 +131,7 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
 
                     if (!description && i + 1 < paragraphs.length) {
                         const nextText = normalizeText($(paragraphs[i + 1]).text());
-                        if (nextText && !isDayLabel(nextText) && !isWeeklyLabel(nextText)) {
+                        if (nextText && !getLeadingDayLabel(nextText) && !isWeeklyLabel(nextText)) {
                             description = nextText;
                             i++;
                         }
@@ -142,7 +141,7 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
                         menuItems.push({
                             name: description,
                             price: KANTIN_LUNCH_PRICE,
-                            day: strongTextRaw
+                            day: strongDayLabel
                         });
                     }
 
@@ -191,7 +190,7 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
                 continue;
             }
 
-            const inlineDayLabel = getLeadingLabel(paragraphText, swedishDays);
+            const inlineDayLabel = getLeadingDayLabel(paragraphText);
             if (inlineDayLabel) {
                 const description = stripLeadingSeparators(paragraphText.slice(inlineDayLabel.length));
 

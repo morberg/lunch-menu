@@ -9,6 +9,10 @@
 - Simple is good, try to keep the code as simple as possible
 - Do not deploy code unless it is fully tested and committed to git
 
+## Debugging
+
+- Run `make debug-scraper` (where scraper is the name of the scraper) to debug a scraper against a live web site
+
 ## Makefile First
 - Always use Makefile targets for common tasks
 - Add new targets when introducing new workflows

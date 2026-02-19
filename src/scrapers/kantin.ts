@@ -3,62 +3,48 @@ import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 
 const swedishDays = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'];
+const weeklyLabels = ['Veckans vegetariska', 'Månadens alternativ'];
 const KANTIN_LUNCH_PRICE = 145;
 
 const normalizeText = (text: string): string => text.replace(/\s+/g, ' ').trim();
 
 const stripLeadingSeparators = (text: string): string => text.replace(/^\s*[-–—:]\s*/, '').trim();
 
-const extractKantinMenuItems = (text: string): MenuItem[] => {
+const getLeadingLabel = (text: string, labels: string[]): string | null =>
+    labels.find((label) => text.startsWith(label)) ?? null;
+
+const parseKantinParagraphs = (paragraphTexts: string[]): MenuItem[] => {
     const menuItems: MenuItem[] = [];
-    const dayPattern = swedishDays.join('|');
-    const nextLabelPattern = `(?:Veckans vegetariska|Månadens alternativ|${dayPattern})`;
-    const weeklyVegetarianRegex = new RegExp(
-        `Veckans vegetariska\\s*[:\\-–—]?\\s*(.+?)(?=\\b(?:Månadens alternativ|${dayPattern})\\b|$)`,
-        'i'
-    );
-    const monthlyAlternativeRegex = new RegExp(
-        `Månadens alternativ\\s*[:\\-–—]?\\s*(.+?)(?=\\b(?:Veckans vegetariska|${dayPattern})\\b|$)`,
-        'i'
-    );
-    const dayRegex = new RegExp(
-        `\\b(${dayPattern})\\b\\s*[:\\-–—]?\\s*(.+?)(?=\\b${nextLabelPattern}\\b|$)`,
-        'g'
-    );
 
-    const vegetarianMatch = text.match(weeklyVegetarianRegex);
-    if (vegetarianMatch) {
-        const description = stripLeadingSeparators(normalizeText(vegetarianMatch[1] ?? ''));
-        if (description) {
-            menuItems.push({
-                name: `Veckans vegetariska: ${description}`,
-                price: KANTIN_LUNCH_PRICE,
-                day: 'Hela veckan'
-            });
+    for (const paragraphTextRaw of paragraphTexts) {
+        const paragraphText = normalizeText(paragraphTextRaw);
+        if (!paragraphText) {
+            continue;
         }
-    }
 
-    const monthlyMatch = text.match(monthlyAlternativeRegex);
-    if (monthlyMatch) {
-        const description = stripLeadingSeparators(normalizeText(monthlyMatch[1] ?? ''));
-        if (description) {
-            menuItems.push({
-                name: `Månadens alternativ: ${description}`,
-                price: KANTIN_LUNCH_PRICE,
-                day: 'Hela veckan'
-            });
+        const weeklyLabel = getLeadingLabel(paragraphText, weeklyLabels);
+        if (weeklyLabel) {
+            const description = stripLeadingSeparators(paragraphText.slice(weeklyLabel.length));
+            if (description) {
+                menuItems.push({
+                    name: `${weeklyLabel}: ${description}`,
+                    price: KANTIN_LUNCH_PRICE,
+                    day: 'Hela veckan'
+                });
+            }
+            continue;
         }
-    }
 
-    for (const match of text.matchAll(dayRegex)) {
-        const dayLabel = normalizeText(match[1] ?? '');
-        const description = stripLeadingSeparators(normalizeText(match[2] ?? ''));
-        if (swedishDays.includes(dayLabel) && description) {
-            menuItems.push({
-                name: description,
-                price: KANTIN_LUNCH_PRICE,
-                day: dayLabel
-            });
+        const dayLabel = getLeadingLabel(paragraphText, swedishDays);
+        if (dayLabel) {
+            const description = stripLeadingSeparators(paragraphText.slice(dayLabel.length));
+            if (description) {
+                menuItems.push({
+                    name: description,
+                    price: KANTIN_LUNCH_PRICE,
+                    day: dayLabel
+                });
+            }
         }
     }
 
@@ -75,15 +61,15 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
 
     if (menuHeading.length > 0) {
         const menuRoot = menuHeading.closest('div');
-        const menuText = normalizeText(menuRoot.text());
-        const menuItems = extractKantinMenuItems(menuText);
+        const menuParagraphs = menuRoot.find('p').toArray().map((paragraph) => normalizeText($(paragraph).text()));
+        const menuItems = parseKantinParagraphs(menuParagraphs);
         if (menuItems.length > 0) {
             return menuItems;
         }
     }
 
-    const bodyText = normalizeText($('body').text());
-    return extractKantinMenuItems(bodyText);
+    const bodyParagraphs = $('p').toArray().map((paragraph) => normalizeText($(paragraph).text()));
+    return parseKantinParagraphs(bodyParagraphs);
 };
 
 export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {

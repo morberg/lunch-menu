@@ -234,8 +234,10 @@
         function displayMenus(data) {
             const content = document.getElementById('content');
             content.innerHTML = '';
-            const days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'];
-            const dayMapping = { 'Monday': 'Måndag', 'Tuesday': 'Tisdag', 'Wednesday': 'Onsdag', 'Thursday': 'Torsdag', 'Friday': 'Fredag', 'Hela veckan': 'Hela veckan' };
+            if (!Array.isArray(window.SWEDISH_DAYS) || window.SWEDISH_DAYS.length === 0) {
+                throw new Error('SWEDISH_DAYS is not available');
+            }
+            const days = window.SWEDISH_DAYS;
             const restaurants = [
                 { name: 'Edison', key: 'edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
                 { name: 'Grenden', key: 'grenden', data: data.grenden, url: 'https://www.nordrest.se/restaurang/grenden/' },
@@ -252,7 +254,6 @@
             const collapsedKey = 'collapsedRestaurantsV1';
             const collapsed = new Set(JSON.parse(localStorage.getItem(collapsedKey) || '[]'));
             function persist() { localStorage.setItem(collapsedKey, JSON.stringify([...collapsed])); }
-            function normalizeDay(day) { return dayMapping[day] || day; }
             function buildRestaurantHeader(r, hasUniformPrice, uniformPrice) {
                 const isCollapsed = collapsed.has(r.key);
                 const priceSpan = (hasUniformPrice && uniformPrice !== null) ? `<span class="price">${uniformPrice} kr</span>` : '';
@@ -347,7 +348,7 @@
 
                 restaurants.forEach(r => {
                     if (r.weeklyOnly) return;
-                    const items = (r.data || []).filter(item => normalizeDay(item.day) === daySv);
+                    const items = (r.data || []).filter(item => item.day === daySv);
                     appendRestaurantBlock(
                         daySection,
                         r,
@@ -362,7 +363,7 @@
                 weeklyItemsSection.innerHTML = '<div class="day-title">Hela veckan</div>';
                 let anyWeekly = false;
                 restaurants.forEach(r => {
-                    const weeklyItems = (r.data || []).filter(item => normalizeDay(item.day) === 'Hela veckan');
+                    const weeklyItems = (r.data || []).filter(item => item.day === 'Hela veckan');
                     if (!weeklyItems.length) return;
                     anyWeekly = true;
                     appendRestaurantBlock(weeklyItemsSection, r, weeklyItems, false, '');
@@ -430,8 +431,8 @@
             });
 
             const today = new Date();
-            const swedishDays = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
-            const todayName = swedishDays[today.getDay()];
+            const swedishWeekDays = ['Söndag', ...days, 'Lördag'];
+            const todayName = swedishWeekDays[today.getDay()];
             const defaultDay = days.includes(todayName) ? todayName : days[0];
             setActiveDay(defaultDay);
         }

@@ -2,17 +2,17 @@
     {
         "name": "Mushroom risoni, gremolata, Grana Padano, rocket salad",
         "price": 105,
-        "day": "Monday"
+        "day": "Måndag"
     },
     {
         "name": "Breaded saithe, apple- and curry slaw, pea salad with mint, boiled potatoes",
         "price": 105,
-        "day": "Monday"
+        "day": "Måndag"
     },
     {
         "name": "Chicken Vindaloo, carrot- and cabbage salad, basmati rice, raita",
         "price": 105,
-        "day": "Monday"
+        "day": "Måndag"
     },
     {
         "name": "Korean deep fried chicken, gochujangmayo, rice, pickles",
@@ -22,61 +22,61 @@
     {
         "name": "Falafel, roasted potatoes, tabbouleh, tahini- and garlic dressing",
         "price": 105,
-        "day": "Tuesday"
+        "day": "Tisdag"
     },
     {
         "name": "\"Moqueca\" Brasilian fish stew with coconut, tomatoes and lime with garlic rice",
         "price": 105,
-        "day": "Tuesday"
+        "day": "Tisdag"
     },
     {
         "name": "Pork Bulgogi, Ssämjang sauce, rice, korean pickled vegetables",
         "price": 105,
-        "day": "Tuesday"
+        "day": "Tisdag"
     },
     {
         "name": "Veg. Schnitzel. german potato salad with capers, onions and lemon",
         "price": 105,
-        "day": "Wednesday"
+        "day": "Onsdag"
     },
     {
         "name": "Breaded plaice, german remoulade sauce, cucumeber with dill, boiled potatoes",
         "price": 105,
-        "day": "Wednesday"
+        "day": "Onsdag"
     },
     {
         "name": "Bratwurst, sauerkraut, mashed potatoes, mustard",
         "price": 105,
-        "day": "Wednesday"
+        "day": "Onsdag"
     },
     {
         "name": "Tagine with soy chunks, lemon, olives, dried fruits, yoghurt, couscous",
         "price": 105,
-        "day": "Thursday"
+        "day": "Torsdag"
     },
     {
         "name": "Fillet of plaice, bouillabaisse vinaigrette, vegetables, boiled potatoes, aioli",
         "price": 105,
-        "day": "Thursday"
+        "day": "Torsdag"
     },
     {
         "name": "Chicken tagine with lemon, olives, dried fruits, yoghurt and couscous",
         "price": 105,
-        "day": "Thursday"
+        "day": "Torsdag"
     },
     {
         "name": "Fried rice with mixed vegetables, soy mince, sweet ketjap and fried egg",
         "price": 105,
-        "day": "Friday"
+        "day": "Fredag"
     },
     {
         "name": "Salmon patties, fennel salad, dill creamed potatoes, mustard vinaigrette",
         "price": 105,
-        "day": "Friday"
+        "day": "Fredag"
     },
     {
         "name": "Pork loin with sage, saffron risotto, roasted broccoli, tomato sauce",
         "price": 105,
-        "day": "Friday"
+        "day": "Fredag"
     }
 ]

@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
+import { normalizeToSwedishDay } from '../utils/swedish-days';
 
 export async function scrapeGrendenMenu(fixtureUrl?: string): Promise<MenuItem[]> {
     try {
@@ -70,7 +71,11 @@ function extractMenuItems(accordionWrapper: any, $: any, basePrice: number | nul
 
     weekdayItems.each((index: number, element: any) => {
         const dayElement = $(element);
-        const dayName = dayElement.find('.accordion-header').first().text().trim().split('\n')[0].trim();
+        const dayHeader = dayElement.find('.accordion-header').first().text().trim().split('\n')[0].trim();
+        const dayName = normalizeToSwedishDay(dayHeader);
+        if (!dayName) {
+            return;
+        }
 
         // Find all ratter items (menu dishes) for this day
         const ratterItems = dayElement.find('li.ratter');

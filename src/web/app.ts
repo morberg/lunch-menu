@@ -4,13 +4,14 @@ import fs from 'fs';
 import { marked } from 'marked';
 import menusRouter from './routes/menus';
 import { menuService } from '../services/menu-service';
+import { SWEDISH_DAYS } from '../utils/swedish-days';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'views'), { index: false }));
 
 app.use('/api', menusRouter);
 
@@ -135,7 +136,15 @@ app.get('/api/docs', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+    try {
+        const indexPath = path.join(__dirname, 'views', 'index.html');
+        const html = fs.readFileSync(indexPath, 'utf-8');
+        const daysScript = `<script>window.SWEDISH_DAYS = ${JSON.stringify(SWEDISH_DAYS)};</script>`;
+        res.send(html.replace('</head>', `    ${daysScript}\n</head>`));
+    } catch (error) {
+        console.error('Error serving index page:', error);
+        res.status(500).send('Error loading index page');
+    }
 });
 
 const server = app.listen(PORT, () => {

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
+import { SWEDISH_DAYS } from '../utils/swedish-days';
 
-const swedishDays = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'];
 const weeklyLabels = ['Veckans vegetariska', 'Månadens alternativ'];
 const KANTIN_LUNCH_PRICE = 145;
 
@@ -10,7 +10,7 @@ const normalizeText = (text: string): string => text.replace(/\s+/g, ' ').trim()
 
 const stripLeadingSeparators = (text: string): string => text.replace(/^\s*[-–—:]\s*/, '').trim();
 
-const getLeadingLabel = (text: string, labels: string[]): string | null =>
+const getLeadingLabel = (text: string, labels: readonly string[]): string | null =>
     labels.find((label) => text.startsWith(label)) ?? null;
 
 const parseKantinParagraphs = (paragraphTexts: string[]): MenuItem[] => {
@@ -35,7 +35,7 @@ const parseKantinParagraphs = (paragraphTexts: string[]): MenuItem[] => {
             continue;
         }
 
-        const dayLabel = getLeadingLabel(paragraphText, swedishDays);
+        const dayLabel = getLeadingLabel(paragraphText, SWEDISH_DAYS);
         if (dayLabel) {
             const description = stripLeadingSeparators(paragraphText.slice(dayLabel.length));
             if (description) {

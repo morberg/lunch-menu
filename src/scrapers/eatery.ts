@@ -2,15 +2,9 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import pdfParse from 'pdf-parse';
 import { MenuItem } from '../types/menu';
+import { SWEDISH_DAYS, SwedishDay } from '../utils/swedish-days';
 
 const EATERY_LUNCH_PRICE = 139;
-const EATERY_DAY_MAP: Record<string, string> = {
-    'måndag': 'Måndag',
-    'tisdag': 'Tisdag',
-    'onsdag': 'Onsdag',
-    'torsdag': 'Torsdag',
-    'fredag': 'Fredag'
-};
 
 export const scrapeEatery = async (): Promise<MenuItem[]> => {
     try {
@@ -78,7 +72,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
         .map((line) => normalizeLine(line))
         .filter((line) => line.length > 0);
 
-    let currentDay = '';
+    let currentDay: SwedishDay | null = null;
 
     let currentDish = '';
     let pendingPrefix = '';
@@ -89,7 +83,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
         const dayFound = findDay(line);
         if (dayFound) {
             if (currentDish) {
-                pushDish(menuItems, currentDish, EATERY_DAY_MAP[currentDay] ?? EATERY_DAY_MAP[dayFound]);
+                pushDish(menuItems, currentDish, currentDay ?? dayFound);
                 currentDish = '';
             }
             currentDay = dayFound;
@@ -117,7 +111,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
         }
 
         if (startsNew) {
-            pushDish(menuItems, currentDish, EATERY_DAY_MAP[currentDay]);
+            pushDish(menuItems, currentDish, currentDay);
             currentDish = lineWithPrefix;
         } else {
             currentDish = `${currentDish} ${lineWithPrefix}`.trim();
@@ -125,7 +119,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
     }
 
     if (currentDish && currentDay) {
-        pushDish(menuItems, currentDish, EATERY_DAY_MAP[currentDay]);
+        pushDish(menuItems, currentDish, currentDay);
     }
 
     return menuItems;
@@ -143,7 +137,7 @@ function pushDish(menuItems: MenuItem[], name: string, day: string | undefined):
     });
 }
 
-function findDay(line: string): string | null {
+function findDay(line: string): SwedishDay | null {
     const normalized = normalizeLine(line).toLowerCase();
     if (!normalized) {
         return null;
@@ -151,8 +145,9 @@ function findDay(line: string): string | null {
 
     const tokens = normalized.split(' ').filter(Boolean);
     for (const token of tokens) {
-        if (EATERY_DAY_MAP[token]) {
-            return token;
+        const matchedDay = SWEDISH_DAYS.find((day) => day.toLowerCase() === token);
+        if (matchedDay) {
+            return matchedDay;
         }
     }
 

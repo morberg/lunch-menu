@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
+import { isSwedishDay } from '../utils/swedish-days';
 
 export const scrapeBricksMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
     try {
@@ -24,9 +25,6 @@ function parseBricksHtml(html: string): MenuItem[] {
     const $ = cheerio.load(html);
     const menuItems: MenuItem[] = [];
 
-    // List of Swedish day names
-    const swedishDays = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'];
-
     // Bricks renders each day in a structured block like:
     // <h3>Monday</h3> ... <div class="lunchmeny_wrapper"> ... <div class="lunchmeny_container"> ...
     // Parsing the DOM is more robust than scanning body text.
@@ -37,11 +35,11 @@ function parseBricksHtml(html: string): MenuItem[] {
             .closest('.elementor-element')
             .prevAll()
             .find('h3.elementor-heading-title')
-            .filter((_, h) => swedishDays.includes($(h).text().trim()))
+            .filter((_, h) => isSwedishDay($(h).text().trim()))
             .first();
 
         const day = dayHeading.text().trim();
-        if (!swedishDays.includes(day)) {
+        if (!isSwedishDay(day)) {
             return;
         }
 

@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
+import { isSwedishDay } from '../utils/swedish-days';
 
 export const scrapeEdisonMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
     try {
@@ -24,9 +25,6 @@ export const parseEdisonMenuFromHtml = (html: string): MenuItem[] => {
     const $ = cheerio.load(html);
     const menuItems: MenuItem[] = [];
 
-    // List of Swedish day names
-    const swedishDays = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'];
-
     const bodyText = $('body').text();
     const lines = bodyText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
 
@@ -36,7 +34,7 @@ export const parseEdisonMenuFromHtml = (html: string): MenuItem[] => {
         const line = lines[i];
 
         // Check if line is a Swedish day name
-        if (swedishDays.includes(line)) {
+        if (isSwedishDay(line)) {
             currentDay = line;
             continue;
         }

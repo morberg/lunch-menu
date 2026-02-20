@@ -195,6 +195,90 @@
                 font-size: 13px;
             }
         }
+
+        /* Fredagskaka banner */
+        #fredagskaka-banner {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 200px;
+            background: #faf7ed;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: box-shadow 0.2s ease;
+        }
+
+        #fredagskaka-banner.minimized {
+            width: auto;
+            background: none;
+            box-shadow: none;
+            overflow: visible;
+        }
+
+        .fredagskaka-minimized-btn {
+            display: none;
+            background: #faf7ed;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.15s ease;
+        }
+
+        .fredagskaka-minimized-btn:hover {
+            transform: scale(1.1);
+        }
+
+        #fredagskaka-banner.minimized .fredagskaka-minimized-btn {
+            display: block;
+        }
+
+        .fredagskaka-card {
+            padding: 12px;
+        }
+
+        #fredagskaka-banner.minimized .fredagskaka-card {
+            display: none;
+        }
+
+        .fredagskaka-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .fredagskaka-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: #344e41;
+            /* letter-spacing: 0.5px; */
+        }
+
+        .fredagskaka-card {
+            cursor: pointer;
+        }
+
+        .fredagskaka-img {
+            width: 100%;
+            /* height: 110px; */
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+            margin-bottom: 8px;
+            background: #e8e3d5;
+        }
+
+        .fredagskaka-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #344e41;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -214,6 +298,18 @@
     <footer class="page-footer">
         <a href="/api/docs" class="api-docs-link">API Documentation</a>
     </footer>
+
+    <div id="fredagskaka-banner" class="hidden">
+        <button class="fredagskaka-minimized-btn" id="fredagskaka-restore" title="Veckans fredagskaka"
+            aria-label="Visa fredagskaka">🍪</button>
+        <div class="fredagskaka-card" id="fredagskaka-card" title="Klicka för att minimera">
+            <div class="fredagskaka-top">
+                <span class="fredagskaka-title">Fredagskaka</span>
+            </div>
+            <img id="fredagskaka-img" class="fredagskaka-img" src="" alt="" />
+            <div id="fredagskaka-name" class="fredagskaka-name"></div>
+        </div>
+    </div>
 
     <script>
         async function loadMenus() {
@@ -436,7 +532,72 @@
             const defaultDay = days.includes(todayName) ? todayName : days[0];
             setActiveDay(defaultDay);
         }
-        window.addEventListener('DOMContentLoaded', loadMenus);
+        async function loadFredagskaka() {
+            const today = new Date();
+            if (today.getDay() !== 5) return;
+
+            const banner = document.getElementById('fredagskaka-banner');
+            if (!banner) return;
+
+            try {
+                const res = await fetch('/api/fredagskaka');
+                if (!res.ok) return;
+                const data = await res.json();
+                if (!data || !data.Kaka) return;
+
+                const dismissKey = `fredagskaka-${data.Year}-${data.Week}`;
+                if (localStorage.getItem(dismissKey) === 'dismissed') return;
+
+                document.getElementById('fredagskaka-img').src = data.URL;
+                document.getElementById('fredagskaka-img').alt = data.Kaka;
+                document.getElementById('fredagskaka-name').textContent = data.Kaka;
+
+                if (localStorage.getItem(dismissKey) !== 'expanded') {
+                    banner.classList.add('minimized');
+                }
+
+                function syncVisibility() {
+                    const activeTab = document.querySelector('.day-tab[aria-selected="true"]');
+                    const isFredag = activeTab && activeTab.dataset.day === 'Fredag';
+                    banner.classList.toggle('hidden', !isFredag);
+                }
+
+                // Wait for tabs to be rendered before syncing initial visibility
+                function waitForTabs() {
+                    return new Promise(resolve => {
+                        function check() {
+                            if (document.querySelectorAll('.day-tab').length > 0) resolve();
+                            else requestAnimationFrame(check);
+                        }
+                        check();
+                    });
+                }
+                await waitForTabs();
+                syncVisibility();
+
+                // Keep in sync when the user switches tabs
+                document.addEventListener('click', e => {
+                    if (e.target.classList.contains('day-tab')) {
+                        // Let setActiveDay update aria-selected first, then sync
+                        requestAnimationFrame(syncVisibility);
+                    }
+                });
+
+                document.getElementById('fredagskaka-card').addEventListener('click', () => {
+                    banner.classList.add('minimized');
+                    localStorage.removeItem(dismissKey);
+                });
+
+                document.getElementById('fredagskaka-restore').addEventListener('click', () => {
+                    banner.classList.remove('minimized');
+                    localStorage.setItem(dismissKey, 'expanded');
+                });
+            } catch (e) {
+                // Silently ignore — don't break the page if the API is unavailable
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => { loadMenus(); loadFredagskaka(); });
     </script>
 </body>
 

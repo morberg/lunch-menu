@@ -533,9 +533,6 @@
             setActiveDay(defaultDay);
         }
         async function loadFredagskaka() {
-            const today = new Date();
-            if (today.getDay() !== 5) return;
-
             const banner = document.getElementById('fredagskaka-banner');
             if (!banner) return;
 

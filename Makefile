@@ -1,6 +1,6 @@
 # Makefile for lunch-menu-scraper
 
-.PHONY: install build start dev clean deploy test snapshots debug-%
+.PHONY: install build start dev clean deploy test snapshots debug-% profile-scrapers
 
 install:
 	npm install
@@ -25,6 +25,9 @@ snapshots: build
 
 debug-%:
 	npx tsx debug/debug-$*.ts
+
+profile-scrapers:
+	npx tsx debug/profile-scrapers.ts
 
 clean:
 	rm -rf node_modules dist

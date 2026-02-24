@@ -25,6 +25,14 @@ class MemoryCache<T> {
 
         return entry.data;
     }
+
+    /**
+     * Returns cached data regardless of TTL expiry.
+     * Useful as a fallback when a fresh fetch fails.
+     */
+    getStale(key: string): T | null {
+        return this.cache.get(key)?.data ?? null;
+    }
 }
 
 export default MemoryCache;

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as fs from 'fs';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
@@ -6,7 +7,6 @@ import { parsePrice } from '../utils/price';
 export async function scrapeFoodHallMenu(fixtureUrl?: string): Promise<MenuItem[]> {
     try {
         if (fixtureUrl && fixtureUrl.startsWith('file://')) {
-            const fs = await import('fs');
             const html = fs.readFileSync(fixtureUrl.replace('file://', ''), 'utf8');
             return parseFoodHallMenuFromHtml(html);
         }

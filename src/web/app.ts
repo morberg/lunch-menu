@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
+import compression from 'compression';
 import { marked } from 'marked';
 import menusRouter from './routes/menus';
 import { menuService } from '../services/menu-service';
@@ -9,24 +10,29 @@ import { SWEDISH_DAYS } from '../utils/swedish-days';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'views'), { index: false }));
 
 app.use('/api', menusRouter);
 
+// Build the API docs HTML once and cache it in memory
+let cachedApiDocsHtml: string | null = null;
+
 app.get('/api/docs', (req, res) => {
     try {
-        // Try dist location first (production), then source location (dev)
-        let apiDocPath = path.join(__dirname, '..', 'API.md');
-        if (!fs.existsSync(apiDocPath)) {
-            apiDocPath = path.join(__dirname, '..', '..', 'API.md');
-        }
+        if (!cachedApiDocsHtml) {
+            // Try dist location first (production), then source location (dev)
+            let apiDocPath = path.join(__dirname, '..', 'API.md');
+            if (!fs.existsSync(apiDocPath)) {
+                apiDocPath = path.join(__dirname, '..', '..', 'API.md');
+            }
 
-        const markdown = fs.readFileSync(apiDocPath, 'utf-8');
-        const html = marked(markdown);
+            const markdown = fs.readFileSync(apiDocPath, 'utf-8');
+            const html = marked(markdown);
 
-        const fullPage = `
+            cachedApiDocsHtml = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -127,20 +133,29 @@ app.get('/api/docs', (req, res) => {
     </div>
 </body>
 </html>`;
+        }
 
-        res.send(fullPage);
+        res.setHeader('Cache-Control', 'public, max-age=3600');
+        res.send(cachedApiDocsHtml);
     } catch (error) {
         console.error('Error serving API documentation:', error);
         res.status(500).send('Error loading API documentation');
     }
 });
 
+// Build the index page HTML once (with injected SWEDISH_DAYS) and cache it in memory
+let cachedIndexHtml: string | null = null;
+
 app.get('/', (req, res) => {
     try {
-        const indexPath = path.join(__dirname, 'views', 'index.html');
-        const html = fs.readFileSync(indexPath, 'utf-8');
-        const daysScript = `<script>window.SWEDISH_DAYS = ${JSON.stringify(SWEDISH_DAYS)};</script>`;
-        res.send(html.replace('</head>', `    ${daysScript}\n</head>`));
+        if (!cachedIndexHtml) {
+            const indexPath = path.join(__dirname, 'views', 'index.html');
+            const html = fs.readFileSync(indexPath, 'utf-8');
+            const daysScript = `<script>window.SWEDISH_DAYS = ${JSON.stringify(SWEDISH_DAYS)};</script>`;
+            cachedIndexHtml = html.replace('</head>', `    ${daysScript}\n</head>`);
+        }
+        res.setHeader('Cache-Control', 'public, max-age=3600');
+        res.send(cachedIndexHtml);
     } catch (error) {
         console.error('Error serving index page:', error);
         res.status(500).send('Error loading index page');

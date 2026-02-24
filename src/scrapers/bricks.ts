@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as fs from 'fs';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
@@ -7,7 +8,6 @@ import { normalizeToSwedishDay } from '../utils/swedish-days';
 export const scrapeBricksMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
     try {
         if (fixtureUrl && fixtureUrl.startsWith('file://')) {
-            const fs = await import('fs');
             const html = fs.readFileSync(fixtureUrl.replace('file://', ''), 'utf8');
             return parseBricksHtml(html);
         }
@@ -21,7 +21,7 @@ export const scrapeBricksMenu = async (fixtureUrl?: string): Promise<MenuItem[]>
     }
 };
 
-function parseBricksHtml(html: string): MenuItem[] {
+export function parseBricksHtml(html: string): MenuItem[] {
     const $ = cheerio.load(html);
     const menuItems: MenuItem[] = [];
 

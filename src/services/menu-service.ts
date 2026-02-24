@@ -83,8 +83,8 @@ class MenuService {
             return result;
         } catch (error) {
             console.error('Error fetching menus:', error);
-            // If we have old cached data, return it even if expired
-            const staleData = this.cache.get(this.CACHE_KEY);
+            // If we have old cached data (even expired), return it
+            const staleData = this.cache.getStale(this.CACHE_KEY);
             if (staleData) {
                 console.log('Returning stale cached data due to fetch error');
                 return staleData;

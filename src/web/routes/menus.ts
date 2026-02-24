@@ -17,6 +17,9 @@ router.get('/fredagskaka', async (_req, res) => {
 router.get('/menus', async (req, res) => {
     try {
         const result = await menuService.getMenus();
+        // Menus are refreshed in the background every 2 hours.
+        // Allow clients/CDN to cache for 5 minutes; serve stale for up to 4 hours while revalidating.
+        res.setHeader('Cache-Control', 'public, max-age=300, stale-while-revalidate=14400');
         res.json(result);
     } catch (error) {
         console.error('Error in /menus route:', error);

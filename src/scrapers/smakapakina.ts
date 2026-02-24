@@ -1,7 +1,8 @@
 import axios from 'axios';
-import * as cheerio from 'cheerio';
+import * as fs from 'fs';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
+import { bodyText as extractBodyText } from '../utils/html-text';
 
 /**
  * Smakapakina scraper
@@ -18,7 +19,6 @@ import { parsePrice } from '../utils/price';
 export async function scrapeSmakapakina(fixtureUrl?: string): Promise<MenuItem[]> {
     try {
         if (fixtureUrl && fixtureUrl.startsWith('file://')) {
-            const fs = await import('fs');
             const html = fs.readFileSync(fixtureUrl.replace('file://', ''), 'utf8');
             return parseFixtureHtml(html);
         }
@@ -116,8 +116,7 @@ function extractPriceData(html: string): Map<string, number> {
 
 // ---------------- Modern main page parser (v2) ----------------
 function parseModernMainPage(html: string): MenuItem[] {
-    const $ = cheerio.load(html);
-    const bodyText = $('body').text();
+    const bodyText = extractBodyText(html);
 
     // Extract price data from JSON embedded in HTML
     const priceMap = extractPriceData(html);

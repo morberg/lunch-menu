@@ -38,6 +38,24 @@ Returns a JSON object with restaurant menus organized by restaurant key. Each re
 }
 ```
 
+### Force Menu Refresh
+
+Invalidates the cache and immediately re-fetches menus from all restaurants. Useful when a restaurant has updated its menu mid-week.
+
+**Endpoint:** `POST /api/menus/refresh`
+
+**Parameters:** None
+
+**Response:** `200 OK`
+
+```json
+{
+  "ok": true,
+  "refreshed": "2026-02-24T09:55:12.000Z",
+  "menus": { ... }
+}
+```
+
 ## Data Types
 
 ### MenuItem

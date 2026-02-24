@@ -18,14 +18,26 @@ interface RestaurantMenus {
     grenden: MenuItem[];
 }
 
+/** Hour of day (local time) at which menus are automatically refreshed. */
+const DAILY_REFRESH_HOUR = 10;
+
+/** Returns minutes until the next occurrence of DAILY_REFRESH_HOUR (at least 1 minute). */
+function minutesUntilNextRefresh(): number {
+    const now = new Date();
+    const next = new Date(now);
+    next.setHours(DAILY_REFRESH_HOUR, 0, 0, 0);
+    if (next <= now) {
+        next.setDate(next.getDate() + 1);
+    }
+    return Math.max(1, Math.round((next.getTime() - now.getTime()) / 60_000));
+}
+
 class MenuService {
     private cache = new MemoryCache<RestaurantMenus>();
     private readonly CACHE_KEY = 'restaurant_menus';
-    private readonly CACHE_TTL_MINUTES = 240; // 4 hours
-    private refreshInterval: NodeJS.Timeout | null = null;
+    private refreshTimeout: NodeJS.Timeout | null = null;
 
     constructor() {
-        // Start background refresh on service initialization
         this.startBackgroundRefresh();
     }
 
@@ -76,9 +88,10 @@ class MenuService {
                 { name: 'Grenden', result: grendenMenu }
             ]);
 
-            // Cache the result
-            this.cache.set(this.CACHE_KEY, result, this.CACHE_TTL_MINUTES);
-            console.log(`Cached menus for ${this.CACHE_TTL_MINUTES} minutes`);
+            // Cache until next scheduled refresh
+            const ttl = minutesUntilNextRefresh();
+            this.cache.set(this.CACHE_KEY, result, ttl);
+            console.log(`Cached menus for ${ttl} minutes (until next 10:00 refresh)`);
 
             return result;
         } catch (error) {
@@ -101,31 +114,48 @@ class MenuService {
         });
     }
 
-    private startBackgroundRefresh(): void {
-        // Refresh every 2 hours (cache expires after 4 hours)
-        const refreshIntervalMs = 2 * 60 * 60 * 1000; // 2 hours
+    /**
+     * Invalidates the cache and immediately fetches fresh menus.
+     * Can be called from the /api/menus/refresh endpoint.
+     */
+    async invalidateCache(): Promise<RestaurantMenus> {
+        console.log('Cache invalidated by request');
+        this.cache.delete(this.CACHE_KEY);
+        return this.fetchAndCacheMenus();
+    }
 
-        this.refreshInterval = setInterval(async () => {
+    private scheduleNextRefresh(): void {
+        const msUntilNext = minutesUntilNextRefresh() * 60_000;
+        const nextTime = new Date(Date.now() + msUntilNext);
+        console.log(`Next menu refresh scheduled for ${nextTime.toLocaleTimeString()} (in ${Math.round(msUntilNext / 60_000)} min)`);
+
+        this.refreshTimeout = setTimeout(async () => {
             try {
-                console.log('Background refresh triggered');
+                console.log('Daily 10:00 refresh triggered');
                 await this.fetchAndCacheMenus();
             } catch (error) {
-                console.error('Background refresh failed:', error);
+                console.error('Daily refresh failed:', error);
+            } finally {
+                this.scheduleNextRefresh();
             }
-        }, refreshIntervalMs);
+        }, msUntilNext);
+    }
 
-        // Initial cache population
+    private startBackgroundRefresh(): void {
+        // Warm up cache shortly after server start
         setTimeout(() => {
             this.fetchAndCacheMenus().catch(error => {
                 console.error('Initial cache population failed:', error);
             });
-        }, 1000); // Delay to let server start
+        }, 1000);
+
+        this.scheduleNextRefresh();
     }
 
     stopBackgroundRefresh(): void {
-        if (this.refreshInterval) {
-            clearInterval(this.refreshInterval);
-            this.refreshInterval = null;
+        if (this.refreshTimeout) {
+            clearTimeout(this.refreshTimeout);
+            this.refreshTimeout = null;
         }
     }
 }

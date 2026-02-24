@@ -33,6 +33,10 @@ class MemoryCache<T> {
     getStale(key: string): T | null {
         return this.cache.get(key)?.data ?? null;
     }
+
+    delete(key: string): void {
+        this.cache.delete(key);
+    }
 }
 
 export default MemoryCache;

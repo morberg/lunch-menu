@@ -508,24 +508,6 @@
             content.appendChild(tabs);
             content.appendChild(panels);
 
-            // Section listing restaurants with zero items all week
-            const emptyRestaurants = restaurants.filter(r => !(restaurantsWithAnyItems.has(r.key)));
-            if (emptyRestaurants.length) {
-                const section = document.createElement('div');
-                section.className = 'day-section';
-                section.innerHTML = '<div class="day-title">Restauranger utan menydata</div>';
-                emptyRestaurants.forEach(r => {
-                    const div = document.createElement('div');
-                    div.className = 'restaurant';
-                    div.dataset.rest = r.key;
-                    const isCollapsed = collapsed.has(r.key);
-                    div.innerHTML = buildRestaurantHeader(r, false, null) + `<div class="restaurant-content"><div class="placeholder-note">Ingen meny kunde hämtas. Klicka för att besöka deras sida.</div></div>`;
-                    if (isCollapsed) div.classList.add('collapsed');
-                    section.appendChild(div);
-                });
-                content.appendChild(section);
-            }
-
             applyToggleHandlers(document);
 
             function setActiveDay(daySv) {

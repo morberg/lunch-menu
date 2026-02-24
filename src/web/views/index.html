@@ -279,49 +279,12 @@
             color: #344e41;
             text-align: center;
         }
-
-        .refresh-btn {
-            background: none;
-            border: 1px solid #588157;
-            color: #588157;
-            border-radius: 999px;
-            padding: 4px 12px;
-            font-size: 13px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 6px;
-            transition: background 0.15s, color 0.15s;
-        }
-
-        .refresh-btn:hover {
-            background: #588157;
-            color: #fff;
-        }
-
-        .refresh-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .refresh-btn .spin {
-            display: inline-block;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
     </style>
 </head>
 
 <body>
     <header>
         <h1>Dagens Lunch</h1>
-        <button class="refresh-btn" id="refresh-btn" onclick="forceRefresh()" title="Hämta de senaste menyerna från restaurangerna">
-            🔄 Uppdatera menyer
-        </button>
     </header>
 
     <main>
@@ -334,6 +297,8 @@
 
     <footer class="page-footer">
         <a href="/api/docs" class="api-docs-link">API Documentation</a>
+        <span style="margin: 0 8px; color: #888">&middot;</span>
+        <a href="#" class="api-docs-link" id="refresh-link" onclick="forceRefresh(); return false;">Uppdatera menyer</a>
     </footer>
 
     <div id="fredagskaka-banner" class="hidden">
@@ -365,21 +330,20 @@
         }
 
         async function forceRefresh() {
-            const btn = document.getElementById('refresh-btn');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spin">🔄</span> Hämtar...';
+            const link = document.getElementById('refresh-link');
+            link.textContent = 'Hämtar...';
             try {
                 const response = await fetch('/api/menus/refresh', { method: 'POST' });
                 if (!response.ok) throw new Error('Refresh failed');
                 const { menus } = await response.json();
                 document.getElementById('content').innerHTML = '';
                 displayMenus(menus);
-                btn.innerHTML = '✅ Uppdaterad';
-                setTimeout(() => { btn.innerHTML = '🔄 Uppdatera menyer'; btn.disabled = false; }, 2000);
+                link.textContent = 'Uppdaterad';
+                setTimeout(() => { link.textContent = 'Uppdatera menyer'; }, 2000);
             } catch (error) {
                 console.error('Force refresh failed:', error);
-                btn.innerHTML = '❌ Försök igen';
-                setTimeout(() => { btn.innerHTML = '🔄 Uppdatera menyer'; btn.disabled = false; }, 2000);
+                link.textContent = 'Försök igen';
+                setTimeout(() => { link.textContent = 'Uppdatera menyer'; }, 2000);
             }
         }
 

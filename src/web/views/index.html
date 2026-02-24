@@ -279,12 +279,49 @@
             color: #344e41;
             text-align: center;
         }
+
+        .refresh-btn {
+            background: none;
+            border: 1px solid #588157;
+            color: #588157;
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 6px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .refresh-btn:hover {
+            background: #588157;
+            color: #fff;
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .refresh-btn .spin {
+            display: inline-block;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
 <body>
     <header>
         <h1>Dagens Lunch</h1>
+        <button class="refresh-btn" id="refresh-btn" onclick="forceRefresh()" title="Hämta de senaste menyerna från restaurangerna">
+            🔄 Uppdatera menyer
+        </button>
     </header>
 
     <main>
@@ -324,6 +361,25 @@
                 const loading = document.getElementById('loading');
                 loading.innerHTML = '<div class="error">Kunde inte ladda menyer. Försök igen senare.</div>';
                 console.error('Error loading menus:', error);
+            }
+        }
+
+        async function forceRefresh() {
+            const btn = document.getElementById('refresh-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spin">🔄</span> Hämtar...';
+            try {
+                const response = await fetch('/api/menus/refresh', { method: 'POST' });
+                if (!response.ok) throw new Error('Refresh failed');
+                const { menus } = await response.json();
+                document.getElementById('content').innerHTML = '';
+                displayMenus(menus);
+                btn.innerHTML = '✅ Uppdaterad';
+                setTimeout(() => { btn.innerHTML = '🔄 Uppdatera menyer'; btn.disabled = false; }, 2000);
+            } catch (error) {
+                console.error('Force refresh failed:', error);
+                btn.innerHTML = '❌ Försök igen';
+                setTimeout(() => { btn.innerHTML = '🔄 Uppdatera menyer'; btn.disabled = false; }, 2000);
             }
         }
 

@@ -5,14 +5,11 @@ import { loadHtmlSource } from '../utils/scraper';
 
 /**
  * Smakapakina scraper
- * Supports two historical site shapes:
- *  1. Legacy Wix Restaurants embedded menu (data-hook="wixrest-menus-item-title" etc) – fixture: smakapakina.html
- *  2. New (2025) full site /meny page where weekday dishes are only present in rendered textual content – fixture: smakapakina_v2.html
+ * Parses the current /meny page where weekday dishes are present in rendered textual content.
  *
  * Policy:
  *  - Always return exactly one MenuItem per weekday (Mon–Fri) when available.
- *  - Legacy version includes a price (100 kr) – parsed via parsePrice.
- *  - New version has no visible lunch price → price null.
+ *  - Price is extracted from embedded JSON when present, otherwise null.
  *  - Remove dates, enumeration indexes, Chinese parenthetical parts, duplicated dishes, and trailing punctuation.
  */
 export async function scrapeSmakapakina(fixtureUrl?: string): Promise<MenuItem[]> {
@@ -22,54 +19,11 @@ export async function scrapeSmakapakina(fixtureUrl?: string): Promise<MenuItem[]
             'https://www.smakapakina.se/meny/',
             { headers: { 'User-Agent': 'Mozilla/5.0' } }
         );
-        return parseFixtureHtml(html);
+        return parseModernMainPage(html);
     } catch (err) {
         console.error('Error scraping Smakapakina:', err);
         return [];
     }
-}
-
-function parseFixtureHtml(html: string): MenuItem[] {
-    // Decide which parser to use
-    if (html.includes('data-hook="wixrest-menus-item-title"')) {
-        return parseLegacyEmbedded(html);
-    }
-    return parseModernMainPage(html);
-}
-
-// ---------------- Legacy parser (wix embedded component) ----------------
-function parseLegacyEmbedded(html: string): MenuItem[] {
-    const titleRegex = /data-hook="wixrest-menus-item-title"[^>]*>([^<]+)</g;
-    const descriptionRegex = /data-hook="wixrest-menus-item-description"[^>]*>([^<]+(?:<[^>]*>[^<]*)*?)</g;
-    const priceRegex = /data-hook="wixrest-menus-item-price"[^>]*>([^<]+)</g;
-    let titleMatch: RegExpExecArray | null;
-    let descriptionMatch: RegExpExecArray | null;
-    let priceMatch: RegExpExecArray | null;
-    const titles: string[] = [];
-    const descriptions: string[] = [];
-    const prices: string[] = [];
-
-    while ((titleMatch = titleRegex.exec(html)) !== null) titles.push(titleMatch[1].trim());
-    while ((descriptionMatch = descriptionRegex.exec(html)) !== null) descriptions.push(descriptionMatch[1].trim());
-    while ((priceMatch = priceRegex.exec(html)) !== null) prices.push(priceMatch[1].trim());
-
-    const items: MenuItem[] = [];
-    for (let i = 0; i < titles.length; i++) {
-        const title = titles[i];
-        if (!/(måndag|tisdag|onsdag|torsdag|fredag)/i.test(title)) continue;
-        const description = descriptions[i] || '';
-        const priceText = prices[i] || '';
-        const dishMatches = description.match(/\d+\.\s*[^0-9]+?(?=\s*\d+\.|$)/g);
-        if (!dishMatches) continue;
-        const dishes = dishMatches.map(d => cleanDish(d.replace(/^\d+\.\s*/, ''))).filter(Boolean);
-        if (!dishes.length) continue;
-        const day = (title.match(/(måndag|tisdag|onsdag|torsdag|fredag)/i)?.[1] || '').toLowerCase();
-        const dayCap = capitalizeSv(day);
-        const price = parsePrice(priceText); // will return number or null per policy
-        items.push({ name: joinDishes(dishes), day: dayCap, price });
-    }
-    // Ensure ordering
-    return sortByWeekday(items);
 }
 
 // Extract price data from JSON embedded in the HTML
@@ -104,7 +58,6 @@ function extractPriceData(html: string): Map<string, number> {
     return priceMap;
 }
 
-// ---------------- Modern main page parser (v2) ----------------
 function parseModernMainPage(html: string): MenuItem[] {
     const bodyText = extractBodyText(html);
 
@@ -212,6 +165,4 @@ function sortByWeekday(items: MenuItem[]): MenuItem[] {
     return items.sort((a, b) => order.indexOf(a.day) - order.indexOf(b.day));
 }
 
-// Extract the first dumpling filling variant (used to append to Friday per expected v2 JSON)
-export { parseFixtureHtml as parseSmakapakinaMenuFromHtml };
-// end
+export { parseModernMainPage as parseSmakapakinaMenuFromHtml };

@@ -36,9 +36,12 @@ class MenuService {
     private cache = new MemoryCache<RestaurantMenus>();
     private readonly CACHE_KEY = 'restaurant_menus';
     private refreshTimeout: NodeJS.Timeout | null = null;
+    private warmupTimeout: NodeJS.Timeout | null = null;
 
-    constructor() {
-        this.startBackgroundRefresh();
+    constructor(startBackgroundRefresh: boolean = true) {
+        if (startBackgroundRefresh) {
+            this.startBackgroundRefresh();
+        }
     }
 
     async getMenus(): Promise<RestaurantMenus> {
@@ -143,7 +146,7 @@ class MenuService {
 
     private startBackgroundRefresh(): void {
         // Warm up cache shortly after server start
-        setTimeout(() => {
+        this.warmupTimeout = setTimeout(() => {
             this.fetchAndCacheMenus().catch(error => {
                 console.error('Initial cache population failed:', error);
             });
@@ -153,6 +156,11 @@ class MenuService {
     }
 
     stopBackgroundRefresh(): void {
+        if (this.warmupTimeout) {
+            clearTimeout(this.warmupTimeout);
+            this.warmupTimeout = null;
+        }
+
         if (this.refreshTimeout) {
             clearTimeout(this.refreshTimeout);
             this.refreshTimeout = null;
@@ -161,5 +169,5 @@ class MenuService {
 }
 
 // Export singleton instance
-export const menuService = new MenuService();
+export const menuService = new MenuService(process.env.NODE_ENV !== 'test');
 export default MenuService;

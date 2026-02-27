@@ -123,30 +123,32 @@ function extractMenuItems(accordionWrapper: any, $: any, basePrice: number | nul
 
     // Process items: remove duplicates and handle weekly specials
     const processedItems: MenuItem[] = [];
-    const seenDishes = new Set<string>();
+    const seenWeeklyDishes = new Set<string>();
+    const seenDailyDishes = new Set<string>();
 
     for (const item of items) {
         const dishText = item.dishText!;
 
         if (weeklySpecials.has(dishText)) {
             // This is a weekly special - only add once with special pricing
-            if (!seenDishes.has(dishText)) {
+            if (!seenWeeklyDishes.has(dishText)) {
                 processedItems.push({
                     name: item.name,
                     price: specialPrice,
                     day: "Hela veckan"
                 });
-                seenDishes.add(dishText);
+                seenWeeklyDishes.add(dishText);
             }
         } else {
             // Regular daily dish
-            if (!seenDishes.has(dishText)) {
+            const dailyKey = `${item.day}:${dishText}`;
+            if (!seenDailyDishes.has(dailyKey)) {
                 processedItems.push({
                     name: item.name,
                     price: item.price,
                     day: item.day
                 });
-                seenDishes.add(dishText);
+                seenDailyDishes.add(dailyKey);
             }
         }
     }

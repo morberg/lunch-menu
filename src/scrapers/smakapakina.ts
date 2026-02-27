@@ -1,7 +1,11 @@
+import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
-import { bodyText as extractBodyText } from '../utils/html-text';
 import { loadHtmlSource } from '../utils/scraper';
+import { SWEDISH_DAYS, normalizeToSwedishDay } from '../utils/swedish-days';
+
+const SWEDISH_DAY_PATTERN = SWEDISH_DAYS.map((day) => day.toLowerCase()).join('|');
+const LEADING_DAY_REGEX = new RegExp(`^(${SWEDISH_DAY_PATTERN})[^a-zA-ZåäöÅÄÖ]*`, 'i');
 
 /**
  * Smakapakina scraper
@@ -26,67 +30,45 @@ export async function scrapeSmakapakina(fixtureUrl?: string): Promise<MenuItem[]
     }
 }
 
-// Extract price data from JSON embedded in the HTML
-function extractPriceData(html: string): Map<string, number> {
-    const priceMap = new Map<string, number>();
-
-    try {
-        // Look for name field followed by priceInfo data in the HTML
-        // Pattern: "name":"Weekday, date","description":"...","featured":false,"priceInfo":{"price":"100"
-        const nameWithPriceRegex = /"name":"([^"]+)"[^}]*"priceInfo":\{"price":"(\d+)"/g;
-
-        let match;
-        while ((match = nameWithPriceRegex.exec(html)) !== null) {
-            const name = match[1].toLowerCase();
-            const price = parsePrice(match[2]);
-            if (price === null) {
-                continue;
-            }
-
-            // Map Swedish weekday names to our expected format
-            if (name.includes('måndag')) priceMap.set('måndag', price);
-            else if (name.includes('tisdag')) priceMap.set('tisdag', price);
-            else if (name.includes('onsdag')) priceMap.set('onsdag', price);
-            else if (name.includes('torsdag')) priceMap.set('torsdag', price);
-            else if (name.includes('fredag')) priceMap.set('fredag', price);
-        }
-    } catch (error) {
-        // If price extraction fails, return empty map (prices will be null)
-        console.warn('Failed to extract price data:', error);
-    }
-
-    return priceMap;
-}
-
 function parseModernMainPage(html: string): MenuItem[] {
-    const bodyText = extractBodyText(html);
-
-    // Extract price data from JSON embedded in HTML
-    const priceMap = extractPriceData(html);
-
-    // Extract blocks per weekday
-    const dayBlockRegex = /(måndag|tisdag|onsdag|torsdag|fredag)[^]*?(?=(måndag|tisdag|onsdag|torsdag|fredag)|$)/gi;
+    const $ = cheerio.load(html);
     const seen = new Set<string>();
     const results: MenuItem[] = [];
-    let m: RegExpExecArray | null;
-    while ((m = dayBlockRegex.exec(bodyText)) !== null) {
-        const dayLower = m[1].toLowerCase();
-        if (seen.has(dayLower)) continue; // first occurrence only
-        seen.add(dayLower);
-        let block = m[0];
-        // Stop at start of dumpling / non-lunch sections to avoid spillover (Friday issue)
-        const spillIndex = block.search(/DUMPLINGS|JIAO\s+ZI/i);
-        if (spillIndex > 0) {
-            block = block.slice(0, spillIndex);
-        }
-        const dishes = extractEnumeratedDishes(block);
-        if (!dishes.length) continue;
 
-        // Get price for this day from the extracted price map
-        const rawPrice = priceMap.get(dayLower);
-        const dayPrice = rawPrice ?? null;
-        results.push({ day: capitalizeSv(dayLower), name: joinDishes(dishes), price: dayPrice });
-    }
+    $('[data-hook="item.container"]').each((_, element) => {
+        const item = $(element);
+        const nameText = item.find('[data-hook="item.name"]').first().text().trim();
+        const descriptionText = item.find('[data-hook="item.description"]').first().text().trim();
+        const priceText = item.find('[data-hook="item.price"]').first().text().trim();
+
+        if (!nameText || !descriptionText) {
+            return;
+        }
+
+        const dayCandidate = nameText.split(',')[0].trim();
+        const day = normalizeToSwedishDay(dayCandidate);
+        if (!day) {
+            return;
+        }
+
+        const dayLower = day.toLowerCase();
+        if (seen.has(dayLower)) {
+            return;
+        }
+
+        const dishes = extractEnumeratedDishes(descriptionText);
+        if (!dishes.length) {
+            return;
+        }
+
+        seen.add(dayLower);
+        results.push({
+            day,
+            name: joinDishes(dishes),
+            price: parsePrice(priceText)
+        });
+    });
+
     return sortByWeekday(results);
 }
 
@@ -125,7 +107,7 @@ function extractEnumeratedDishes(text: string): string[] {
         if (preEnumMatch) {
             // Remove the day name and any date
             const pre = preEnumMatch
-                .replace(/^(måndag|tisdag|onsdag|torsdag|fredag)[^a-zA-ZåäöÅÄÖ]*/i, '')
+                .replace(LEADING_DAY_REGEX, '')
                 .replace(/\b\d{1,2}\s+(Jan|Feb|Mar|Apr|Maj|Jun|Jul|Aug|Sep|Okt|Nov|Dec)\b/gi, '')
                 .trim();
             // Heuristic: a dish phrase with at least one space and few commas
@@ -156,13 +138,8 @@ function joinDishes(dishes: string[]): string {
     return dishes.join(', ').replace(/[\s,.;:-]+$/, '');
 }
 
-function capitalizeSv(day: string): string {
-    return day.charAt(0).toUpperCase() + day.slice(1).toLowerCase();
-}
-
 function sortByWeekday(items: MenuItem[]): MenuItem[] {
-    const order = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'];
-    return items.sort((a, b) => order.indexOf(a.day) - order.indexOf(b.day));
+    return items.sort((a, b) => SWEDISH_DAYS.indexOf(a.day as (typeof SWEDISH_DAYS)[number]) - SWEDISH_DAYS.indexOf(b.day as (typeof SWEDISH_DAYS)[number]));
 }
 
 export { parseModernMainPage as parseSmakapakinaMenuFromHtml };

@@ -2,11 +2,12 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { SWEDISH_DAYS } from '../utils/swedish-days';
+import { normalizeWhitespace } from '../utils/scraper';
 
 const weeklyLabels = ['Veckans vegetariska', 'Månadens alternativ'];
 const KANTIN_LUNCH_PRICE = 145;
 
-const normalizeText = (text: string): string => text.replace(/\s+/g, ' ').trim();
+const normalizeText = (text: string): string => normalizeWhitespace(text);
 
 const stripLeadingSeparators = (text: string): string => text.replace(/^\s*[-–—:]\s*/, '').trim();
 

@@ -1,8 +1,7 @@
-import axios from 'axios';
-import * as fs from 'fs';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
 import { bodyText as extractBodyText } from '../utils/html-text';
+import { loadHtmlSource } from '../utils/scraper';
 
 /**
  * Smakapakina scraper
@@ -18,21 +17,12 @@ import { bodyText as extractBodyText } from '../utils/html-text';
  */
 export async function scrapeSmakapakina(fixtureUrl?: string): Promise<MenuItem[]> {
     try {
-        if (fixtureUrl && fixtureUrl.startsWith('file://')) {
-            const html = fs.readFileSync(fixtureUrl.replace('file://', ''), 'utf8');
-            return parseFixtureHtml(html);
-        }
-
-        // Live strategy (kept simple – we still prefer fixtures in tests)
-        const mainUrl = 'https://www.smakapakina.se/meny/';
-        let html: string | null = null;
-        try {
-            const res = await axios.get(mainUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } });
-            html = res.data;
-        } catch {/* ignore network errors */ }
-        if (!html) return [];
-        const parsed = parseFixtureHtml(html);
-        return parsed;
+        const html = await loadHtmlSource(
+            fixtureUrl,
+            'https://www.smakapakina.se/meny/',
+            { headers: { 'User-Agent': 'Mozilla/5.0' } }
+        );
+        return parseFixtureHtml(html);
     } catch (err) {
         console.error('Error scraping Smakapakina:', err);
         return [];

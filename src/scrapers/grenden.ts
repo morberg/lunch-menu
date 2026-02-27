@@ -1,29 +1,23 @@
-import axios from 'axios';
-import * as fs from 'fs';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
 import { normalizeToSwedishDay } from '../utils/swedish-days';
+import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
 
 export async function scrapeGrendenMenu(fixtureUrl?: string): Promise<MenuItem[]> {
-    try {
-        if (fixtureUrl && fixtureUrl.startsWith('file://')) {
-            const html = fs.readFileSync(fixtureUrl.replace('file://', ''), 'utf8');
-            return parseGrendenMenuFromHtml(html);
-        }
-
-        const response = await axios.get('https://www.nordrest.se/restaurang/grenden/');
-        return parseGrendenMenuFromHtml(response.data);
-    } catch (error) {
-        console.error('Error scraping Grenden menu:', error);
-        return [
+    return scrapeHtmlMenu({
+        scraperName: 'Grenden',
+        fixtureUrl,
+        url: 'https://www.nordrest.se/restaurang/grenden/',
+        parseHtml: parseGrendenMenuFromHtml,
+        fallback: [
             {
                 name: 'Dagens lunch – Meny inte tillgänglig för tillfället',
                 price: null,
-                day: "Hela veckan"
+                day: 'Hela veckan'
             }
-        ];
-    }
+        ]
+    });
 }
 
 export function parseGrendenMenuFromHtml(html: string): MenuItem[] {
@@ -163,7 +157,7 @@ function extractMenuItems(accordionWrapper: any, $: any, basePrice: number | nul
 function extractBasePrice($: cheerio.Root): number | null {
     const priceListItems = $('ul.pris-list li').toArray();
     for (const item of priceListItems) {
-        const text = $(item).text().replace(/\s+/g, ' ').trim();
+        const text = normalizeWhitespace($(item).text());
         const parsed = parsePrice(text);
         if (parsed !== null) {
             return parsed;
@@ -171,6 +165,6 @@ function extractBasePrice($: cheerio.Root): number | null {
     }
 
     // Fallback for alternate page shapes where lunch price appears in generic text.
-    const lunchPriceText = $('*:contains("Lunchpris")').first().text().replace(/\s+/g, ' ').trim();
+    const lunchPriceText = normalizeWhitespace($('*:contains("Lunchpris")').first().text());
     return parsePrice(lunchPriceText);
 }

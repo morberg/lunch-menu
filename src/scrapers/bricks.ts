@@ -1,24 +1,16 @@
-import axios from 'axios';
-import * as fs from 'fs';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
 import { normalizeToSwedishDay } from '../utils/swedish-days';
+import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
 
 export const scrapeBricksMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
-    try {
-        if (fixtureUrl && fixtureUrl.startsWith('file://')) {
-            const html = fs.readFileSync(fixtureUrl.replace('file://', ''), 'utf8');
-            return parseBricksHtml(html);
-        }
-
-        const url = 'https://brickseatery.se/lunch/';
-        const response = await axios.get(url);
-        return parseBricksHtml(response.data);
-    } catch (error) {
-        console.error('Error scraping Bricks menu:', error);
-        return [];
-    }
+    return scrapeHtmlMenu({
+        scraperName: 'Bricks',
+        fixtureUrl,
+        url: 'https://brickseatery.se/lunch/',
+        parseHtml: parseBricksHtml
+    });
 };
 
 export function parseBricksHtml(html: string): MenuItem[] {
@@ -45,9 +37,9 @@ export function parseBricksHtml(html: string): MenuItem[] {
         wrapper.find('div.lunchmeny_container').each((_, containerEl) => {
             const container = $(containerEl);
 
-            const category = container.find('span.lunch_title').text().replace(/\s+/g, ' ').trim();
-            const priceText = container.find('span.lunch_price').text().replace(/\s+/g, ' ').trim();
-            const description = container.find('div.lunch_desc').text().replace(/\s+/g, ' ').trim();
+            const category = normalizeWhitespace(container.find('span.lunch_title').text());
+            const priceText = normalizeWhitespace(container.find('span.lunch_price').text());
+            const description = normalizeWhitespace(container.find('div.lunch_desc').text());
 
             if (!category || !description) {
                 return;

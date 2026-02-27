@@ -1,24 +1,16 @@
-import axios from 'axios';
-import * as fs from 'fs';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
 import { isSwedishDay } from '../utils/swedish-days';
+import { scrapeHtmlMenu, splitNormalizedLines } from '../utils/scraper';
 
 export const scrapeEdisonMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
-    try {
-        if (fixtureUrl && fixtureUrl.startsWith('file://')) {
-            const html = fs.readFileSync(fixtureUrl.replace('file://', ''), 'utf8');
-            return parseEdisonMenuFromHtml(html);
-        }
-
-        const url = 'https://restaurangedison.se/lunch/';
-        const response = await axios.get(url);
-        return parseEdisonMenuFromHtml(response.data);
-    } catch (error) {
-        console.error('Error scraping Edison menu:', error);
-        return [];
-    }
+    return scrapeHtmlMenu({
+        scraperName: 'Edison',
+        fixtureUrl,
+        url: 'https://restaurangedison.se/lunch/',
+        parseHtml: parseEdisonMenuFromHtml
+    });
 };
 
 export const parseEdisonMenuFromHtml = (html: string): MenuItem[] => {
@@ -26,7 +18,7 @@ export const parseEdisonMenuFromHtml = (html: string): MenuItem[] => {
     const menuItems: MenuItem[] = [];
 
     const bodyText = $('body').text();
-    const lines = bodyText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+    const lines = splitNormalizedLines(bodyText);
 
     let currentDay = '';
 

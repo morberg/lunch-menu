@@ -1,22 +1,15 @@
-import axios from 'axios';
-import * as fs from 'fs';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
+import { scrapeHtmlMenu } from '../utils/scraper';
 
 export async function scrapeFoodHallMenu(fixtureUrl?: string): Promise<MenuItem[]> {
-    try {
-        if (fixtureUrl && fixtureUrl.startsWith('file://')) {
-            const html = fs.readFileSync(fixtureUrl.replace('file://', ''), 'utf8');
-            return parseFoodHallMenuFromHtml(html);
-        }
-
-        const response = await axios.get('https://www.nordrest.se/restaurang/food-hall/');
-        return parseFoodHallMenuFromHtml(response.data);
-    } catch (error) {
-        console.error('Error scraping Food Hall menu:', error);
-        return [];
-    }
+    return scrapeHtmlMenu({
+        scraperName: 'Food Hall',
+        fixtureUrl,
+        url: 'https://www.nordrest.se/restaurang/food-hall/',
+        parseHtml: parseFoodHallMenuFromHtml
+    });
 }
 
 export function parseFoodHallMenuFromHtml(html: string): MenuItem[] {

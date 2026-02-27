@@ -3,6 +3,7 @@ import * as cheerio from 'cheerio';
 import pdfParse from 'pdf-parse';
 import { MenuItem } from '../types/menu';
 import { SWEDISH_DAYS, SwedishDay } from '../utils/swedish-days';
+import { normalizeWhitespace, splitNormalizedLines } from '../utils/scraper';
 
 const EATERY_LUNCH_PRICE = 139;
 
@@ -65,12 +66,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
     const menuItems: MenuItem[] = [];
 
     // Clean the text and split into lines
-    const lines = pdfText
-        .replace(/\r\n/g, '\n')
-        .replace(/\r/g, '\n')
-        .split('\n')
-        .map((line) => normalizeLine(line))
-        .filter((line) => line.length > 0);
+    const lines = splitNormalizedLines(pdfText);
 
     let currentDay: SwedishDay | null = null;
 
@@ -155,7 +151,7 @@ function findDay(line: string): SwedishDay | null {
 }
 
 function normalizeLine(line: string): string {
-    return line.replace(/\s+/g, ' ').trim();
+    return normalizeWhitespace(line);
 }
 
 function startsFooterBlock(line: string): boolean {

@@ -22,151 +22,73 @@ export async function scrapeGrendenMenu(fixtureUrl?: string): Promise<MenuItem[]
 
 export function parseGrendenMenuFromHtml(html: string): MenuItem[] {
     const $ = cheerio.load(html);
+    const items: MenuItem[] = [];
 
-    // Extract base price from visible price list (e.g. "Lunchpris: 105 kr")
-    const basePrice = extractBasePrice($);
+    // Extract prices from the castit-lunch-meta section
+    const { dailyPrice, weeklyPrice } = extractPrices($);
 
-    // Find the currently visible accordion wrapper (the one with display: block)
-    const visibleAccordion = $('.accordion-wrapper').filter((index, element) => {
-        const style = $(element).attr('style');
-        return Boolean(style && style.includes('display: block'));
+    // Find the active week panel
+    const weekPanel = $('.castit-weekpanel.is-active').first();
+    const container = weekPanel.length > 0 ? weekPanel : $('body');
+
+    // Extract weekly specials from castit-day--week section
+    container.find('section.castit-day.castit-day--week .castit-dish:not(.castit-dish--day-note)').each((_: number, el: any) => {
+        const dish = extractDish($, el);
+        if (dish) {
+            items.push({ name: dish, price: weeklyPrice, day: 'Hela veckan' });
+        }
     });
 
-    if (visibleAccordion.length === 0) {
-        // Fallback to first accordion wrapper if none explicitly visible
-        const firstAccordion = $('.accordion-wrapper').first();
-        if (firstAccordion.length > 0) {
-            return extractMenuItems(firstAccordion, $, basePrice);
-        }
-    } else {
-        return extractMenuItems(visibleAccordion, $, basePrice);
-    }
+    // Extract daily dishes from regular castit-day sections (not weekly specials)
+    container.find('section.castit-day:not(.castit-day--week)').each((_: number, section: any) => {
+        const dayText = normalizeWhitespace($(section).find('h3.castit-day__title .castit-i18n').first().attr('data-sv') || $(section).find('h3.castit-day__title .castit-i18n').first().text());
+        const dayName = normalizeToSwedishDay(dayText);
+        if (!dayName) return;
 
-    return [
-        {
-            name: 'Dagens lunch – Dagligt växlande meny med svenska klassiker och moderna gröna rätter',
-            price: null,
-            day: "Hela veckan"
-        }
-    ];
-}
-
-function extractMenuItems(accordionWrapper: any, $: any, basePrice: number | null): MenuItem[] {
-    const items: Array<MenuItem & { dishText?: string }> = [];
-    const dishCount: { [key: string]: number } = {};
-
-    // Extract special pricing information from the page - target specifically the "grill & fusion special" price
-    const specialPriceText = $('*:contains("grill & fusion special")').text();
-    const specialPriceMatch = specialPriceText.match(/grill\s*&\s*fusion\s*special\s*(\d+)\s*SEK/i);
-    const specialPrice = specialPriceMatch ? parsePrice(specialPriceMatch[1]) : null;
-
-    // Find all weekday accordion items within this wrapper
-    const weekdayItems = accordionWrapper.find('.weekday-item');
-
-    weekdayItems.each((index: number, element: any) => {
-        const dayElement = $(element);
-        const dayHeader = dayElement.find('.accordion-header').first().text().trim().split('\n')[0].trim();
-        const dayName = normalizeToSwedishDay(dayHeader);
-        if (!dayName) {
-            return;
-        }
-
-        // Find all ratter items (menu dishes) for this day
-        const ratterItems = dayElement.find('li.ratter');
-
-        ratterItems.each((ratterIndex: number, ratterElement: any) => {
-            const dishElement = $(ratterElement);
-            const dishText = dishElement.clone().children().remove().end().text().trim();
-
-            if (dishText && dishText.length > 5) {
-                // Clean up the dish text and extract name/description
-                const cleanDish = dishText.replace(/\s+/g, ' ').trim();
-
-                // Count occurrences of each dish to identify weekly specials
-                dishCount[cleanDish] = (dishCount[cleanDish] || 0) + 1;
-
-                // Split by | to separate name and ingredients
-                const parts = cleanDish.split('|').map((part: string) => part.trim());
-
-                if (parts.length >= 2) {
-                    const name = parts[0];
-                    const description = parts.slice(1).join(' | ');
-
-                    items.push({
-                        name: `${name} – ${description}`,
-                        price: basePrice,
-                        day: dayName,
-                        dishText: cleanDish
-                    });
-                } else if (cleanDish.length > 10) {
-                    // Handle dishes without | separator
-                    items.push({
-                        name: cleanDish,
-                        price: basePrice,
-                        day: dayName,
-                        dishText: cleanDish
-                    });
-                }
+        $(section).find('.castit-dish:not(.castit-dish--day-note)').each((_: number, el: any) => {
+            const dish = extractDish($, el);
+            if (dish) {
+                items.push({ name: dish, price: dailyPrice, day: dayName });
             }
         });
     });
 
-    // Identify dishes that appear on multiple days (weekly specials)
-    const weeklySpecials = new Set<string>();
-    const totalDays = weekdayItems.length;
-
-    for (const [dishText, count] of Object.entries(dishCount)) {
-        if (count >= Math.max(3, Math.floor(totalDays * 0.6))) { // Appears on 60% or more of days
-            weeklySpecials.add(dishText);
-        }
-    }
-
-    // Process items: remove duplicates and handle weekly specials
-    const processedItems: MenuItem[] = [];
-    const seenWeeklyDishes = new Set<string>();
-    const seenDailyDishes = new Set<string>();
-
-    for (const item of items) {
-        const dishText = item.dishText!;
-
-        if (weeklySpecials.has(dishText)) {
-            // This is a weekly special - only add once with special pricing
-            if (!seenWeeklyDishes.has(dishText)) {
-                processedItems.push({
-                    name: item.name,
-                    price: specialPrice,
-                    day: "Hela veckan"
-                });
-                seenWeeklyDishes.add(dishText);
-            }
-        } else {
-            // Regular daily dish
-            const dailyKey = `${item.day}:${dishText}`;
-            if (!seenDailyDishes.has(dailyKey)) {
-                processedItems.push({
-                    name: item.name,
-                    price: item.price,
-                    day: item.day
-                });
-                seenDailyDishes.add(dailyKey);
-            }
-        }
-    }
-
-    return processedItems;
+    return items;
 }
 
-function extractBasePrice($: cheerio.Root): number | null {
-    const priceListItems = $('ul.pris-list li').toArray();
-    for (const item of priceListItems) {
-        const text = normalizeWhitespace($(item).text());
-        const parsed = parsePrice(text);
-        if (parsed !== null) {
-            return parsed;
+function extractDish($: cheerio.Root, el: any): string | null {
+    const titleEl = $(el).find('.castit-dish__title .castit-i18n').first();
+    const descEl = $(el).find('.castit-dish__desc .castit-i18n').first();
+
+    const title = normalizeWhitespace(titleEl.attr('data-sv') || titleEl.text());
+    const desc = normalizeWhitespace(descEl.attr('data-sv') || descEl.text());
+
+    if (!title) return null;
+
+    return desc ? `${title}, ${desc}` : title;
+}
+
+function extractPrices($: cheerio.Root): { dailyPrice: number | null; weeklyPrice: number | null } {
+    let dailyPrice: number | null = null;
+    let weeklyPrice: number | null = null;
+
+    $('.castit-lunch-meta__item').each((_: number, el: any) => {
+        const text = normalizeWhitespace($(el).text());
+        const price = parsePrice(text);
+        if (price === null) return;
+
+        if (/weekly|vecka/i.test(text)) {
+            weeklyPrice = price;
+        } else {
+            dailyPrice = price;
         }
+    });
+
+    // Fallback: try the week-note inside the weekly specials column
+    if (weeklyPrice === null) {
+        const noteText = normalizeWhitespace($('.castit-week-note .castit-week-note__title').text());
+        weeklyPrice = parsePrice(noteText);
     }
 
-    // Fallback for alternate page shapes where lunch price appears in generic text.
-    const lunchPriceText = normalizeWhitespace($('*:contains("Lunchpris")').first().text());
-    return parsePrice(lunchPriceText);
+    return { dailyPrice, weeklyPrice };
 }

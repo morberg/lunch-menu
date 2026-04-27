@@ -1,82 +1,67 @@
 [
     {
-        "name": "Mushroom risoni, gremolata, Grana Padano, rocket salad",
-        "price": 105,
-        "day": "Måndag"
-    },
-    {
-        "name": "Breaded saithe, apple- and curry slaw, pea salad with mint, boiled potatoes",
-        "price": 105,
-        "day": "Måndag"
-    },
-    {
-        "name": "Chicken Vindaloo, carrot- and cabbage salad, basmati rice, raita",
-        "price": 105,
-        "day": "Måndag"
-    },
-    {
         "name": "Korean deep fried chicken, gochujangmayo, rice, pickles",
         "price": 125,
         "day": "Hela veckan"
     },
     {
-        "name": "Falafel, roasted potatoes, tabbouleh, tahini- and garlic dressing",
+        "name": "Potato gnocchi, with creamy pesto sauce, roasted asparagus, grana padano",
+        "price": 105,
+        "day": "Måndag"
+    },
+    {
+        "name": "Fish and shellfishcasserole with saffron, tomatoes, potatoes, dill and garlic",
+        "price": 105,
+        "day": "Måndag"
+    },
+    {
+        "name": "Cheese roasted chicken \"Alfredo\" linguine pasta, cream sauce, broccoli",
+        "price": 105,
+        "day": "Måndag"
+    },
+    {
+        "name": "Pumpkin in green curry and cocnut sauce, noodles, mixed vegetables, lime",
         "price": 105,
         "day": "Tisdag"
     },
     {
-        "name": "\"Moqueca\" Brasilian fish stew with coconut, tomatoes and lime with garlic rice",
+        "name": "\"Gravlax\" potatoes in Sandefjord sauce, green peas, dill, mustard vinaigrette",
         "price": 105,
         "day": "Tisdag"
     },
     {
-        "name": "Pork Bulgogi, Ssämjang sauce, rice, korean pickled vegetables",
+        "name": "Veal patties \"Wallenbergare\" mashed potatoes, green peas, lingon berries, browned butter",
         "price": 105,
         "day": "Tisdag"
     },
     {
-        "name": "Veg. Schnitzel. german potato salad with capers, onions and lemon",
+        "name": "Pasta with \"Aubergine parmigiana\" Roasted egg plant with tomato sauce and mozzarella",
         "price": 105,
         "day": "Onsdag"
     },
     {
-        "name": "Breaded plaice, german remoulade sauce, cucumeber with dill, boiled potatoes",
+        "name": "Fish and lemongrass burger, vegetables, pickles, avokado, lime mayo, french fries",
         "price": 105,
         "day": "Onsdag"
     },
     {
-        "name": "Bratwurst, sauerkraut, mashed potatoes, mustard",
+        "name": "Miso glased chicken, kimchi slaw, marinated been sprouts, jasmine rice",
         "price": 105,
         "day": "Onsdag"
     },
     {
-        "name": "Tagine with soy chunks, lemon, olives, dried fruits, yoghurt, couscous",
+        "name": "Vegetarian schnitzel, wild garlic bearnaise, green beans, tomato",
         "price": 105,
         "day": "Torsdag"
     },
     {
-        "name": "Fillet of plaice, bouillabaisse vinaigrette, vegetables, boiled potatoes, aioli",
+        "name": "Fried breaded flounder, Danish remoulade sauce, pickled carrots and lemon",
         "price": 105,
         "day": "Torsdag"
     },
     {
-        "name": "Chicken tagine with lemon, olives, dried fruits, yoghurt and couscous",
+        "name": "Entrecote, wild garlic bearnaise, potato wedges, green beans, tomato",
         "price": 105,
         "day": "Torsdag"
-    },
-    {
-        "name": "Fried rice with mixed vegetables, soy mince, sweet ketjap and fried egg",
-        "price": 105,
-        "day": "Fredag"
-    },
-    {
-        "name": "Salmon patties, fennel salad, dill creamed potatoes, mustard vinaigrette",
-        "price": 105,
-        "day": "Fredag"
-    },
-    {
-        "name": "Pork loin with sage, saffron risotto, roasted broccoli, tomato sauce",
-        "price": 105,
-        "day": "Fredag"
     }
 ]

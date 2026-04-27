@@ -17,28 +17,15 @@ Restaurants:
 The lunch menus are available via a public API. See [API.md](API.md) for complete documentation, or visit `/api/docs` when running the application.
 
 ## Quick start
-- Run app: make start
-- Tests: make test
-- Update snapshots: make snapshots
+- Run app: `make start`
+- Tests: `make test`
 
-## Snapshot testing (latest HTML only)
-Snapshots are kept in [test/fixtures](test/fixtures) and expected outputs in [test/expected](test/expected).
+## Fixture testing
+Test fixtures (HTML snapshots) are in [test/fixtures](test/fixtures) and expected outputs in [test/expected](test/expected).
 
-Workflow:
-1) make snapshots
-2) Update [test/expected](test/expected) as needed
-3) make test
+When a scraper breaks: fetch the new HTML with `curl`, update the fixture and expected output manually, then run `make test`.
 
-## Common Makefile targets
-- make build
-- make start
-- make dev
-- make test
-- make snapshots
-
-## Debug scripts
-Run directly from repo root:
-- make debug-eatery
-- make debug-foodhall
-- make debug-detailed
- 
+## Debug a scraper live
+```
+make debug-<scraper>   # e.g. make debug-grenden
+```

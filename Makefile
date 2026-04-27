@@ -1,6 +1,6 @@
 # Makefile for lunch-menu-scraper
 
-.PHONY: install build start dev clean deploy test snapshots debug-% profile-scrapers
+.PHONY: install build start dev clean deploy test debug-% profile-scrapers
 
 install:
 	npm install
@@ -18,10 +18,6 @@ dev:
 # Test commands
 test:
 	npm test
-	@echo "Tip: run 'make snapshots' to refresh fixtures/expected outputs when tests fail."
-
-snapshots: build
-	node dist/scripts/update-snapshots.js
 
 debug-%:
 	npx tsx debug/debug-$*.ts

@@ -34,3 +34,9 @@
 - Scrapers in `src/scrapers/`
 - Web interface in `src/web/`
 - Build output goes to `dist/`
+
+## Continuous improvement
+
+When you have completed a task, ALWAYS verify that copilot-instructions.md and README.md are up-to-date.
+
+End your final output with some refactoring suggestions, preferably on how to reduce code and complexity.⏎

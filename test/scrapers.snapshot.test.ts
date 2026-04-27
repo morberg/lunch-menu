@@ -1,11 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import pdfParse from 'pdf-parse';
 import { scrapeBricksMenu } from '../src/scrapers/bricks';
 import { scrapeEdisonMenu } from '../src/scrapers/edison';
-import { parseKantinMenuFromHtml } from '../src/scrapers/kantin';
+import { scrapeKantinMenu } from '../src/scrapers/kantin';
 import { scrapeSmakapakina } from '../src/scrapers/smakapakina';
-import { parsePdfMenu } from '../src/scrapers/eatery';
+import { scrapeEatery } from '../src/scrapers/eatery';
 import { scrapeFoodHallMenu } from '../src/scrapers/foodhall';
 import { scrapeGrendenMenu } from '../src/scrapers/grenden';
 import { MenuItem } from '../src/types/menu';
@@ -13,8 +12,7 @@ import { MenuItem } from '../src/types/menu';
 const snapshotsDir = path.join(__dirname, 'fixtures');
 const expectedDir = path.join(__dirname, 'expected');
 
-const snapshotPath = (filename: string) => path.join(snapshotsDir, filename);
-const snapshotFileUrl = (filename: string) => `file://${snapshotPath(filename)}`;
+const snapshotFileUrl = (filename: string) => `file://${path.join(snapshotsDir, filename)}`;
 
 const loadExpected = (filename: string): MenuItem[] => {
     const expectedPath = path.join(expectedDir, filename);
@@ -65,9 +63,8 @@ describe('Scraper snapshot tests (latest HTML only)', () => {
         expect(result).toEqual(expected);
     });
 
-    test('Kantin snapshot matches expected', () => {
-        const html = fs.readFileSync(snapshotPath('kantin.html'), 'utf8');
-        const result = parseKantinMenuFromHtml(html);
+    test('Kantin snapshot matches expected', async () => {
+        const result = await scrapeKantinMenu(snapshotFileUrl('kantin.html'));
         const expected = loadExpected('kantin.json');
         validateMenuStructure(result);
         expect(result).toEqual(expected);
@@ -81,9 +78,7 @@ describe('Scraper snapshot tests (latest HTML only)', () => {
     });
 
     test('Eatery snapshot matches expected', async () => {
-        const pdfBuffer = fs.readFileSync(snapshotPath('eatery-menu.pdf'));
-        const pdfData = await pdfParse(pdfBuffer);
-        const result = parsePdfMenu(pdfData.text);
+        const result = await scrapeEatery(snapshotFileUrl('eatery-menu.pdf'));
         const expected = loadExpected('eatery.json');
         validateMenuStructure(result);
         expect(result).toEqual(expected);

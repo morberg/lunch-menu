@@ -1,8 +1,7 @@
-import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { SWEDISH_DAYS } from '../utils/swedish-days';
-import { normalizeWhitespace } from '../utils/scraper';
+import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
 
 const weeklyLabels = ['Veckans vegetariska', 'Månadens alternativ'];
 const KANTIN_LUNCH_PRICE = 145;
@@ -73,13 +72,11 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
     return parseKantinParagraphs(bodyParagraphs);
 };
 
-export const scrapeKantinMenu = async (): Promise<MenuItem[]> => {
-    try {
-        const url = 'https://www.kantinlund.se/';
-        const response = await axios.get(url);
-        return parseKantinMenuFromHtml(response.data);
-    } catch (error) {
-        console.error('Error scraping Kantin menu:', error);
-        return [];
-    }
+export const scrapeKantinMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
+    return scrapeHtmlMenu({
+        scraperName: 'Kantin',
+        fixtureUrl,
+        url: 'https://www.kantinlund.se/',
+        parseHtml: parseKantinMenuFromHtml
+    });
 };

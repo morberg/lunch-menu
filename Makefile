@@ -20,7 +20,7 @@ test:
 	npm test
 
 debug-%:
-	npx tsx debug/debug-$*.ts
+	npx tsx debug/debug.ts $*
 
 profile-scrapers:
 	npx tsx debug/profile-scrapers.ts

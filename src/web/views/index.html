@@ -463,7 +463,9 @@
                 daySection.innerHTML = '';
 
                 restaurants.forEach(r => {
-                    const items = (r.data || []).filter(item => item.day === daySv || item.day === 'Hela veckan');
+                    const items = (r.data || [])
+                        .filter(item => item.day === daySv || item.day === 'Hela veckan')
+                        .sort((a, b) => (a.day === 'Hela veckan') - (b.day === 'Hela veckan'));
                     appendRestaurantBlock(
                         daySection,
                         r,

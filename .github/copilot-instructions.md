@@ -35,6 +35,9 @@
 - Web interface in `src/web/`
 - Build output goes to `dist/`
 
+## TypeScript Conventions
+- Use `as const` for all constant arrays (never `readonly T[]`)
+
 ## Continuous improvement
 
 When you have completed a task, ALWAYS verify that copilot-instructions.md and README.md are up-to-date.

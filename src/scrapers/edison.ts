@@ -32,9 +32,9 @@ export const parseEdisonMenuFromHtml = (html: string): MenuItem[] => {
         }
 
         // Check if line starts with a category (allow extra text after category)
-        const categoryMatch = line.match(/^(Green|Local|World Wide)(,.*)?$/);
+        const categoryMatch = line.match(/^(Green|Local|World Wide)\b(.*)?$/);
         if (categoryMatch && currentDay) {
-            const category = categoryMatch[1];
+            const category = categoryMatch[0].replace(/\s+$/, '');
             // Next line should be the price
             if (i + 1 < lines.length && i + 2 < lines.length) {
                 const rawPrice = lines[i + 1];

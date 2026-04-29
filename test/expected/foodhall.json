@@ -1,22 +1,87 @@
 [
-    {
-        "name": "“Laksa” Malaysian noodle soup with red curry, vegetables and fried tofu (Veg.)",
-        "price": 115,
-        "day": "Hela veckan"
-    },
-    {
-        "name": "“Laksa” Malaysian noodle soup with red curry, coconut, vegetables and wannamei shrimps",
-        "price": 125,
-        "day": "Hela veckan"
-    },
-    {
-        "name": "“Kung pao” Soy chunks in Szechuan pepper sauce, scallions, chili and jasmine rice (Veg.)",
-        "price": 105,
-        "day": "Hela veckan"
-    },
-    {
-        "name": "“Tom kha gai” Thai chicken soup with coconut, lemon grass, mushrooms and jasmine rice",
-        "price": 105,
-        "day": "Hela veckan"
-    }
+  {
+    "name": "Poke bowl",
+    "price": 120,
+    "day": "Hela veckan"
+  },
+  {
+    "name": "Stir fried pork, with ginger and garlic, bamboo shoots, green beans, coriander, rice",
+    "price": 105,
+    "day": "Måndag"
+  },
+  {
+    "name": "Vietnamese fresh spring rolls, with vegetables, soy mince, rice and spicy dipp sauce",
+    "price": 105,
+    "day": "Måndag"
+  },
+  {
+    "name": "\"Dan Dan noodles\" Egg noodles with soy mince, pak choy, spices, cashew nuts",
+    "price": 105,
+    "day": "Måndag"
+  },
+  {
+    "name": "\"Dan Dan noodles\" Egg noodles, with chicken mince, pak choy, spices, cashew nuts",
+    "price": 105,
+    "day": "Måndag"
+  },
+  {
+    "name": "Thai stir fried rice noodles, with fish sauce, lime, chili, chicken and vegetables",
+    "price": 105,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Vietnamese fresh spring rolls, with vegetables, soy mince, rice and spicy dipping sauce",
+    "price": 105,
+    "day": "Tisdag"
+  },
+  {
+    "name": "\"Dan Dan noodles\" Egg noodles, with chicken mince, pak choy, spices, cashew nuts",
+    "price": 105,
+    "day": "Tisdag"
+  },
+  {
+    "name": "\"Dan Dan noodles\" Egg noodles with soy mince, pak choy, spices, cashew nuts",
+    "price": 105,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Spicy Thai fried rice with beef mince, fried egg, scallions, cashew, and lime",
+    "price": 105,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Vietnamese fresh spring rolls, with vegetables, soy mince, rice and spicy dipp sauce",
+    "price": 105,
+    "day": "Onsdag"
+  },
+  {
+    "name": "\"Dan Dan noodles\" Egg noodles, with chicken mince, pak choy, spices, cashew nuts",
+    "price": 105,
+    "day": "Onsdag"
+  },
+  {
+    "name": "\"Dan Dan noodles\" Egg noodles with soy mince, pak choy, spices, cashew nuts",
+    "price": 105,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Chicken, green curry- and coconut sauce, pineapple, green beans, bamboo shoots, thai basil, rice",
+    "price": 105,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Vietnamese fresh spring rolls, with vegetables, soy mince, rice and spicy dipp sauce",
+    "price": 105,
+    "day": "Torsdag"
+  },
+  {
+    "name": "\"Dan Dan noodles\" Egg noodles, with chicken mince, pak choy, spices, cashew nuts",
+    "price": 105,
+    "day": "Torsdag"
+  },
+  {
+    "name": "\"Dan Dan noodles\" Egg noodles with soy mince, pak choy, spices, cashew nuts",
+    "price": 105,
+    "day": "Torsdag"
+  }
 ]

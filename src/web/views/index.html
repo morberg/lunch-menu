@@ -357,7 +357,7 @@
             const restaurants = [
                 { name: 'Edison', key: 'edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
                 { name: 'Grenden', key: 'grenden', data: data.grenden, url: 'https://www.nordrest.se/restaurang/grenden/' },
-                { name: 'Food Hall', key: 'foodhall', data: data.foodhall, url: 'https://www.nordrest.se/restaurang/food-hall/', weeklyOnly: true },
+                { name: 'Food Hall', key: 'foodhall', data: data.foodhall, url: 'https://www.nordrest.se/restaurang/food-hall/' },
                 { name: 'Bricks Eatery', key: 'bricks', data: data.bricks, url: 'https://brickseatery.se/lunch/' },
                 { name: 'Kantin', key: 'kantin', data: data.kantin, url: 'https://www.kantinlund.se/' },
                 { name: 'Smakapakina', key: 'smakapakina', data: data.smakapakina, url: 'https://www.smakapakina.se/meny' },
@@ -463,8 +463,7 @@
                 daySection.innerHTML = '';
 
                 restaurants.forEach(r => {
-                    if (r.weeklyOnly) return;
-                    const items = (r.data || []).filter(item => item.day === daySv);
+                    const items = (r.data || []).filter(item => item.day === daySv || item.day === 'Hela veckan');
                     appendRestaurantBlock(
                         daySection,
                         r,
@@ -473,20 +472,6 @@
                         `Ingen meny hittades för ${daySv.toLowerCase()}. Klicka för att besöka.`
                     );
                 });
-
-                const weeklyItemsSection = document.createElement('div');
-                weeklyItemsSection.className = 'day-section';
-                weeklyItemsSection.innerHTML = '<div class="day-title">Hela veckan</div>';
-                let anyWeekly = false;
-                restaurants.forEach(r => {
-                    const weeklyItems = (r.data || []).filter(item => item.day === 'Hela veckan');
-                    if (!weeklyItems.length) return;
-                    anyWeekly = true;
-                    appendRestaurantBlock(weeklyItemsSection, r, weeklyItems, false, '');
-                });
-                if (anyWeekly) {
-                    daySection.appendChild(weeklyItemsSection);
-                }
 
                 panel.appendChild(daySection);
                 return panel;

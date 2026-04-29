@@ -21,7 +21,7 @@ export const parseEdisonMenuFromHtml = (html: string): MenuItem[] => {
         const day = normalizeToSwedishDay(englishDay);
         if (!day) continue;
 
-        $(`.${englishDay} .lunchmeny_container`).each((_: number, el: any) => {
+        $(`.${englishDay.toLowerCase()} .lunchmeny_container`).each((_: number, el: any) => {
             const title = normalizeWhitespace($(el).find('.lunch_title').text());
             const desc = normalizeWhitespace($(el).find('.lunch_desc').text());
             const priceText = $(el).find('.lunch_price').text();

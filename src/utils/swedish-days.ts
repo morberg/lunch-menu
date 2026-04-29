@@ -1,12 +1,12 @@
 export const SWEDISH_DAYS = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'] as const;
-export const ENGLISH_DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'] as const;
+export const ENGLISH_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] as const;
 
 export type SwedishDay = (typeof SWEDISH_DAYS)[number];
 export type EnglishDay = (typeof ENGLISH_DAYS)[number];
 
 
 const ENGLISH_TO_SWEDISH_DAY: Record<string, SwedishDay> = Object.fromEntries(
-    ENGLISH_DAYS.map((e, i) => [e, SWEDISH_DAYS[i]])
+    ENGLISH_DAYS.map((e, i) => [e.toLowerCase(), SWEDISH_DAYS[i]])
 );
 
 export const isSwedishDay = (value: string): value is SwedishDay =>

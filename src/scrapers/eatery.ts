@@ -4,6 +4,7 @@ import * as cheerio from 'cheerio';
 import pdfParse from 'pdf-parse';
 import { MenuItem } from '../types/menu';
 import { SWEDISH_DAYS, SwedishDay } from '../utils/swedish-days';
+import { findLabelCaseInsensitive } from '../utils/label-matching';
 import { normalizeWhitespace, splitNormalizedLines, isFileFixtureUrl } from '../utils/scraper';
 
 const EATERY_LUNCH_PRICE = 139;
@@ -132,7 +133,7 @@ function findDay(line: string): SwedishDay | null {
 
     const tokens = normalized.split(' ').filter(Boolean);
     for (const token of tokens) {
-        const matchedDay = SWEDISH_DAYS.find((day) => day.toLowerCase() === token);
+        const matchedDay = findLabelCaseInsensitive(token, SWEDISH_DAYS);
         if (matchedDay) {
             return matchedDay;
         }

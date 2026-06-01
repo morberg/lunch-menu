@@ -1,6 +1,7 @@
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { SWEDISH_DAYS } from '../utils/swedish-days';
+import { findLabelCaseInsensitive } from '../utils/label-matching';
 import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
 
 const weeklyLabels = ['Veckans vegetariska', 'Månadens alternativ'];
@@ -9,9 +10,6 @@ const KANTIN_LUNCH_PRICE = 145;
 const normalizeText = (text: string): string => normalizeWhitespace(text);
 
 const stripLeadingSeparators = (text: string): string => text.replace(/^\s*[-–—:]\s*/, '').trim();
-
-const getLeadingLabel = (text: string, labels: readonly string[]): string | null =>
-    labels.find((label) => text.startsWith(label)) ?? null;
 
 const parseKantinParagraphs = (paragraphTexts: string[]): MenuItem[] => {
     const menuItems: MenuItem[] = [];
@@ -22,7 +20,7 @@ const parseKantinParagraphs = (paragraphTexts: string[]): MenuItem[] => {
             continue;
         }
 
-        const weeklyLabel = getLeadingLabel(paragraphText, weeklyLabels);
+        const weeklyLabel = findLabelCaseInsensitive(paragraphText, weeklyLabels, 'leading');
         if (weeklyLabel) {
             const description = stripLeadingSeparators(paragraphText.slice(weeklyLabel.length));
             if (description) {
@@ -35,7 +33,7 @@ const parseKantinParagraphs = (paragraphTexts: string[]): MenuItem[] => {
             continue;
         }
 
-        const dayLabel = getLeadingLabel(paragraphText, SWEDISH_DAYS);
+        const dayLabel = findLabelCaseInsensitive(paragraphText, SWEDISH_DAYS, 'leading');
         if (dayLabel) {
             const description = stripLeadingSeparators(paragraphText.slice(dayLabel.length));
             if (description) {

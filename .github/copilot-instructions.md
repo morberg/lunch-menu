@@ -41,6 +41,8 @@
 
 ## Continuous improvement
 
-When you have completed a task, ALWAYS verify that copilot-instructions.md and README.md are up-to-date.
+When you have completed a task, ALWAYS verify that copilot-instructions.md and README.md are up to date.
+
+If you have added a new restaurant, verify that the SKILL.md used worked as intended. Update the SKILL.md if needed.
 
 End your final output with some refactoring suggestions, preferably on how to reduce code and complexity.⏎

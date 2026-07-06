@@ -7,7 +7,7 @@ install:
 
 setup: install
 	cp -n .git/hooks/pre-commit .git/hooks/pre-commit.bak 2>/dev/null || true
-	printf '#!/bin/sh\necho "Running lint before commit..."\nnpm run lint\n' > .git/hooks/pre-commit
+	printf '#!/bin/sh\necho "Running lint before commit..."\nnpm run lint\necho "Running tests before commit..."\nnpm test\n' > .git/hooks/pre-commit
 	chmod +x .git/hooks/pre-commit
 	@echo "Git hooks installed."
 

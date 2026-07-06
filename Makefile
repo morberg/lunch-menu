@@ -1,6 +1,6 @@
 # Makefile for lunch-menu-scraper
 
-.PHONY: install build start dev clean deploy test debug-% profile-scrapers
+.PHONY: install build start dev clean deploy test lint debug-% profile-scrapers
 
 install:
 	npm install
@@ -18,6 +18,9 @@ dev:
 # Test commands
 test:
 	npm test
+
+lint:
+	npm run lint
 
 debug-%:
 	npx tsx debug/debug.ts $*

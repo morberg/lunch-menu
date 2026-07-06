@@ -34,6 +34,7 @@
 - Scrapers in `src/scrapers/`
 - Web interface in `src/web/`
 - Build output goes to `dist/`
+- Task-specific workflows live as skills in `.github/skills/` (e.g. adding a new restaurant scraper), not in this file
 
 ## TypeScript Conventions
 - Use `as const` for all constant arrays (never `readonly T[]`)

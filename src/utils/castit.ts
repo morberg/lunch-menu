@@ -44,7 +44,7 @@ export function parseCastitMenu(html: string, defaultPrices?: CastitPrices): Men
     return items;
 }
 
-function extractDish($: cheerio.Root, el: any): string | null {
+function extractDish($: cheerio.CheerioAPI, el: any): string | null {
     const titleEl = $(el).find('.castit-dish__title .castit-i18n').first();
     const descEl = $(el).find('.castit-dish__desc .castit-i18n').first();
 
@@ -56,7 +56,7 @@ function extractDish($: cheerio.Root, el: any): string | null {
     return desc ? `${title}, ${desc}` : title;
 }
 
-function extractPrices($: cheerio.Root, defaults?: CastitPrices): CastitPrices {
+function extractPrices($: cheerio.CheerioAPI, defaults?: CastitPrices): CastitPrices {
     let dailyPrice: number | null = defaults?.dailyPrice ?? null;
     let weeklyPrice: number | null = defaults?.weeklyPrice ?? null;
 

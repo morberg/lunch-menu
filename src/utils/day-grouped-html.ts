@@ -1,14 +1,15 @@
 import * as cheerio from 'cheerio';
+import { AnyNode, Element } from 'domhandler';
 import { MenuItem } from '../types/menu';
 
 export interface DayGroup {
     day: string;
-    elements: cheerio.Cheerio;
+    elements: cheerio.Cheerio<AnyNode>;
 }
 
 interface ParseDayGroupedHtmlOptions {
     groups: DayGroup[];
-    parseElement: (element: cheerio.Element, day: string) => Omit<MenuItem, 'day'> | null;
+    parseElement: (element: Element, day: string) => Omit<MenuItem, 'day'> | null;
 }
 
 /**
@@ -18,8 +19,8 @@ export function parseDayGroupedHtml({ groups, parseElement }: ParseDayGroupedHtm
     const menuItems: MenuItem[] = [];
 
     groups.forEach((group) => {
-        group.elements.each((_, element) => {
-            const parsed = parseElement(element, group.day);
+        group.elements.each((_: number, element: AnyNode) => {
+            const parsed = parseElement(element as Element, group.day);
             if (!parsed) {
                 return;
             }

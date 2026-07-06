@@ -19,8 +19,10 @@ Restaurants:
 The lunch menus are available via a public API. See [API.md](API.md) for complete documentation, or visit `/api/docs` when running the application.
 
 ## Quick start
+- First time setup: `make setup` (installs deps + git hooks)
 - Run app: `make start`
 - Tests: `make test`
+- Lint: `make lint`
 
 ## Fixture testing
 Test fixtures (HTML snapshots) are in [test/fixtures](test/fixtures) and expected outputs in [test/expected](test/expected).

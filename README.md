@@ -11,6 +11,7 @@ Restaurants:
 - Eatery
 - Food Hall
 - Grenden
+- Linnea & Basilika
 
 ## API Documentation
 

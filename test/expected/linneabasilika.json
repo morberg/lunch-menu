@@ -1,0 +1,102 @@
+[
+    {
+        "name": "Kycklingfilé med zucchini i het thai grön curry",
+        "price": 155,
+        "day": "Måndag"
+    },
+    {
+        "name": "Wokad grovmalen blandfärs med stark thai basilika",
+        "price": 155,
+        "day": "Måndag"
+    },
+    {
+        "name": "Wokad kycklingfilé med ingefära och grönsaker",
+        "price": 155,
+        "day": "Måndag"
+    },
+    {
+        "name": "Grillade hot wings asian style",
+        "price": 155,
+        "day": "Måndag"
+    },
+    {
+        "name": "Kycklingfilé med aubergine i kryddig thai röd curry",
+        "price": 155,
+        "day": "Tisdag"
+    },
+    {
+        "name": "Wokad ryggbiff med champinjoner och bambuskott",
+        "price": 155,
+        "day": "Tisdag"
+    },
+    {
+        "name": "Wokad kycklingfilé med egenrostade cashewnötter och grönsaker",
+        "price": 155,
+        "day": "Tisdag"
+    },
+    {
+        "name": "Grillad kycklinginnerfilé på spett med hemlagad jordnötssås",
+        "price": 155,
+        "day": "Tisdag"
+    },
+    {
+        "name": "Kycklingfilé med ananas och blomkål i krämig thai gul curry",
+        "price": 155,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Wokad fläskfilé med champinjoner och bambuskott",
+        "price": 155,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Vitlöksmarinerad kycklingfilé med grovmalen svartpeppar, koriander och thai basilika",
+        "price": 155,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Egenrullade vårrullar med blandfärs, vermicelli, black fungus svamp och örter",
+        "price": 155,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Kycklingfilé med potatis i krämig masaman curry",
+        "price": 155,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Vitlöksmarinerad ryggbiff med grovmalen svartpeppar, koriander och thai basilika",
+        "price": 155,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Wokad kycklingfilé med grönsaker",
+        "price": 155,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Grillade hot wings asian style",
+        "price": 155,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Kycklingfilé med brytbönor i panang curry",
+        "price": 155,
+        "day": "Fredag"
+    },
+    {
+        "name": "Wokade jätteräkor med egenrostade cashewnötter och grönsaker",
+        "price": 155,
+        "day": "Fredag"
+    },
+    {
+        "name": "Wokad kycklingfilé med stark thai basilika",
+        "price": 155,
+        "day": "Fredag"
+    },
+    {
+        "name": "Grillad kycklinginnerfilé på spett med hemlagad jordnötssås",
+        "price": 155,
+        "day": "Fredag"
+    }
+]

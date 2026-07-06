@@ -4,6 +4,7 @@ import { scrapeEdisonMenu } from '../src/scrapers/edison';
 import { scrapeFoodHallMenu } from '../src/scrapers/foodhall';
 import { scrapeGrendenMenu } from '../src/scrapers/grenden';
 import { scrapeKantinMenu } from '../src/scrapers/kantin';
+import { scrapeLinneaBasilikaMenu } from '../src/scrapers/linneabasilika';
 import { scrapeSmakapakina } from '../src/scrapers/smakapakina';
 import { MenuItem } from '../src/types/menu';
 
@@ -14,6 +15,7 @@ const scrapers: Record<string, () => Promise<MenuItem[]>> = {
     foodhall: scrapeFoodHallMenu,
     grenden: scrapeGrendenMenu,
     kantin: scrapeKantinMenu,
+    linneabasilika: scrapeLinneaBasilikaMenu,
     smakapakina: scrapeSmakapakina
 };
 

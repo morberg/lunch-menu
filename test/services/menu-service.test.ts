@@ -5,6 +5,7 @@ jest.mock('../../src/scrapers/smakapakina', () => ({ scrapeSmakapakina: jest.fn(
 jest.mock('../../src/scrapers/eatery', () => ({ scrapeEatery: jest.fn() }));
 jest.mock('../../src/scrapers/foodhall', () => ({ scrapeFoodHallMenu: jest.fn() }));
 jest.mock('../../src/scrapers/grenden', () => ({ scrapeGrendenMenu: jest.fn() }));
+jest.mock('../../src/scrapers/linneabasilika', () => ({ scrapeLinneaBasilikaMenu: jest.fn() }));
 
 import { scrapeEdisonMenu } from '../../src/scrapers/edison';
 import { scrapeBricksMenu } from '../../src/scrapers/bricks';
@@ -13,6 +14,7 @@ import { scrapeSmakapakina } from '../../src/scrapers/smakapakina';
 import { scrapeEatery } from '../../src/scrapers/eatery';
 import { scrapeFoodHallMenu } from '../../src/scrapers/foodhall';
 import { scrapeGrendenMenu } from '../../src/scrapers/grenden';
+import { scrapeLinneaBasilikaMenu } from '../../src/scrapers/linneabasilika';
 import MenuService, { menuService } from '../../src/services/menu-service';
 
 const edisonMock = scrapeEdisonMenu as jest.MockedFunction<typeof scrapeEdisonMenu>;
@@ -22,6 +24,7 @@ const smakapakinaMock = scrapeSmakapakina as jest.MockedFunction<typeof scrapeSm
 const eateryMock = scrapeEatery as jest.MockedFunction<typeof scrapeEatery>;
 const foodhallMock = scrapeFoodHallMenu as jest.MockedFunction<typeof scrapeFoodHallMenu>;
 const grendenMock = scrapeGrendenMenu as jest.MockedFunction<typeof scrapeGrendenMenu>;
+const linneabasilikaMock = scrapeLinneaBasilikaMenu as jest.MockedFunction<typeof scrapeLinneaBasilikaMenu>;
 
 function mockAllScrapersResolved(): void {
     edisonMock.mockResolvedValue([{ name: 'Edison item', day: 'Måndag', price: 100 }]);
@@ -31,6 +34,7 @@ function mockAllScrapersResolved(): void {
     eateryMock.mockResolvedValue([{ name: 'Eatery item', day: 'Måndag', price: 104 }]);
     foodhallMock.mockResolvedValue([{ name: 'Food Hall item', day: 'Hela veckan', price: 105 }]);
     grendenMock.mockResolvedValue([{ name: 'Grenden item', day: 'Måndag', price: 106 }]);
+    linneabasilikaMock.mockResolvedValue([{ name: 'Linnea & Basilika item', day: 'Måndag', price: 155 }]);
 }
 
 describe('MenuService cache behavior', () => {

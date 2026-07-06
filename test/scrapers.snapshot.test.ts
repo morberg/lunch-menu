@@ -7,6 +7,7 @@ import { scrapeSmakapakina } from '../src/scrapers/smakapakina';
 import { scrapeEatery } from '../src/scrapers/eatery';
 import { scrapeFoodHallMenu } from '../src/scrapers/foodhall';
 import { scrapeGrendenMenu } from '../src/scrapers/grenden';
+import { scrapeLinneaBasilikaMenu } from '../src/scrapers/linneabasilika';
 import { MenuItem } from '../src/types/menu';
 
 const snapshotsDir = path.join(__dirname, 'fixtures');
@@ -94,6 +95,13 @@ describe('Scraper snapshot tests (latest HTML only)', () => {
     test('Grenden snapshot matches expected', async () => {
         const result = await scrapeGrendenMenu(snapshotFileUrl('grenden.html'));
         const expected = loadExpected('grenden.json');
+        validateMenuStructure(result);
+        expect(result).toEqual(expected);
+    });
+
+    test('Linnea & Basilika snapshot matches expected', async () => {
+        const result = await scrapeLinneaBasilikaMenu(snapshotFileUrl('linneabasilika.html'));
+        const expected = loadExpected('linneabasilika.json');
         validateMenuStructure(result);
         expect(result).toEqual(expected);
     });

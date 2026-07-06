@@ -3,6 +3,7 @@ import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
 import { ENGLISH_DAYS, SWEDISH_DAYS } from '../utils/swedish-days';
 import { scrapeHtmlMenu, normalizeWhitespace } from '../utils/scraper';
+import { DayGroup, parseDayGroupedHtml } from '../utils/day-grouped-html';
 
 export const scrapeEdisonMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
     return scrapeHtmlMenu({
@@ -15,23 +16,27 @@ export const scrapeEdisonMenu = async (fixtureUrl?: string): Promise<MenuItem[]>
 
 export const parseEdisonMenuFromHtml = (html: string): MenuItem[] => {
     const $ = cheerio.load(html);
-    const menuItems: MenuItem[] = [];
+    const groups: DayGroup[] = ENGLISH_DAYS.map((englishDay, index) => ({
+        day: SWEDISH_DAYS[index],
+        elements: $(`.${englishDay.toLowerCase()} .lunchmeny_container`)
+    }));
 
-    for (let i = 0; i < ENGLISH_DAYS.length; i++) {
-        const day = SWEDISH_DAYS[i];
-
-        $(`.${ENGLISH_DAYS[i].toLowerCase()} .lunchmeny_container`).each((_: number, el: any) => {
-            const title = normalizeWhitespace($(el).find('.lunch_title').text());
-            const desc = normalizeWhitespace($(el).find('.lunch_desc').text());
-            const priceText = $(el).find('.lunch_price').text();
+    return parseDayGroupedHtml({
+        groups,
+        parseElement: (element) => {
+            const title = normalizeWhitespace($(element).find('.lunch_title').text());
+            const desc = normalizeWhitespace($(element).find('.lunch_desc').text());
+            const priceText = $(element).find('.lunch_price').text();
             const price = parsePrice(priceText);
 
-            if (!title && !desc) return;
+            if (!title && !desc) {
+                return null;
+            }
 
-            const name = desc ? `${title}: ${desc}` : title;
-            menuItems.push({ name, price, day });
-        });
-    }
-
-    return menuItems;
+            return {
+                name: desc ? `${title}: ${desc}` : title,
+                price
+            };
+        }
+    });
 };

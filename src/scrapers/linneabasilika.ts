@@ -4,6 +4,7 @@ import { parsePrice } from '../utils/price';
 import { normalizeToSwedishDay } from '../utils/swedish-days';
 import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
 import { bodyText } from '../utils/html-text';
+import { DayGroup, parseDayGroupedHtml } from '../utils/day-grouped-html';
 
 export async function scrapeLinneaBasilikaMenu(fixtureUrl?: string): Promise<MenuItem[]> {
     return scrapeHtmlMenu({
@@ -23,7 +24,7 @@ export async function scrapeLinneaBasilikaMenu(fixtureUrl?: string): Promise<Men
 export function parseLinneaBasilikaMenuFromHtml(html: string): MenuItem[] {
     const $ = cheerio.load(html);
     const price = extractLunchPrice(html);
-    const menuItems: MenuItem[] = [];
+    const groups: DayGroup[] = [];
 
     $('h4').each((_: number, headingEl: any) => {
         const heading = $(headingEl);
@@ -32,17 +33,25 @@ export function parseLinneaBasilikaMenuFromHtml(html: string): MenuItem[] {
         if (!day) {
             return;
         }
-
-        heading.parent().find('p').each((_: number, dishEl: any) => {
-            const dishText = normalizeWhitespace($(dishEl).text());
-            if (!dishText) {
-                return;
-            }
-            menuItems.push({ name: dishText, price, day });
+        groups.push({
+            day,
+            elements: heading.parent().find('p')
         });
     });
 
-    return menuItems;
+    return parseDayGroupedHtml({
+        groups,
+        parseElement: (dishEl) => {
+            const dishText = normalizeWhitespace($(dishEl).text());
+            if (!dishText) {
+                return null;
+            }
+            return {
+                name: dishText,
+                price
+            };
+        }
+    });
 }
 
 function extractLunchPrice(html: string): number | null {

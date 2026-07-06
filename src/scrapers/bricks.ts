@@ -3,6 +3,7 @@ import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
 import { normalizeToSwedishDay } from '../utils/swedish-days';
 import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
+import { DayGroup, parseDayGroupedHtml } from '../utils/day-grouped-html';
 
 export const scrapeBricksMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
     return scrapeHtmlMenu({
@@ -15,7 +16,7 @@ export const scrapeBricksMenu = async (fixtureUrl?: string): Promise<MenuItem[]>
 
 export function parseBricksHtml(html: string): MenuItem[] {
     const $ = cheerio.load(html);
-    const menuItems: MenuItem[] = [];
+    const groups: DayGroup[] = [];
 
     // Bricks renders each day in a structured block like:
     // <h3>Monday</h3> ... <div class="lunchmeny_wrapper"> ... <div class="lunchmeny_container"> ...
@@ -33,31 +34,35 @@ export function parseBricksHtml(html: string): MenuItem[] {
         if (!day) {
             return;
         }
+        groups.push({
+            day,
+            elements: wrapper.find('div.lunchmeny_container')
+        });
+    });
 
-        wrapper.find('div.lunchmeny_container').each((_, containerEl) => {
+    return parseDayGroupedHtml({
+        groups,
+        parseElement: (containerEl) => {
             const container = $(containerEl);
-
             const category = normalizeWhitespace(container.find('span.lunch_title').text());
             const priceText = normalizeWhitespace(container.find('span.lunch_price').text());
             const description = normalizeWhitespace(container.find('div.lunch_desc').text());
 
             if (!category || !description) {
-                return;
+                return null;
             }
 
             const price = parsePrice(priceText);
             // Bricks sometimes includes non-lunch promo items (e.g. free dessert) with no price.
             // Only include actual lunch dishes that have a parseable price.
             if (price === null) {
-                return;
+                return null;
             }
-            menuItems.push({
-                name: `${category}: ${description}`,
-                price,
-                day
-            });
-        });
-    });
 
-    return menuItems;
+            return {
+                name: `${category}: ${description}`,
+                price
+            };
+        }
+    });
 }

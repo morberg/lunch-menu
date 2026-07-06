@@ -35,7 +35,8 @@ Returns a JSON object with restaurant menus organized by restaurant key. Each re
   "eatery": MenuItem[],
   "foodhall": MenuItem[],
   "grenden": MenuItem[],
-  "linneabasilika": MenuItem[]
+  "linneabasilika": MenuItem[],
+  "troppo": MenuItem[]
 }
 ```
 
@@ -109,7 +110,8 @@ Each menu item has the following structure:
       "price": 155,
       "day": "Torsdag"
     }
-  ]
+  ],
+  "troppo": []
 }
 ```
 
@@ -125,6 +127,7 @@ Each menu item has the following structure:
 | `foodhall`    | Food Hall       | Lund     |
 | `grenden`     | Grenden         | Lund     |
 | `linneabasilika` | Linnea & Basilika | Lund  |
+| `troppo`      | Troppo          | Lund     |
 
 ## Caching & Data Freshness
 

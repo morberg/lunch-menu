@@ -12,6 +12,7 @@ Restaurants:
 - Food Hall
 - Grenden
 - Linnea & Basilika
+- Troppo
 
 ## API Documentation
 

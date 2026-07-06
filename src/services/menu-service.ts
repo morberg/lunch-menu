@@ -6,6 +6,7 @@ import { scrapeEatery } from '../scrapers/eatery';
 import { scrapeFoodHallMenu } from '../scrapers/foodhall';
 import { scrapeGrendenMenu } from '../scrapers/grenden';
 import { scrapeLinneaBasilikaMenu } from '../scrapers/linneabasilika';
+import { scrapeTroppoMenu } from '../scrapers/troppo';
 import { MenuItem } from '../types/menu';
 import MemoryCache from '../utils/cache';
 
@@ -18,6 +19,7 @@ interface RestaurantMenus {
     foodhall: MenuItem[];
     grenden: MenuItem[];
     linneabasilika: MenuItem[];
+    troppo: MenuItem[];
 }
 
 /** Hour of day (local time) at which menus are automatically refreshed. */
@@ -62,7 +64,7 @@ class MenuService {
         try {
             console.log('Fetching menus from all restaurants...');
 
-            const [edisonMenu, bricksMenu, kantinMenu, smakapakinaMenu, eateryMenu, foodhallMenu, grendenMenu, linneabasilikaMenu] = await Promise.allSettled([
+            const [edisonMenu, bricksMenu, kantinMenu, smakapakinaMenu, eateryMenu, foodhallMenu, grendenMenu, linneabasilikaMenu, troppoMenu] = await Promise.allSettled([
                 scrapeEdisonMenu(),
                 scrapeBricksMenu(),
                 scrapeKantinMenu(),
@@ -70,7 +72,8 @@ class MenuService {
                 scrapeEatery(),
                 scrapeFoodHallMenu(),
                 scrapeGrendenMenu(),
-                scrapeLinneaBasilikaMenu()
+                scrapeLinneaBasilikaMenu(),
+                scrapeTroppoMenu()
             ]);
 
             const result: RestaurantMenus = {
@@ -82,6 +85,7 @@ class MenuService {
                 foodhall: foodhallMenu.status === 'fulfilled' ? foodhallMenu.value : [],
                 grenden: grendenMenu.status === 'fulfilled' ? grendenMenu.value : [],
                 linneabasilika: linneabasilikaMenu.status === 'fulfilled' ? linneabasilikaMenu.value : [],
+                troppo: troppoMenu.status === 'fulfilled' ? troppoMenu.value : [],
             };
 
             // Log any errors
@@ -93,7 +97,8 @@ class MenuService {
                 { name: 'Eatery', result: eateryMenu },
                 { name: 'Food Hall', result: foodhallMenu },
                 { name: 'Grenden', result: grendenMenu },
-                { name: 'Linnea & Basilika', result: linneabasilikaMenu }
+                { name: 'Linnea & Basilika', result: linneabasilikaMenu },
+                { name: 'Troppo', result: troppoMenu }
             ]);
 
             // Cache until next scheduled refresh

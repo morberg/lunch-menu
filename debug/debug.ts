@@ -6,6 +6,7 @@ import { scrapeGrendenMenu } from '../src/scrapers/grenden';
 import { scrapeKantinMenu } from '../src/scrapers/kantin';
 import { scrapeLinneaBasilikaMenu } from '../src/scrapers/linneabasilika';
 import { scrapeSmakapakina } from '../src/scrapers/smakapakina';
+import { scrapeTroppoMenu } from '../src/scrapers/troppo';
 import { MenuItem } from '../src/types/menu';
 
 const scrapers: Record<string, () => Promise<MenuItem[]>> = {
@@ -16,7 +17,8 @@ const scrapers: Record<string, () => Promise<MenuItem[]>> = {
     grenden: scrapeGrendenMenu,
     kantin: scrapeKantinMenu,
     linneabasilika: scrapeLinneaBasilikaMenu,
-    smakapakina: scrapeSmakapakina
+    smakapakina: scrapeSmakapakina,
+    troppo: scrapeTroppoMenu
 };
 
 const name = process.argv[2];

@@ -2,7 +2,7 @@ import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
 import { loadHtmlSource } from '../utils/scraper';
-import { SWEDISH_DAYS, parseDay } from '../utils/swedish-days';
+import { compareDays, parseDay } from '../utils/days';
 
 /**
  * Smakapakina scraper
@@ -65,7 +65,7 @@ function parseModernMainPage(html: string): MenuItem[] {
         });
     });
 
-    return sortByWeekday(results);
+    return results.sort((left, right) => compareDays(left.day, right.day));
 }
 
 // Extract enumerated dishes like: 1. Dish, 2. Another dish ... from a block
@@ -90,10 +90,6 @@ function extractEnumeratedDishes(text: string): string[] {
 
 function joinDishes(dishes: string[]): string {
     return dishes.join(', ').replace(/[\s,.;:-]+$/, '');
-}
-
-function sortByWeekday(items: MenuItem[]): MenuItem[] {
-    return items.sort((a, b) => SWEDISH_DAYS.indexOf(a.day as (typeof SWEDISH_DAYS)[number]) - SWEDISH_DAYS.indexOf(b.day as (typeof SWEDISH_DAYS)[number]));
 }
 
 export { parseModernMainPage as parseSmakapakinaMenuFromHtml };

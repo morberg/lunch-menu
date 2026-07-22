@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
+import { ALL_WEEK } from '../utils/days';
 import { bodyText } from '../utils/html-text';
 import { parsePrice } from '../utils/price';
 import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
@@ -62,7 +63,7 @@ export function parseTroppoHtml(html: string): MenuItem[] {
     return dishes.map((name) => ({
         name,
         price,
-        day: 'Hela veckan'
+        day: ALL_WEEK
     }));
 }
 

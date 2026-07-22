@@ -3,8 +3,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import pdfParse from 'pdf-parse';
 import { MenuItem } from '../types/menu';
-import { SWEDISH_DAYS, SwedishDay } from '../utils/swedish-days';
-import { findLabelCaseInsensitive } from '../utils/label-matching';
+import { findDay, SwedishDay } from '../utils/days';
 import { normalizeWhitespace, splitNormalizedLines, isFileFixtureUrl } from '../utils/scraper';
 
 const EATERY_LUNCH_PRICE = 139;
@@ -113,7 +112,7 @@ export function parsePdfMenu(pdfText: string): MenuItem[] {
     return menuItems;
 }
 
-function pushDish(menuItems: MenuItem[], name: string, day: string | undefined): void {
+function pushDish(menuItems: MenuItem[], name: string, day: SwedishDay | undefined): void {
     if (!name || !day) {
         return;
     }
@@ -123,23 +122,6 @@ function pushDish(menuItems: MenuItem[], name: string, day: string | undefined):
         day,
         price: EATERY_LUNCH_PRICE
     });
-}
-
-function findDay(line: string): SwedishDay | null {
-    const normalized = normalizeLine(line).toLowerCase();
-    if (!normalized) {
-        return null;
-    }
-
-    const tokens = normalized.split(' ').filter(Boolean);
-    for (const token of tokens) {
-        const matchedDay = findLabelCaseInsensitive(token, SWEDISH_DAYS);
-        if (matchedDay) {
-            return matchedDay;
-        }
-    }
-
-    return null;
 }
 
 function normalizeLine(line: string): string {

@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
-import { parseDay } from '../utils/swedish-days';
+import { ALL_WEEK, parseDay } from './days';
 import { normalizeWhitespace } from '../utils/scraper';
 
 export interface CastitPrices {
@@ -21,7 +21,7 @@ export function parseCastitMenu(html: string, defaultPrices?: CastitPrices): Men
     container.find('section.castit-day.castit-day--week .castit-dish:not(.castit-dish--day-note)').each((_: number, el: any) => {
         const dish = extractDish($, el);
         if (dish) {
-            items.push({ name: dish, price: weeklyPrice, day: 'Hela veckan' });
+            items.push({ name: dish, price: weeklyPrice, day: ALL_WEEK });
         }
     });
 

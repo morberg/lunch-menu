@@ -1,15 +1,16 @@
 import * as cheerio from 'cheerio';
 import { AnyNode, Element } from 'domhandler';
 import { MenuItem } from '../types/menu';
+import { SwedishDay } from './days';
 
 export interface DayGroup {
-    day: string;
+    day: SwedishDay;
     elements: cheerio.Cheerio<AnyNode>;
 }
 
 interface ParseDayGroupedHtmlOptions {
     groups: DayGroup[];
-    parseElement: (element: Element, day: string) => Omit<MenuItem, 'day'> | null;
+    parseElement: (element: Element, day: SwedishDay) => Omit<MenuItem, 'day'> | null;
 }
 
 /**

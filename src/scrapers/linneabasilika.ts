@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
-import { parseDay } from '../utils/swedish-days';
+import { parseDay } from '../utils/days';
 import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
 import { bodyText } from '../utils/html-text';
 import { DayGroup, parseDayGroupedHtml } from '../utils/day-grouped-html';

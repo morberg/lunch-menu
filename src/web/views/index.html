@@ -353,7 +353,11 @@
             if (!Array.isArray(window.SWEDISH_DAYS) || window.SWEDISH_DAYS.length === 0) {
                 throw new Error('SWEDISH_DAYS is not available');
             }
+            if (typeof window.ALL_WEEK !== 'string') {
+                throw new Error('ALL_WEEK is not available');
+            }
             const days = window.SWEDISH_DAYS;
+            const allWeek = window.ALL_WEEK;
             const restaurants = [
                 { name: 'Edison', key: 'edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
                 { name: 'Grenden', key: 'grenden', data: data.grenden, url: 'https://www.nordrest.se/restaurang/grenden/' },
@@ -466,8 +470,8 @@
 
                 restaurants.forEach(r => {
                     const items = (r.data || [])
-                        .filter(item => item.day === daySv || item.day === 'Hela veckan')
-                        .sort((a, b) => (a.day === 'Hela veckan') - (b.day === 'Hela veckan'));
+                        .filter(item => item.day === daySv || item.day === allWeek)
+                        .sort((a, b) => (a.day === allWeek) - (b.day === allWeek));
                     appendRestaurantBlock(
                         daySection,
                         r,

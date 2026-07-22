@@ -5,7 +5,7 @@ import compression from 'compression';
 import { marked } from 'marked';
 import menusRouter from './routes/menus';
 import { menuService } from '../services/menu-service';
-import { SWEDISH_DAYS } from '../utils/swedish-days';
+import { ALL_WEEK, SWEDISH_DAYS } from '../utils/days';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -143,7 +143,7 @@ app.get('/api/docs', (req, res) => {
     }
 });
 
-// Build the index page HTML once (with injected SWEDISH_DAYS) and cache it in memory
+// Build the index page HTML once with canonical day values and cache it in memory
 let cachedIndexHtml: string | null = null;
 
 app.get('/', (req, res) => {
@@ -151,7 +151,7 @@ app.get('/', (req, res) => {
         if (!cachedIndexHtml) {
             const indexPath = path.join(__dirname, 'views', 'index.html');
             const html = fs.readFileSync(indexPath, 'utf-8');
-            const daysScript = `<script>window.SWEDISH_DAYS = ${JSON.stringify(SWEDISH_DAYS)};</script>`;
+            const daysScript = `<script>window.SWEDISH_DAYS = ${JSON.stringify(SWEDISH_DAYS)}; window.ALL_WEEK = ${JSON.stringify(ALL_WEEK)};</script>`;
             cachedIndexHtml = html.replace('</head>', `    ${daysScript}\n</head>`);
         }
         res.setHeader('Cache-Control', 'public, max-age=3600');

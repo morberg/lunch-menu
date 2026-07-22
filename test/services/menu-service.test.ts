@@ -76,8 +76,14 @@ describe('MenuService cache behavior', () => {
 
         const result = await service.getMenus();
 
-        expect(result.bricks).toEqual([]);
-        expect(result.edison).toEqual([{ name: 'Edison item', day: 'Måndag', price: 100 }]);
+        expect(result.find(restaurant => restaurant.key === 'bricks')).toMatchObject({
+            name: 'Bricks Eatery',
+            url: 'https://brickseatery.se/lunch/',
+            menu: []
+        });
+        expect(result.find(restaurant => restaurant.key === 'edison')?.menu).toEqual([
+            { name: 'Edison item', day: 'Måndag', price: 100 }
+        ]);
     });
 
     test('invalidateCache forces refetch', async () => {

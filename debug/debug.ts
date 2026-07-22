@@ -1,35 +1,15 @@
-import { scrapeBricksMenu } from '../src/scrapers/bricks';
-import { scrapeEatery } from '../src/scrapers/eatery';
-import { scrapeEdisonMenu } from '../src/scrapers/edison';
-import { scrapeFoodHallMenu } from '../src/scrapers/foodhall';
-import { scrapeGrendenMenu } from '../src/scrapers/grenden';
-import { scrapeKantinMenu } from '../src/scrapers/kantin';
-import { scrapeLinneaBasilikaMenu } from '../src/scrapers/linneabasilika';
-import { scrapeSmakapakina } from '../src/scrapers/smakapakina';
-import { scrapeTroppoMenu } from '../src/scrapers/troppo';
-import { MenuItem } from '../src/types/menu';
-
-const scrapers: Record<string, () => Promise<MenuItem[]>> = {
-    bricks: scrapeBricksMenu,
-    eatery: scrapeEatery,
-    edison: scrapeEdisonMenu,
-    foodhall: scrapeFoodHallMenu,
-    grenden: scrapeGrendenMenu,
-    kantin: scrapeKantinMenu,
-    linneabasilika: scrapeLinneaBasilikaMenu,
-    smakapakina: scrapeSmakapakina,
-    troppo: scrapeTroppoMenu
-};
+import { RESTAURANTS } from '../src/restaurants';
 
 const name = process.argv[2];
+const restaurant = RESTAURANTS.find(({ key }) => key === name);
 
-if (!name || !scrapers[name]) {
+if (!restaurant) {
     console.error(`Usage: debug.ts <scraper>`);
-    console.error(`Available scrapers: ${Object.keys(scrapers).join(', ')}`);
+    console.error(`Available scrapers: ${RESTAURANTS.map(({ key }) => key).join(', ')}`);
     process.exit(1);
 }
 
-scrapers[name]()
+restaurant.scrape()
     .then((items) => {
         console.log(`${name}: ${items.length} items`);
         items.forEach((item) => {

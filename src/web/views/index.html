@@ -321,7 +321,7 @@
                 document.getElementById('loading').classList.add('hidden');
                 const contentEl = document.getElementById('content');
                 contentEl.classList.remove('hidden');
-                displayMenus(data);
+                displayMenus(data.restaurants);
             } catch (error) {
                 const loading = document.getElementById('loading');
                 loading.innerHTML = '<div class="error">Kunde inte ladda menyer. Försök igen senare.</div>';
@@ -335,9 +335,9 @@
             try {
                 const response = await fetch('/api/menus/refresh', { method: 'POST' });
                 if (!response.ok) throw new Error('Refresh failed');
-                const { menus } = await response.json();
+                const { restaurants } = await response.json();
                 document.getElementById('content').innerHTML = '';
-                displayMenus(menus);
+                displayMenus(restaurants);
                 link.textContent = 'Uppdaterad';
                 setTimeout(() => { link.textContent = 'Uppdatera menyer'; }, 2000);
             } catch (error) {
@@ -347,27 +347,16 @@
             }
         }
 
-        function displayMenus(data) {
+        function displayMenus(restaurants) {
             const content = document.getElementById('content');
             content.innerHTML = '';
             if (!Array.isArray(window.SWEDISH_DAYS) || window.SWEDISH_DAYS.length === 0) {
                 throw new Error('SWEDISH_DAYS is not available');
             }
+            if (!Array.isArray(restaurants)) {
+                throw new Error('Restaurants are not available');
+            }
             const days = window.SWEDISH_DAYS;
-            const restaurants = [
-                { name: 'Edison', key: 'edison', data: data.edison, url: 'https://restaurangedison.se/lunch/' },
-                { name: 'Grenden', key: 'grenden', data: data.grenden, url: 'https://www.nordrest.se/restaurang/grenden/' },
-                { name: 'Food Hall', key: 'foodhall', data: data.foodhall, url: 'https://www.nordrest.se/restaurang/food-hall/' },
-                { name: 'Bricks Eatery', key: 'bricks', data: data.bricks, url: 'https://brickseatery.se/lunch/' },
-                { name: 'Kantin', key: 'kantin', data: data.kantin, url: 'https://www.kantinlund.se/' },
-                { name: 'Smaka på Kina', key: 'smakapakina', data: data.smakapakina, url: 'https://www.smakapakina.se/meny' },
-                { name: 'Eatery', key: 'eatery', data: data.eatery, url: 'https://eatery.se/anlaggningar/lund' },
-                { name: 'Linnea & Basilika', key: 'linneabasilika', data: data.linneabasilika, url: 'https://www.linneabasilika.se/lund-brunnshog/' },
-                { name: 'Troppo', key: 'troppo', data: data.troppo, url: 'https://www.troppo.se/lunch' },
-            ];
-
-            const restaurantsWithAnyItems = new Set();
-            restaurants.forEach(r => { if (Array.isArray(r.data) && r.data.length > 0) restaurantsWithAnyItems.add(r.key); });
 
             const collapsedKey = 'collapsedRestaurantsV1';
             const collapsed = new Set(JSON.parse(localStorage.getItem(collapsedKey) || '[]'));
@@ -465,7 +454,7 @@
                 daySection.innerHTML = '';
 
                 restaurants.forEach(r => {
-                    const items = (r.data || [])
+                    const items = (r.menu || [])
                         .filter(item => item.day === daySv);
                     appendRestaurantBlock(
                         daySection,

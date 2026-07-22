@@ -1,6 +1,6 @@
 ---
 name: add-restaurant-scraper
-description: 'Step-by-step workflow for adding a new restaurant lunch-menu scraper to this project. USE WHEN: the user asks to "add a restaurant", "add a scraper", "scrape <restaurant> lunch menu", "support a new lunch place", or wire a new menu source into the app. Covers source discovery (static HTML / WordPress REST / PDF / Castit CMS), creating the scraper, registering it in the menu service and debug runner, and adding fixtures, snapshots, and tests. DO NOT USE FOR: fixing an existing scraper that broke due to markup drift (just edit the scraper + its parser test), or general TypeScript questions.'
+description: 'Step-by-step workflow for adding a new restaurant lunch-menu scraper to this project. USE WHEN: the user asks to "add a restaurant", "add a scraper", "scrape <restaurant> lunch menu", "support a new lunch place", or wire a new menu source into the app. Covers source discovery (static HTML / WordPress REST / PDF / Castit CMS), creating and registering the scraper, and adding fixtures, snapshots, and tests. DO NOT USE FOR: fixing an existing scraper that broke due to markup drift (just edit the scraper + its parser test), or general TypeScript questions.'
 ---
 
 # Add a Restaurant Scraper
@@ -82,18 +82,14 @@ Create `src/scrapers/<name>.ts`. Reuse utilities in `src/utils/` — do not reim
 
 Keep the pure parser free of network/file I/O so it can be unit-tested directly.
 
-## Step 2 — Register the scraper (2 files)
+## Step 2 — Register the scraper
 
-In `src/services/menu-service.ts` make all 5 edits:
-1. `import { scrape<Name>Menu } from '../scrapers/<name>';`
-2. Add `<name>: MenuItem[];` to the `RestaurantMenus` interface.
-3. Add `scrape<Name>Menu()` to the `Promise.allSettled([...])` array.
-4. Add `<name>: <name>Menu.status === 'fulfilled' ? <name>Menu.value : [],` to the result object.
-5. Add `{ name: '<Name>', result: <name>Menu }` to the `logErrors([...])` array.
+In `src/restaurants.ts`:
+1. Import `scrape<Name>Menu` from `./scrapers/<name>`.
+2. Add one `RESTAURANTS` entry with its canonical `key`, display `name`, menu `url`, and `scrape` function.
 
-In `debug/debug.ts`:
-1. `import { scrape<Name>Menu } from '../src/scrapers/<name>';`
-2. Add `<name>: scrape<Name>Menu,` to the `scrapers` map.
+The menu service, API response, frontend order, and debug runner all derive from this registry. Do not
+add separate restaurant entries to those files.
 
 ## Step 3 — Fixture + expected output
 
@@ -119,7 +115,8 @@ required for label-based parsers — snapshots alone miss live drift.
 ## Step 5 — Docs & frontend
 
 - Add the restaurant to `README.md`.
-- Check `src/web/views/index.html` — if restaurants are listed/hardcoded there, add it too.
+- Add the restaurant to the supported-restaurants table and response example in `API.md`.
+- Do not add it to `src/web/views/index.html`; the frontend consumes the canonical registry through the API.
 
 ## Step 6 — Verify
 

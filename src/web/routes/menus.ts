@@ -16,11 +16,11 @@ router.get('/fredagskaka', async (_req, res) => {
 
 router.get('/menus', async (req, res) => {
     try {
-        const result = await menuService.getMenus();
+        const restaurants = await menuService.getMenus();
         // Menus are refreshed daily at 10:00.
         // Allow clients/CDN to cache for 5 minutes; serve stale for up to 24 hours while revalidating.
         res.setHeader('Cache-Control', 'public, max-age=300, stale-while-revalidate=86400');
-        res.json(result);
+        res.json({ restaurants });
     } catch (error) {
         console.error('Error in /menus route:', error);
         res.status(500).json({ error: 'Failed to fetch menus' });
@@ -30,8 +30,8 @@ router.get('/menus', async (req, res) => {
 router.post('/menus/refresh', async (_req, res) => {
     try {
         console.log('Manual cache refresh requested');
-        const result = await menuService.invalidateCache();
-        res.json({ ok: true, refreshed: new Date().toISOString(), menus: result });
+        const restaurants = await menuService.invalidateCache();
+        res.json({ refreshed: new Date().toISOString(), restaurants });
     } catch (error) {
         console.error('Error in /menus/refresh route:', error);
         res.status(500).json({ error: 'Failed to refresh menus' });

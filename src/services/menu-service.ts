@@ -1,35 +1,6 @@
-import { scrapeEdisonMenu } from '../scrapers/edison';
-import { scrapeBricksMenu } from '../scrapers/bricks';
-import { scrapeKantinMenu } from '../scrapers/kantin';
-import { scrapeSmakapakina } from '../scrapers/smakapakina';
-import { scrapeEatery } from '../scrapers/eatery';
-import { scrapeFoodHallMenu } from '../scrapers/foodhall';
-import { scrapeGrendenMenu } from '../scrapers/grenden';
-import { scrapeLinneaBasilikaMenu } from '../scrapers/linneabasilika';
-import { scrapeTroppoMenu } from '../scrapers/troppo';
+import { RESTAURANTS, RestaurantMenu } from '../restaurants';
 import { MenuItem } from '../types/menu';
 import MemoryCache from '../utils/cache';
-
-interface RestaurantDefinition {
-    key: string;
-    name: string;
-    scrape: () => Promise<MenuItem[]>;
-}
-
-const RESTAURANTS = [
-    { key: 'edison', name: 'Edison', scrape: scrapeEdisonMenu },
-    { key: 'bricks', name: 'Bricks', scrape: scrapeBricksMenu },
-    { key: 'kantin', name: 'Kantin', scrape: scrapeKantinMenu },
-    { key: 'smakapakina', name: 'Smakapakina', scrape: scrapeSmakapakina },
-    { key: 'eatery', name: 'Eatery', scrape: scrapeEatery },
-    { key: 'foodhall', name: 'Food Hall', scrape: scrapeFoodHallMenu },
-    { key: 'grenden', name: 'Grenden', scrape: scrapeGrendenMenu },
-    { key: 'linneabasilika', name: 'Linnea & Basilika', scrape: scrapeLinneaBasilikaMenu },
-    { key: 'troppo', name: 'Troppo', scrape: scrapeTroppoMenu }
-] as const satisfies readonly RestaurantDefinition[];
-
-type RestaurantKey = typeof RESTAURANTS[number]['key'];
-type RestaurantMenus = Record<RestaurantKey, MenuItem[]>;
 
 /** Hour of day (local time) at which menus are automatically refreshed. */
 const DAILY_REFRESH_HOUR = 10;
@@ -46,11 +17,11 @@ function minutesUntilNextRefresh(): number {
 }
 
 class MenuService {
-    private cache = new MemoryCache<RestaurantMenus>();
+    private cache = new MemoryCache<RestaurantMenu[]>();
     private readonly CACHE_KEY = 'restaurant_menus';
     private refreshTimeout: NodeJS.Timeout | null = null;
     private warmupTimeout: NodeJS.Timeout | null = null;
-    private inFlightFetch: Promise<RestaurantMenus> | null = null;
+    private inFlightFetch: Promise<RestaurantMenu[]> | null = null;
 
     constructor(startBackgroundRefresh: boolean = true) {
         if (startBackgroundRefresh) {
@@ -58,7 +29,7 @@ class MenuService {
         }
     }
 
-    async getMenus(): Promise<RestaurantMenus> {
+    async getMenus(): Promise<RestaurantMenu[]> {
         // Try to get from cache first
         const cachedMenus = this.cache.get(this.CACHE_KEY);
         if (cachedMenus) {
@@ -80,26 +51,21 @@ class MenuService {
         }
     }
 
-    private async fetchAndCacheMenus(): Promise<RestaurantMenus> {
+    private async fetchAndCacheMenus(): Promise<RestaurantMenu[]> {
         try {
             console.log('Fetching menus from all restaurants...');
 
-            const entries = await Promise.all(
-                RESTAURANTS.map(async ({ key, name, scrape }) => {
+            const result = await Promise.all(
+                RESTAURANTS.map(async ({ key, name, url, scrape }): Promise<RestaurantMenu> => {
                     try {
-                        return [key, await scrape()] as const;
+                        return { key, name, url, menu: await scrape() };
                     } catch (error) {
-                        console.error(`${name} scraper failed:`, error);
+                        console.error(`${key} scraper failed:`, error);
                         const emptyMenu: MenuItem[] = [];
-                        return [key, emptyMenu] as const;
+                        return { key, name, url, menu: emptyMenu };
                     }
                 })
             );
-
-            const result = entries.reduce((acc, [key, menu]) => {
-                acc[key] = menu;
-                return acc;
-            }, {} as RestaurantMenus);
 
             // Cache until next scheduled refresh
             const ttl = minutesUntilNextRefresh();
@@ -123,7 +89,7 @@ class MenuService {
      * Invalidates the cache and immediately fetches fresh menus.
      * Can be called from the /api/menus/refresh endpoint.
      */
-    async invalidateCache(): Promise<RestaurantMenus> {
+    async invalidateCache(): Promise<RestaurantMenu[]> {
         console.log('Cache invalidated by request');
         this.cache.delete(this.CACHE_KEY);
 

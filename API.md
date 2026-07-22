@@ -24,19 +24,11 @@ Retrieves lunch menus for all supported restaurants.
 
 **Response:** `200 OK`
 
-Returns a JSON object with restaurant menus organized by restaurant key. Each restaurant contains an array of menu items.
+Returns an ordered array of restaurants. Each restaurant contains its metadata and menu items.
 
 ```json
 {
-  "edison": MenuItem[],
-  "bricks": MenuItem[],
-  "kantin": MenuItem[],
-  "smakapakina": MenuItem[],
-  "eatery": MenuItem[],
-  "foodhall": MenuItem[],
-  "grenden": MenuItem[],
-  "linneabasilika": MenuItem[],
-  "troppo": MenuItem[]
+  "restaurants": RestaurantMenu[]
 }
 ```
 
@@ -52,13 +44,21 @@ Invalidates the cache and immediately re-fetches menus from all restaurants. Use
 
 ```json
 {
-  "ok": true,
   "refreshed": "2026-02-24T09:55:12.000Z",
-  "menus": { ... }
+  "restaurants": [ ... ]
 }
 ```
 
 ## Data Types
+
+### RestaurantMenu
+
+| Field  | Type         | Description                              |
+| ------ | ------------ | ---------------------------------------- |
+| `key`  | `string`     | Stable restaurant identifier             |
+| `name` | `string`     | Restaurant display name                  |
+| `url`  | `string`     | Link to the restaurant's lunch menu      |
+| `menu` | `MenuItem[]` | Menu items, or an empty array on failure |
 
 ### MenuItem
 
@@ -77,49 +77,26 @@ separate weekly value.
 
 ```json
 {
-  "edison": [
+  "restaurants": [
     {
-      "name": "Pasta Carbonara",
-      "price": 115,
-      "day": "Måndag"
+      "key": "edison",
+      "name": "Edison",
+      "url": "https://restaurangedison.se/lunch/",
+      "menu": [
+        {
+          "name": "Pasta Carbonara",
+          "price": 115,
+          "day": "Måndag"
+        }
+      ]
     },
     {
-      "name": "Vegetarisk lasagne",
-      "price": 110,
-      "day": "Måndag"
+      "key": "grenden",
+      "name": "Grenden",
+      "url": "https://www.nordrest.se/restaurang/grenden/",
+      "menu": []
     }
-  ],
-  "bricks": [
-    {
-      "name": "Fish and Chips",
-      "price": null,
-      "day": "Tisdag"
-    }
-  ],
-  "kantin": [],
-  "smakapakina": [
-    {
-      "name": "Grillad lax",
-      "price": 125,
-      "day": "Måndag"
-    },
-    {
-      "name": "Grillad lax",
-      "price": 125,
-      "day": "Tisdag"
-    }
-  ],
-  "eatery": [],
-  "foodhall": [],
-  "grenden": [],
-  "linneabasilika": [
-    {
-      "name": "Wokad kycklingfilé med grönsaker",
-      "price": 155,
-      "day": "Torsdag"
-    }
-  ],
-  "troppo": []
+  ]
 }
 ```
 
@@ -152,7 +129,8 @@ separate weekly value.
 fetch('https://your-deployment-url.vercel.app/api/menus')
   .then(response => response.json())
   .then(data => {
-    console.log('Edison menu:', data.edison);
+    const edison = data.restaurants.find(restaurant => restaurant.key === 'edison');
+    console.log('Edison menu:', edison.menu);
   });
 ```
 
@@ -168,8 +146,9 @@ curl https://your-deployment-url.vercel.app/api/menus
 import requests
 
 response = requests.get('https://your-deployment-url.vercel.app/api/menus')
-menus = response.json()
-print(menus['edison'])
+restaurants = response.json()['restaurants']
+edison = next(restaurant for restaurant in restaurants if restaurant['key'] == 'edison')
+print(edison['menu'])
 ```
 
 ## Error Handling

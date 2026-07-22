@@ -50,6 +50,7 @@ class MenuService {
     private readonly CACHE_KEY = 'restaurant_menus';
     private refreshTimeout: NodeJS.Timeout | null = null;
     private warmupTimeout: NodeJS.Timeout | null = null;
+    private inFlightFetch: Promise<RestaurantMenus> | null = null;
 
     constructor(startBackgroundRefresh: boolean = true) {
         if (startBackgroundRefresh) {
@@ -65,8 +66,18 @@ class MenuService {
             return cachedMenus;
         }
 
+        if (this.inFlightFetch) {
+            console.log('Cache miss - awaiting in-flight menu fetch');
+            return await this.inFlightFetch;
+        }
+
         console.log('Cache miss - fetching fresh menus');
-        return await this.fetchAndCacheMenus();
+        this.inFlightFetch = this.fetchAndCacheMenus();
+        try {
+            return await this.inFlightFetch;
+        } finally {
+            this.inFlightFetch = null;
+        }
     }
 
     private async fetchAndCacheMenus(): Promise<RestaurantMenus> {
@@ -115,7 +126,18 @@ class MenuService {
     async invalidateCache(): Promise<RestaurantMenus> {
         console.log('Cache invalidated by request');
         this.cache.delete(this.CACHE_KEY);
-        return this.fetchAndCacheMenus();
+
+        if (this.inFlightFetch) {
+            console.log('Awaiting in-flight menu fetch after cache invalidation');
+            return await this.inFlightFetch;
+        }
+
+        this.inFlightFetch = this.fetchAndCacheMenus();
+        try {
+            return await this.inFlightFetch;
+        } finally {
+            this.inFlightFetch = null;
+        }
     }
 
     private scheduleNextRefresh(): void {

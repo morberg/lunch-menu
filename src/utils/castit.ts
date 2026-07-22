@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
-import { normalizeToSwedishDay } from '../utils/swedish-days';
+import { parseDay } from '../utils/swedish-days';
 import { normalizeWhitespace } from '../utils/scraper';
 
 export interface CastitPrices {
@@ -30,7 +30,7 @@ export function parseCastitMenu(html: string, defaultPrices?: CastitPrices): Men
             $(section).find('h3.castit-day__title .castit-i18n').first().attr('data-sv') ||
             $(section).find('h3.castit-day__title .castit-i18n').first().text()
         );
-        const dayName = normalizeToSwedishDay(dayText);
+        const dayName = parseDay(dayText);
         if (!dayName) return;
 
         $(section).find('.castit-dish:not(.castit-dish--day-note)').each((_: number, el: any) => {

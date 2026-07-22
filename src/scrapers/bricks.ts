@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
-import { normalizeToSwedishDay } from '../utils/swedish-days';
+import { parseDay } from '../utils/swedish-days';
 import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
 import { DayGroup, parseDayGroupedHtml } from '../utils/day-grouped-html';
 
@@ -30,7 +30,7 @@ export function parseBricksHtml(html: string): MenuItem[] {
             .find('h3.elementor-heading-title')
             .first();
 
-        const day = normalizeToSwedishDay(dayHeading.text().trim());
+        const day = parseDay(dayHeading.text());
         if (!day) {
             return;
         }

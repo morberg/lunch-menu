@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
-import { normalizeToSwedishDay } from '../utils/swedish-days';
+import { parseDay } from '../utils/swedish-days';
 import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
 import { bodyText } from '../utils/html-text';
 import { DayGroup, parseDayGroupedHtml } from '../utils/day-grouped-html';
@@ -28,8 +28,7 @@ export function parseLinneaBasilikaMenuFromHtml(html: string): MenuItem[] {
 
     $('h4').each((_: number, headingEl: any) => {
         const heading = $(headingEl);
-        const dayCandidate = normalizeWhitespace(heading.text()).split(' ')[0];
-        const day = normalizeToSwedishDay(dayCandidate);
+        const day = parseDay(heading.text());
         if (!day) {
             return;
         }

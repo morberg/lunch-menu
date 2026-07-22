@@ -9,10 +9,10 @@ const ENGLISH_TO_SWEDISH_DAY: Record<string, SwedishDay> = Object.fromEntries(
     ENGLISH_DAYS.map((e, i) => [e.toLowerCase(), SWEDISH_DAYS[i]])
 );
 
-export const isSwedishDay = (value: string): value is SwedishDay =>
+const isSwedishDay = (value: string): value is SwedishDay =>
     SWEDISH_DAYS.includes(value as SwedishDay);
 
-export const normalizeToSwedishDay = (value: string): SwedishDay | null => {
+const normalizeDayName = (value: string): SwedishDay | null => {
     const trimmed = value.trim();
     if (isSwedishDay(trimmed)) {
         return trimmed;
@@ -20,4 +20,14 @@ export const normalizeToSwedishDay = (value: string): SwedishDay | null => {
 
     const englishMatch = ENGLISH_TO_SWEDISH_DAY[trimmed.toLowerCase()];
     return englishMatch ?? null;
+};
+
+export const parseDay = (value: string): SwedishDay | null => {
+    const trimmed = value.trim();
+    if (!trimmed) {
+        return null;
+    }
+
+    const firstToken = trimmed.split(/[\s,]+/)[0];
+    return normalizeDayName(firstToken);
 };

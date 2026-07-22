@@ -2,7 +2,7 @@ import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
 import { parsePrice } from '../utils/price';
 import { loadHtmlSource } from '../utils/scraper';
-import { SWEDISH_DAYS, normalizeToSwedishDay } from '../utils/swedish-days';
+import { SWEDISH_DAYS, parseDay } from '../utils/swedish-days';
 
 /**
  * Smakapakina scraper
@@ -42,8 +42,7 @@ function parseModernMainPage(html: string): MenuItem[] {
             return;
         }
 
-        const dayCandidate = nameText.split(',')[0].trim();
-        const day = normalizeToSwedishDay(dayCandidate);
+        const day = parseDay(nameText);
         if (!day) {
             return;
         }

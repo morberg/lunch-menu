@@ -5,15 +5,15 @@ import MemoryCache from '../utils/cache';
 /** Hour of day (local time) at which menus are automatically refreshed. */
 const DAILY_REFRESH_HOUR = 10;
 
-/** Returns minutes until the next occurrence of DAILY_REFRESH_HOUR (at least 1 minute). */
-function minutesUntilNextRefresh(): number {
+/** Returns milliseconds until the next occurrence of DAILY_REFRESH_HOUR. */
+function millisecondsUntilNextRefresh(): number {
     const now = new Date();
     const next = new Date(now);
     next.setHours(DAILY_REFRESH_HOUR, 0, 0, 0);
     if (next <= now) {
         next.setDate(next.getDate() + 1);
     }
-    return Math.max(1, Math.round((next.getTime() - now.getTime()) / 60_000));
+    return next.getTime() - now.getTime();
 }
 
 class MenuService {
@@ -37,52 +37,41 @@ class MenuService {
             return cachedMenus;
         }
 
-        if (this.inFlightFetch) {
-            console.log('Cache miss - awaiting in-flight menu fetch');
-            return await this.inFlightFetch;
+        console.log('Cache miss - fetching fresh menus');
+        return this.runSingleFlightFetch();
+    }
+
+    private runSingleFlightFetch(): Promise<RestaurantMenu[]> {
+        if (!this.inFlightFetch) {
+            this.inFlightFetch = this.fetchAndCacheMenus()
+                .finally(() => {
+                    this.inFlightFetch = null;
+                });
         }
 
-        console.log('Cache miss - fetching fresh menus');
-        this.inFlightFetch = this.fetchAndCacheMenus();
-        try {
-            return await this.inFlightFetch;
-        } finally {
-            this.inFlightFetch = null;
-        }
+        return this.inFlightFetch;
     }
 
     private async fetchAndCacheMenus(): Promise<RestaurantMenu[]> {
-        try {
-            console.log('Fetching menus from all restaurants...');
+        console.log('Fetching menus from all restaurants...');
 
-            const result = await Promise.all(
-                RESTAURANTS.map(async ({ key, name, url, scrape }): Promise<RestaurantMenu> => {
-                    try {
-                        return { key, name, url, menu: await scrape() };
-                    } catch (error) {
-                        console.error(`${key} scraper failed:`, error);
-                        const emptyMenu: MenuItem[] = [];
-                        return { key, name, url, menu: emptyMenu };
-                    }
-                })
-            );
+        const result = await Promise.all(
+            RESTAURANTS.map(async ({ key, name, url, scrape }): Promise<RestaurantMenu> => {
+                try {
+                    return { key, name, url, menu: await scrape() };
+                } catch (error) {
+                    console.error(`${key} scraper failed:`, error);
+                    const emptyMenu: MenuItem[] = [];
+                    return { key, name, url, menu: emptyMenu };
+                }
+            })
+        );
 
-            // Cache until next scheduled refresh
-            const ttl = minutesUntilNextRefresh();
-            this.cache.set(this.CACHE_KEY, result, ttl);
-            console.log(`Cached menus for ${ttl} minutes (until next 10:00 refresh)`);
+        const ttlMs = millisecondsUntilNextRefresh();
+        this.cache.set(this.CACHE_KEY, result, ttlMs);
+        console.log('Cached menus until next 10:00 refresh');
 
-            return result;
-        } catch (error) {
-            console.error('Error fetching menus:', error);
-            // If we have old cached data (even expired), return it
-            const staleData = this.cache.getStale(this.CACHE_KEY);
-            if (staleData) {
-                console.log('Returning stale cached data due to fetch error');
-                return staleData;
-            }
-            throw error;
-        }
+        return result;
     }
 
     /**
@@ -92,29 +81,18 @@ class MenuService {
     async invalidateCache(): Promise<RestaurantMenu[]> {
         console.log('Cache invalidated by request');
         this.cache.delete(this.CACHE_KEY);
-
-        if (this.inFlightFetch) {
-            console.log('Awaiting in-flight menu fetch after cache invalidation');
-            return await this.inFlightFetch;
-        }
-
-        this.inFlightFetch = this.fetchAndCacheMenus();
-        try {
-            return await this.inFlightFetch;
-        } finally {
-            this.inFlightFetch = null;
-        }
+        return this.runSingleFlightFetch();
     }
 
     private scheduleNextRefresh(): void {
-        const msUntilNext = minutesUntilNextRefresh() * 60_000;
+        const msUntilNext = millisecondsUntilNextRefresh();
         const nextTime = new Date(Date.now() + msUntilNext);
         console.log(`Next menu refresh scheduled for ${nextTime.toLocaleTimeString()} (in ${Math.round(msUntilNext / 60_000)} min)`);
 
         this.refreshTimeout = setTimeout(async () => {
             try {
                 console.log('Daily 10:00 refresh triggered');
-                await this.fetchAndCacheMenus();
+                await this.runSingleFlightFetch();
             } catch (error) {
                 console.error('Daily refresh failed:', error);
             } finally {
@@ -126,7 +104,7 @@ class MenuService {
     private startBackgroundRefresh(): void {
         // Warm up cache shortly after server start
         this.warmupTimeout = setTimeout(() => {
-            this.fetchAndCacheMenus().catch(error => {
+            this.runSingleFlightFetch().catch(error => {
                 console.error('Initial cache population failed:', error);
             });
         }, 1000);

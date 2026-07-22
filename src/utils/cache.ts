@@ -6,8 +6,8 @@ interface CacheEntry<T> {
 class MemoryCache<T> {
     private cache = new Map<string, CacheEntry<T>>();
 
-    set(key: string, data: T, ttlMinutes: number): void {
-        const expiresAt = Date.now() + (ttlMinutes * 60 * 1000);
+    set(key: string, data: T, ttlMs: number): void {
+        const expiresAt = Date.now() + ttlMs;
         this.cache.set(key, { data, expiresAt });
     }
 
@@ -18,20 +18,12 @@ class MemoryCache<T> {
             return null;
         }
 
-        if (Date.now() > entry.expiresAt) {
+        if (Date.now() >= entry.expiresAt) {
             this.cache.delete(key);
             return null;
         }
 
         return entry.data;
-    }
-
-    /**
-     * Returns cached data regardless of TTL expiry.
-     * Useful as a fallback when a fresh fetch fails.
-     */
-    getStale(key: string): T | null {
-        return this.cache.get(key)?.data ?? null;
     }
 
     delete(key: string): void {

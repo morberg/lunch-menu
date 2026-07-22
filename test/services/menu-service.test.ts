@@ -70,6 +70,19 @@ describe('MenuService cache behavior', () => {
         expect(bricksMock).toHaveBeenCalledTimes(1);
     });
 
+    test('shares one fetch between concurrent cache misses', async () => {
+        const service = new MenuService(false);
+
+        const [first, second] = await Promise.all([
+            service.getMenus(),
+            service.getMenus()
+        ]);
+
+        expect(first).toEqual(second);
+        expect(edisonMock).toHaveBeenCalledTimes(1);
+        expect(bricksMock).toHaveBeenCalledTimes(1);
+    });
+
     test('returns empty list for rejected scraper while keeping others', async () => {
         const service = new MenuService(false);
         bricksMock.mockRejectedValue(new Error('bricks failed'));
@@ -94,5 +107,24 @@ describe('MenuService cache behavior', () => {
 
         expect(edisonMock).toHaveBeenCalledTimes(2);
         expect(grendenMock).toHaveBeenCalledTimes(2);
+    });
+
+    test('does not return cached data when a fresh fetch fails', async () => {
+        const service = new MenuService(false);
+        await service.getMenus();
+
+        edisonMock.mockRejectedValue(new Error('edison failed'));
+        bricksMock.mockRejectedValue(new Error('bricks failed'));
+        kantinMock.mockRejectedValue(new Error('kantin failed'));
+        smakapakinaMock.mockRejectedValue(new Error('smakapakina failed'));
+        eateryMock.mockRejectedValue(new Error('eatery failed'));
+        foodhallMock.mockRejectedValue(new Error('foodhall failed'));
+        grendenMock.mockRejectedValue(new Error('grenden failed'));
+        linneabasilikaMock.mockRejectedValue(new Error('linneabasilika failed'));
+        troppoMock.mockRejectedValue(new Error('troppo failed'));
+
+        const result = await service.invalidateCache();
+
+        expect(result.every(restaurant => restaurant.menu.length === 0)).toBe(true);
     });
 });

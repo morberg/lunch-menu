@@ -118,6 +118,7 @@ separate weekly value.
 
 - Menu data is cached until the next daily refresh at **10:00 local time**
 - A background refresh runs daily at 10:00 and shortly after application startup
+- Expired menu data is not reused when a fresh fetch fails
 - Empty arrays (`[]`) indicate no menu data available or scraper failure for that restaurant
 - Data is scraped directly from restaurant websites
 

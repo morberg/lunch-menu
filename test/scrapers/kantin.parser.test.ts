@@ -1,4 +1,5 @@
 import { parseKantinMenuFromHtml } from '../../src/scrapers/kantin';
+import { SWEDISH_DAYS } from '../../src/utils/days';
 
 describe('Kantin parser robustness', () => {
     test('parses lowercase weekday labels and normalizes to canonical day names', () => {
@@ -20,11 +21,13 @@ describe('Kantin parser robustness', () => {
 
         const result = parseKantinMenuFromHtml(html);
 
-        expect(result).toContainEqual({
-            name: 'Veckans vegetariska: Halloumi med tillbehor',
-            day: 'Hela veckan',
-            price: 145
-        });
+        for (const day of SWEDISH_DAYS) {
+            expect(result).toContainEqual({
+                name: 'Veckans vegetariska: Halloumi med tillbehor',
+                day,
+                price: 145
+            });
+        }
 
         expect(result).toContainEqual({
             name: 'Kyckling med ris',
@@ -56,6 +59,6 @@ describe('Kantin parser robustness', () => {
             price: 145
         });
 
-        expect(result).toHaveLength(6);
+        expect(result).toHaveLength(10);
     });
 });

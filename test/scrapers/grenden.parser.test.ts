@@ -72,11 +72,13 @@ describe('Grenden parser', () => {
 
         const result = parseGrendenMenuFromHtml(html);
 
-        expect(result).toContainEqual({
-            name: 'Korean chicken, rice, pickles',
-            price: 125,
-            day: 'Hela veckan'
-        });
+        for (const day of ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag']) {
+            expect(result).toContainEqual({
+                name: 'Korean chicken, rice, pickles',
+                price: 125,
+                day
+            });
+        }
 
         expect(result).toContainEqual({
             name: 'Pasta pesto, with parmesan',
@@ -90,7 +92,7 @@ describe('Grenden parser', () => {
             day: 'Tisdag'
         });
 
-        expect(result).toHaveLength(3);
+        expect(result).toHaveLength(7);
     });
 
     test('skips day-note dishes like Closed', () => {

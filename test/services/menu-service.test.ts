@@ -35,10 +35,10 @@ function mockAllScrapersResolved(): void {
     kantinMock.mockResolvedValue([{ name: 'Kantin item', day: 'Måndag', price: 102 }]);
     smakapakinaMock.mockResolvedValue([{ name: 'Smakapakina item', day: 'Måndag', price: 103 }]);
     eateryMock.mockResolvedValue([{ name: 'Eatery item', day: 'Måndag', price: 104 }]);
-    foodhallMock.mockResolvedValue([{ name: 'Food Hall item', day: 'Hela veckan', price: 105 }]);
+    foodhallMock.mockResolvedValue([{ name: 'Food Hall item', day: 'Måndag', price: 105 }]);
     grendenMock.mockResolvedValue([{ name: 'Grenden item', day: 'Måndag', price: 106 }]);
     linneabasilikaMock.mockResolvedValue([{ name: 'Linnea & Basilika item', day: 'Måndag', price: 155 }]);
-    troppoMock.mockResolvedValue([{ name: 'Troppo item', day: 'Hela veckan', price: 149 }]);
+    troppoMock.mockResolvedValue([{ name: 'Troppo item', day: 'Måndag', price: 149 }]);
 }
 
 describe('MenuService cache behavior', () => {

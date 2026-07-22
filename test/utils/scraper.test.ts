@@ -52,10 +52,10 @@ describe('scraper utils', () => {
             scraperName: 'TestScraper',
             url: 'https://example.com',
             parseHtml: () => [{ name: 'ignored', day: 'Måndag', price: 100 }],
-            fallback: [{ name: 'fallback', day: 'Hela veckan', price: null }]
+            fallback: [{ name: 'fallback', day: 'Måndag', price: null }]
         });
 
-        expect(menu).toEqual([{ name: 'fallback', day: 'Hela veckan', price: null }]);
+        expect(menu).toEqual([{ name: 'fallback', day: 'Måndag', price: null }]);
         expect(errorSpy).toHaveBeenCalled();
 
         errorSpy.mockRestore();

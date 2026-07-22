@@ -2,7 +2,27 @@
   {
     "name": "Poke bowl",
     "price": 120,
-    "day": "Hela veckan"
+    "day": "Måndag"
+  },
+  {
+    "name": "Poke bowl",
+    "price": 120,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Poke bowl",
+    "price": 120,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Poke bowl",
+    "price": 120,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Poke bowl",
+    "price": 120,
+    "day": "Fredag"
   },
   {
     "name": "Stir fried pork, with ginger and garlic, bamboo shoots, green beans, coriander, rice",

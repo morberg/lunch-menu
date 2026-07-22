@@ -2,16 +2,76 @@
   {
     "name": "Five Spice Chicken",
     "price": 159,
-    "day": "Hela veckan"
+    "day": "Måndag"
+  },
+  {
+    "name": "Five Spice Chicken",
+    "price": 159,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Five Spice Chicken",
+    "price": 159,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Five Spice Chicken",
+    "price": 159,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Five Spice Chicken",
+    "price": 159,
+    "day": "Fredag"
   },
   {
     "name": "Shrimp Noodles",
     "price": 159,
-    "day": "Hela veckan"
+    "day": "Måndag"
+  },
+  {
+    "name": "Shrimp Noodles",
+    "price": 159,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Shrimp Noodles",
+    "price": 159,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Shrimp Noodles",
+    "price": 159,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Shrimp Noodles",
+    "price": 159,
+    "day": "Fredag"
   },
   {
     "name": "Mock Duck",
     "price": 159,
-    "day": "Hela veckan"
+    "day": "Måndag"
+  },
+  {
+    "name": "Mock Duck",
+    "price": 159,
+    "day": "Tisdag"
+  },
+  {
+    "name": "Mock Duck",
+    "price": 159,
+    "day": "Onsdag"
+  },
+  {
+    "name": "Mock Duck",
+    "price": 159,
+    "day": "Torsdag"
+  },
+  {
+    "name": "Mock Duck",
+    "price": 159,
+    "day": "Fredag"
   }
 ]

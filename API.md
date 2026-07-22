@@ -64,11 +64,14 @@ Invalidates the cache and immediately re-fetches menus from all restaurants. Use
 
 Each menu item has the following structure:
 
-| Field   | Type             | Description                                                |
-| ------- | ---------------- | ---------------------------------------------------------- |
-| `name`  | `string`         | Name of the dish                                           |
-| `price` | `number \| null` | Price in SEK. `null` if price is not available             |
-| `day`   | `string`         | Day of the week (e.g., "Monday", "Tuesday", "Hela veckan") |
+| Field   | Type             | Description                                    |
+| ------- | ---------------- | ---------------------------------------------- |
+| `name`  | `string`         | Name of the dish                               |
+| `price` | `number \| null` | Price in SEK. `null` if price is not available |
+| `day`   | `string`         | Swedish weekday (`Måndag` through `Fredag`)    |
+
+Courses available throughout the week are returned once for each weekday. The API does not use a
+separate weekly value.
 
 ## Example Response
 
@@ -78,19 +81,19 @@ Each menu item has the following structure:
     {
       "name": "Pasta Carbonara",
       "price": 115,
-      "day": "Monday"
+      "day": "Måndag"
     },
     {
       "name": "Vegetarisk lasagne",
       "price": 110,
-      "day": "Monday"
+      "day": "Måndag"
     }
   ],
   "bricks": [
     {
       "name": "Fish and Chips",
       "price": null,
-      "day": "Tuesday"
+      "day": "Tisdag"
     }
   ],
   "kantin": [],
@@ -98,7 +101,12 @@ Each menu item has the following structure:
     {
       "name": "Grillad lax",
       "price": 125,
-      "day": "Hela veckan"
+      "day": "Måndag"
+    },
+    {
+      "name": "Grillad lax",
+      "price": 125,
+      "day": "Tisdag"
     }
   ],
   "eatery": [],
@@ -117,22 +125,22 @@ Each menu item has the following structure:
 
 ## Supported Restaurants
 
-| Key           | Restaurant Name | Location |
-| ------------- | --------------- | -------- |
-| `edison`      | Edison          | Lund     |
-| `bricks`      | Brick's Eatery  | Lund     |
-| `kantin`      | Kantin          | Lund     |
-| `smakapakina` | Smakapåkina     | Lund     |
-| `eatery`      | Eatery          | Lund     |
-| `foodhall`    | Food Hall       | Lund     |
-| `grenden`     | Grenden         | Lund     |
-| `linneabasilika` | Linnea & Basilika | Lund  |
-| `troppo`      | Troppo          | Lund     |
+| Key              | Restaurant Name   | Location |
+| ---------------- | ----------------- | -------- |
+| `edison`         | Edison            | Lund     |
+| `bricks`         | Brick's Eatery    | Lund     |
+| `kantin`         | Kantin            | Lund     |
+| `smakapakina`    | Smakapåkina       | Lund     |
+| `eatery`         | Eatery            | Lund     |
+| `foodhall`       | Food Hall         | Lund     |
+| `grenden`        | Grenden           | Lund     |
+| `linneabasilika` | Linnea & Basilika | Lund     |
+| `troppo`         | Troppo            | Lund     |
 
 ## Caching & Data Freshness
 
-- Menu data is cached with a **4-hour TTL**
-- Background refresh occurs after **2 hours**
+- Menu data is cached until the next daily refresh at **10:00 local time**
+- A background refresh runs daily at 10:00 and shortly after application startup
 - Empty arrays (`[]`) indicate no menu data available or scraper failure for that restaurant
 - Data is scraped directly from restaurant websites
 
@@ -176,10 +184,6 @@ No rate limiting is currently enforced, but please be respectful:
 - Don't poll more frequently than every 15 minutes
 - Cache responses when possible
 - The underlying data only updates daily
-
-## CORS
-
-CORS is enabled for all origins, allowing browser-based applications to consume the API.
 
 ## Source Code
 

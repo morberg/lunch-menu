@@ -1,10 +1,8 @@
 export const SWEDISH_DAYS = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag'] as const;
 export const ENGLISH_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] as const;
-export const ALL_WEEK = 'Hela veckan' as const;
 
 export type SwedishDay = (typeof SWEDISH_DAYS)[number];
 export type EnglishDay = (typeof ENGLISH_DAYS)[number];
-export type MenuDay = SwedishDay | typeof ALL_WEEK;
 
 const ENGLISH_TO_SWEDISH_DAY: Record<EnglishDay, SwedishDay> = Object.fromEntries(
     ENGLISH_DAYS.map((day, index) => [day, SWEDISH_DAYS[index]])
@@ -60,8 +58,8 @@ export const extractLeadingDay = (value: string): LeadingDay | null => {
     };
 };
 
-export const compareDays = (left: MenuDay, right: MenuDay): number => {
-    const leftIndex = left === ALL_WEEK ? SWEDISH_DAYS.length : SWEDISH_DAYS.indexOf(left);
-    const rightIndex = right === ALL_WEEK ? SWEDISH_DAYS.length : SWEDISH_DAYS.indexOf(right);
-    return leftIndex - rightIndex;
-};
+export const forEachDay = <T>(value: T): Array<T & { day: SwedishDay }> =>
+    SWEDISH_DAYS.map((day) => ({ ...value, day }));
+
+export const compareDays = (left: SwedishDay, right: SwedishDay): number =>
+    SWEDISH_DAYS.indexOf(left) - SWEDISH_DAYS.indexOf(right);

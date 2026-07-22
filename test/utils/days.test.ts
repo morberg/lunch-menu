@@ -1,14 +1,14 @@
 import {
-    ALL_WEEK,
     ENGLISH_DAYS,
     SWEDISH_DAYS,
     compareDays,
     extractLeadingDay,
     findDay,
+    forEachDay,
     parseDay,
     translateEnglishDay
 } from '../../src/utils/days';
-import type { MenuDay } from '../../src/utils/days';
+import type { SwedishDay } from '../../src/utils/days';
 
 describe('day utilities', () => {
     test.each([
@@ -53,14 +53,16 @@ describe('day utilities', () => {
         expect(extractLeadingDay('Veckans vegetariska')).toBeNull();
     });
 
-    test('translates English labels and orders canonical menu days', () => {
-        const unorderedDays: MenuDay[] = ['Fredag', ALL_WEEK, 'Måndag'];
+    test('translates English labels and orders canonical weekdays', () => {
+        const unorderedDays: SwedishDay[] = ['Fredag', 'Måndag'];
 
         expect(ENGLISH_DAYS.map(translateEnglishDay)).toEqual(SWEDISH_DAYS);
-        expect(unorderedDays.sort(compareDays)).toEqual([
-            'Måndag',
-            'Fredag',
-            ALL_WEEK
-        ]);
+        expect(unorderedDays.sort(compareDays)).toEqual(['Måndag', 'Fredag']);
+    });
+
+    test('expands a value to every weekday', () => {
+        expect(forEachDay({ name: 'Weekly dish' })).toEqual(
+            SWEDISH_DAYS.map((day) => ({ name: 'Weekly dish', day }))
+        );
     });
 });

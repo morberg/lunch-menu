@@ -2,12 +2,52 @@
     {
         "name": "Veckans vegetariska: Kikärtsfondant – vitlökssmetana – rostade rotfrukter – pickles – rostade pumpakärnor – hjärtsallad",
         "price": 145,
-        "day": "Hela veckan"
+        "day": "Måndag"
+    },
+    {
+        "name": "Veckans vegetariska: Kikärtsfondant – vitlökssmetana – rostade rotfrukter – pickles – rostade pumpakärnor – hjärtsallad",
+        "price": 145,
+        "day": "Tisdag"
+    },
+    {
+        "name": "Veckans vegetariska: Kikärtsfondant – vitlökssmetana – rostade rotfrukter – pickles – rostade pumpakärnor – hjärtsallad",
+        "price": 145,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Veckans vegetariska: Kikärtsfondant – vitlökssmetana – rostade rotfrukter – pickles – rostade pumpakärnor – hjärtsallad",
+        "price": 145,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Veckans vegetariska: Kikärtsfondant – vitlökssmetana – rostade rotfrukter – pickles – rostade pumpakärnor – hjärtsallad",
+        "price": 145,
+        "day": "Fredag"
     },
     {
         "name": "Månadens alternativ: Nötfärslimpa med ajvar – fetaost – rostad potatis – bakad paprika – skysås – rostad lök – krasse",
         "price": 145,
-        "day": "Hela veckan"
+        "day": "Måndag"
+    },
+    {
+        "name": "Månadens alternativ: Nötfärslimpa med ajvar – fetaost – rostad potatis – bakad paprika – skysås – rostad lök – krasse",
+        "price": 145,
+        "day": "Tisdag"
+    },
+    {
+        "name": "Månadens alternativ: Nötfärslimpa med ajvar – fetaost – rostad potatis – bakad paprika – skysås – rostad lök – krasse",
+        "price": 145,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Månadens alternativ: Nötfärslimpa med ajvar – fetaost – rostad potatis – bakad paprika – skysås – rostad lök – krasse",
+        "price": 145,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Månadens alternativ: Nötfärslimpa med ajvar – fetaost – rostad potatis – bakad paprika – skysås – rostad lök – krasse",
+        "price": 145,
+        "day": "Fredag"
     },
     {
         "name": "Kyckling steak – general tso glaze – ris – sesammajo – picklad morot – krasse",

@@ -5,7 +5,7 @@ description: 'Step-by-step workflow for adding a new restaurant lunch-menu scrap
 
 # Add a Restaurant Scraper
 
-A scraper fetches one restaurant's weekly lunch menu and returns `MenuItem[]`. All 7 existing
+A scraper fetches one restaurant's weekly lunch menu and returns `MenuItem[]`. All 9 existing
 scrapers share one contract and a small set of utilities. Follow the steps in order — each new
 scraper touches the same 6-8 files.
 
@@ -22,8 +22,9 @@ export const scrape<Name>Menu = async (fixtureUrl?: string): Promise<MenuItem[]>
     scrapeHtmlMenu({ scraperName: '<Name>', fixtureUrl, url: '<liveUrl>', parseHtml: parse<Name>Html });
 ```
 
-`MenuItem` (`src/types/menu.ts`) is `{ name: string; price: number | null; day: string }`.
-`day` MUST be a value from `SWEDISH_DAYS` (`Måndag`…`Fredag`) or `'Hela veckan'` for weekly items.
+`MenuItem` (`src/types/menu.ts`) is `{ name: string; price: number | null; day: SwedishDay }`.
+`day` MUST be a value from `SWEDISH_DAYS` (`Måndag`…`Fredag`). Expand courses available all week
+with `forEachDay({ name, price })`; do not introduce a separate weekly day label.
 
 The `fixtureUrl` parameter is what makes scrapers testable: when it starts with `file://`,
 `scrapeHtmlMenu` reads the local fixture instead of hitting the network.
@@ -70,10 +71,12 @@ Create `src/scrapers/<name>.ts`. Reuse utilities in `src/utils/` — do not reim
 
 - `parsePrice(text)` → `number | null` (handles `"155 kr"`, `"110:-"`, `"99,50"`). Parse prices
   from the page; never hardcode a price unless the site truly has no price anywhere.
-- `normalizeToSwedishDay(value)` / `SWEDISH_DAYS` — day-name normalization (English → Swedish).
+- `parseDay(value)` — normalize a Swedish or English weekday at the start of a heading.
+- `findDay(value)` — find a standalone weekday later in a line, as needed for PDF text.
+- `extractLeadingDay(value)` — extract a leading weekday and the remaining dish text.
+- `forEachDay({ name, price })` — expand a course available all week into Monday-Friday items.
+- `SWEDISH_DAYS` / `translateEnglishDay(day)` — canonical weekdays and explicit translation.
   Note: there is **no** month-name helper; if you need Swedish months, add a small local lookup const.
-- `findLabelCaseInsensitive(text, labels, 'leading')` — match a day/label prefix case-insensitively
-  (live sites sometimes switch to lowercase — see `kantin.ts`).
 - `normalizeWhitespace(text)`, `splitNormalizedLines(text)` — text cleanup.
 - `htmlToText(html)`, `bodyText(html)` — fast tag-stripping without a full DOM.
 

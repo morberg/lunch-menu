@@ -18,11 +18,15 @@
 - Add new targets when introducing new workflows
 - Keep targets simple and descriptive (e.g., `make start`, `make deploy`)
 
-## README Maintenance
+## Documentation Maintenance
 - Keep README concise and focused
 - Update when adding new features or restaurants
 - Less is more - avoid unnecessary sections
 - Ensure deployment links and setup instructions are current
+- Update API.md when endpoints, response types, field values, caching, or runtime behavior change
+- Update relevant SKILL.md files when implementation workflows, shared utilities, contracts, or conventions change
+- Update debug documentation when debug commands or workflows change
+- After renaming or removing code concepts, search all documentation for stale names and examples
 
 ## Node.js Execution
 - This project uses TypeScript - always build before running
@@ -41,8 +45,11 @@
 
 ## Continuous improvement
 
-When you have completed a task, ALWAYS verify that copilot-instructions.md and README.md are up to date.
+When you have completed a task, ALWAYS verify that README.md, API.md, relevant SKILL.md files,
+debug documentation, and copilot-instructions.md are still accurate. Only edit documents affected
+by the change, but explicitly report which were checked and which were updated.
 
-If you have added a new restaurant, verify that the SKILL.md used worked as intended. Update the SKILL.md if needed.
+If you used a SKILL.md workflow, verify that it worked as intended and update it when the task
+exposed missing, stale, or incorrect guidance.
 
 End your final output with some refactoring suggestions, preferably on how to reduce code and complexity.⏎

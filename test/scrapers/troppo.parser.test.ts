@@ -1,4 +1,5 @@
 import { parseTroppoHtml } from '../../src/scrapers/troppo';
+import { SWEDISH_DAYS } from '../../src/utils/days';
 
 describe('Troppo parser robustness', () => {
     test('parses weekly dishes from monday-friday section with highest price in a range', () => {
@@ -13,11 +14,11 @@ describe('Troppo parser robustness', () => {
 
         const result = parseTroppoHtml(html);
 
-        expect(result).toEqual([
-            { name: 'Five Spice Chicken', price: 159, day: 'Hela veckan' },
-            { name: 'Shrimp Noodles', price: 159, day: 'Hela veckan' },
-            { name: 'Mock Duck', price: 159, day: 'Hela veckan' }
-        ]);
+        expect(result).toEqual(
+            ['Five Spice Chicken', 'Shrimp Noodles', 'Mock Duck'].flatMap((name) =>
+                SWEDISH_DAYS.map((day) => ({ name, price: 159, day }))
+            )
+        );
     });
 
     test('handles lowercase heading and ignores duplicate dish labels', () => {
@@ -31,8 +32,8 @@ describe('Troppo parser robustness', () => {
 
         const result = parseTroppoHtml(html);
 
-        expect(result).toEqual([
-            { name: 'Mock Duck', price: 159, day: 'Hela veckan' }
-        ]);
+        expect(result).toEqual(
+            SWEDISH_DAYS.map((day) => ({ name: 'Mock Duck', price: 159, day }))
+        );
     });
 });

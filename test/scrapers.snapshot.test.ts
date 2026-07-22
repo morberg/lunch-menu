@@ -10,7 +10,7 @@ import { scrapeGrendenMenu } from '../src/scrapers/grenden';
 import { scrapeLinneaBasilikaMenu } from '../src/scrapers/linneabasilika';
 import { scrapeTroppoMenu } from '../src/scrapers/troppo';
 import { MenuItem } from '../src/types/menu';
-import { ALL_WEEK, SWEDISH_DAYS } from '../src/utils/days';
+import { SWEDISH_DAYS } from '../src/utils/days';
 
 const snapshotsDir = path.join(__dirname, 'fixtures');
 const expectedDir = path.join(__dirname, 'expected');
@@ -24,7 +24,7 @@ const loadExpected = (filename: string): MenuItem[] => {
 };
 
 const validateMenuStructure = (items: MenuItem[]) => {
-    const allowedDays = [...SWEDISH_DAYS, ALL_WEEK] as const;
+    const allowedDays = SWEDISH_DAYS;
 
     expect(Array.isArray(items)).toBe(true);
     items.forEach((item) => {

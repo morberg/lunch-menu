@@ -2,7 +2,27 @@
     {
         "name": "Korean deep fried chicken, gochujangmayo, rice, pickles",
         "price": 125,
-        "day": "Hela veckan"
+        "day": "Måndag"
+    },
+    {
+        "name": "Korean deep fried chicken, gochujangmayo, rice, pickles",
+        "price": 125,
+        "day": "Tisdag"
+    },
+    {
+        "name": "Korean deep fried chicken, gochujangmayo, rice, pickles",
+        "price": 125,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Korean deep fried chicken, gochujangmayo, rice, pickles",
+        "price": 125,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Korean deep fried chicken, gochujangmayo, rice, pickles",
+        "price": 125,
+        "day": "Fredag"
     },
     {
         "name": "Potato gnocchi, with creamy pesto sauce, roasted asparagus, grana padano",

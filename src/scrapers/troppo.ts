@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
-import { ALL_WEEK } from '../utils/days';
+import { forEachDay } from '../utils/days';
 import { bodyText } from '../utils/html-text';
 import { parsePrice } from '../utils/price';
 import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
@@ -60,11 +60,7 @@ export function parseTroppoHtml(html: string): MenuItem[] {
     const price = extractLunchPrice(html);
     const dishes = extractWeeklyDishes(html);
 
-    return dishes.map((name) => ({
-        name,
-        price,
-        day: ALL_WEEK
-    }));
+    return dishes.flatMap((name) => forEachDay({ name, price }));
 }
 
 export const scrapeTroppoMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {

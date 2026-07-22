@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
 import { MenuItem } from '../types/menu';
-import { ALL_WEEK, extractLeadingDay } from '../utils/days';
+import { extractLeadingDay, forEachDay } from '../utils/days';
 import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
 
 const WEEKLY_LABELS = ['Veckans vegetariska', 'Månadens alternativ'] as const;
@@ -25,11 +25,10 @@ const parseKantinParagraphs = (paragraphTexts: string[]): MenuItem[] => {
                 .replace(/^\s*[-–—:]\s*/, '')
                 .trim();
             if (description) {
-                menuItems.push({
+                menuItems.push(...forEachDay({
                     name: `${weeklyLabel}: ${description}`,
-                    price: KANTIN_LUNCH_PRICE,
-                    day: ALL_WEEK
-                });
+                    price: KANTIN_LUNCH_PRICE
+                }));
             }
             continue;
         }

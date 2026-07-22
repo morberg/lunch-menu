@@ -10,17 +10,26 @@ import { scrapeTroppoMenu } from '../scrapers/troppo';
 import { MenuItem } from '../types/menu';
 import MemoryCache from '../utils/cache';
 
-interface RestaurantMenus {
-    edison: MenuItem[];
-    bricks: MenuItem[];
-    kantin: MenuItem[];
-    smakapakina: MenuItem[];
-    eatery: MenuItem[];
-    foodhall: MenuItem[];
-    grenden: MenuItem[];
-    linneabasilika: MenuItem[];
-    troppo: MenuItem[];
+interface RestaurantDefinition {
+    key: string;
+    name: string;
+    scrape: () => Promise<MenuItem[]>;
 }
+
+const RESTAURANTS = [
+    { key: 'edison', name: 'Edison', scrape: scrapeEdisonMenu },
+    { key: 'bricks', name: 'Bricks', scrape: scrapeBricksMenu },
+    { key: 'kantin', name: 'Kantin', scrape: scrapeKantinMenu },
+    { key: 'smakapakina', name: 'Smakapakina', scrape: scrapeSmakapakina },
+    { key: 'eatery', name: 'Eatery', scrape: scrapeEatery },
+    { key: 'foodhall', name: 'Food Hall', scrape: scrapeFoodHallMenu },
+    { key: 'grenden', name: 'Grenden', scrape: scrapeGrendenMenu },
+    { key: 'linneabasilika', name: 'Linnea & Basilika', scrape: scrapeLinneaBasilikaMenu },
+    { key: 'troppo', name: 'Troppo', scrape: scrapeTroppoMenu }
+] as const satisfies readonly RestaurantDefinition[];
+
+type RestaurantKey = typeof RESTAURANTS[number]['key'];
+type RestaurantMenus = Record<RestaurantKey, MenuItem[]>;
 
 /** Hour of day (local time) at which menus are automatically refreshed. */
 const DAILY_REFRESH_HOUR = 10;
@@ -64,42 +73,22 @@ class MenuService {
         try {
             console.log('Fetching menus from all restaurants...');
 
-            const [edisonMenu, bricksMenu, kantinMenu, smakapakinaMenu, eateryMenu, foodhallMenu, grendenMenu, linneabasilikaMenu, troppoMenu] = await Promise.allSettled([
-                scrapeEdisonMenu(),
-                scrapeBricksMenu(),
-                scrapeKantinMenu(),
-                scrapeSmakapakina(),
-                scrapeEatery(),
-                scrapeFoodHallMenu(),
-                scrapeGrendenMenu(),
-                scrapeLinneaBasilikaMenu(),
-                scrapeTroppoMenu()
-            ]);
+            const entries = await Promise.all(
+                RESTAURANTS.map(async ({ key, name, scrape }) => {
+                    try {
+                        return [key, await scrape()] as const;
+                    } catch (error) {
+                        console.error(`${name} scraper failed:`, error);
+                        const emptyMenu: MenuItem[] = [];
+                        return [key, emptyMenu] as const;
+                    }
+                })
+            );
 
-            const result: RestaurantMenus = {
-                edison: edisonMenu.status === 'fulfilled' ? edisonMenu.value : [],
-                bricks: bricksMenu.status === 'fulfilled' ? bricksMenu.value : [],
-                kantin: kantinMenu.status === 'fulfilled' ? kantinMenu.value : [],
-                smakapakina: smakapakinaMenu.status === 'fulfilled' ? smakapakinaMenu.value : [],
-                eatery: eateryMenu.status === 'fulfilled' ? eateryMenu.value : [],
-                foodhall: foodhallMenu.status === 'fulfilled' ? foodhallMenu.value : [],
-                grenden: grendenMenu.status === 'fulfilled' ? grendenMenu.value : [],
-                linneabasilika: linneabasilikaMenu.status === 'fulfilled' ? linneabasilikaMenu.value : [],
-                troppo: troppoMenu.status === 'fulfilled' ? troppoMenu.value : [],
-            };
-
-            // Log any errors
-            this.logErrors([
-                { name: 'Edison', result: edisonMenu },
-                { name: 'Bricks', result: bricksMenu },
-                { name: 'Kantin', result: kantinMenu },
-                { name: 'Smakapakina', result: smakapakinaMenu },
-                { name: 'Eatery', result: eateryMenu },
-                { name: 'Food Hall', result: foodhallMenu },
-                { name: 'Grenden', result: grendenMenu },
-                { name: 'Linnea & Basilika', result: linneabasilikaMenu },
-                { name: 'Troppo', result: troppoMenu }
-            ]);
+            const result = entries.reduce((acc, [key, menu]) => {
+                acc[key] = menu;
+                return acc;
+            }, {} as RestaurantMenus);
 
             // Cache until next scheduled refresh
             const ttl = minutesUntilNextRefresh();
@@ -117,14 +106,6 @@ class MenuService {
             }
             throw error;
         }
-    }
-
-    private logErrors(results: Array<{ name: string; result: PromiseSettledResult<MenuItem[]> }>) {
-        results.forEach(({ name, result }) => {
-            if (result.status === 'rejected') {
-                console.error(`${name} scraper failed:`, result.reason);
-            }
-        });
     }
 
     /**

@@ -9,6 +9,15 @@ const stripInvisibleChars = (text: string): string => text.replace(/[\u200B-\u20
 
 const normalizeTroppoText = (text: string): string => normalizeWhitespace(stripInvisibleChars(text));
 
+const isDishName = (dishName: string): boolean => {
+    const firstCharacter = dishName.charAt(0);
+    return (
+        dishName.toLowerCase() !== 'or' &&
+        firstCharacter !== firstCharacter.toLowerCase() &&
+        !/[,.!?;:]/.test(dishName)
+    );
+};
+
 const extractLunchPrice = (html: string): number | null => {
     const lunchPriceMatch = bodyText(html).match(/Lunch\s+(\d+(?:[.,]\d+)?)(?:\s*-\s*(\d+(?:[.,]\d+)?))?\s*(?:kr|:-|sek)/i);
     if (!lunchPriceMatch) {
@@ -41,7 +50,7 @@ const extractWeeklyDishes = (html: string): string[] => {
 
     mondayFridayMenuSection.find('.w-richtext strong').each((_, element) => {
         const dishName = normalizeTroppoText($(element).text());
-        if (!dishName || dishName.toLowerCase() === 'or') {
+        if (!isDishName(dishName)) {
             return;
         }
 

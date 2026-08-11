@@ -73,7 +73,7 @@ Create `src/scrapers/<name>.ts`. Reuse utilities in `src/utils/` — do not reim
   from the page; never hardcode a price unless the site truly has no price anywhere.
 - `parseDay(value)` — normalize a Swedish or English weekday at the start of a heading.
 - `findDay(value)` — find a standalone weekday later in a line, as needed for PDF text.
-- `extractLeadingDay(value)` — extract a leading weekday and the remaining dish text.
+- `extractLeadingDay(value)` — extract a leading weekday and the remaining dish text, removing a leading short date suffix such as `11/8`.
 - `forEachDay({ name, price })` — expand a course available all week into Monday-Friday items.
 - `SWEDISH_DAYS` / `translateEnglishDay(day)` — canonical weekdays and explicit translation.
   Note: there is **no** month-name helper; if you need Swedish months, add a small local lookup const.

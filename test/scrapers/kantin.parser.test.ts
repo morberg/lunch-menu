@@ -61,4 +61,27 @@ describe('Kantin parser robustness', () => {
 
         expect(result).toHaveLength(10);
     });
+
+    test('strips dates appended to weekday labels', () => {
+        const html = `
+            <html>
+                <body>
+                    <h1>Meny</h1>
+                    <div>
+                        <p><strong>måndag 11/8</strong> - Kyckling med ris</p>
+                    </div>
+                </body>
+            </html>
+        `;
+
+        const result = parseKantinMenuFromHtml(html);
+
+        expect(result).toEqual([
+            {
+                name: 'Kyckling med ris',
+                day: 'Måndag',
+                price: 145
+            }
+        ]);
+    });
 });

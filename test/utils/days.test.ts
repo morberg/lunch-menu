@@ -44,6 +44,7 @@ describe('day utilities', () => {
         ['måndag - Kyckling med ris', { day: 'Måndag', text: 'Kyckling med ris' }],
         ['Tuesday: Fisk med potatis', { day: 'Tisdag', text: 'Fisk med potatis' }],
         ['ONSDAG — Pasta', { day: 'Onsdag', text: 'Pasta' }],
+        ['Måndag 11/8 - Kyckling med ris', { day: 'Måndag', text: 'Kyckling med ris' }],
         ['Torsdag', { day: 'Torsdag', text: '' }]
     ])('extractLeadingDay parses %s', (value, expected) => {
         expect(extractLeadingDay(value)).toEqual(expected);

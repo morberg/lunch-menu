@@ -17,7 +17,7 @@ import { scrapeFoodHallMenu } from '../../src/scrapers/foodhall';
 import { scrapeGrendenMenu } from '../../src/scrapers/grenden';
 import { scrapeLinneaBasilikaMenu } from '../../src/scrapers/linneabasilika';
 import { scrapeTroppoMenu } from '../../src/scrapers/troppo';
-import MenuService, { menuService } from '../../src/services/menu-service';
+import MenuService from '../../src/services/menu-service';
 
 const edisonMock = scrapeEdisonMenu as jest.MockedFunction<typeof scrapeEdisonMenu>;
 const bricksMock = scrapeBricksMenu as jest.MockedFunction<typeof scrapeBricksMenu>;
@@ -41,13 +41,9 @@ function mockAllScrapersResolved(): void {
     troppoMock.mockResolvedValue([{ name: 'Troppo item', day: 'Måndag', price: 149 }]);
 }
 
-describe('MenuService cache behavior', () => {
+describe('MenuService', () => {
     const logSpy = jest.spyOn(console, 'log').mockImplementation(() => undefined);
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
-
-    beforeAll(() => {
-        menuService.stopBackgroundRefresh();
-    });
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -59,32 +55,19 @@ describe('MenuService cache behavior', () => {
         errorSpy.mockRestore();
     });
 
-    test('caches fetched menus between getMenus calls', async () => {
-        const service = new MenuService(false);
+    test('fetches menus for each service call', async () => {
+        const service = new MenuService();
 
         const first = await service.getMenus();
         const second = await service.getMenus();
 
         expect(first).toEqual(second);
-        expect(edisonMock).toHaveBeenCalledTimes(1);
-        expect(bricksMock).toHaveBeenCalledTimes(1);
-    });
-
-    test('shares one fetch between concurrent cache misses', async () => {
-        const service = new MenuService(false);
-
-        const [first, second] = await Promise.all([
-            service.getMenus(),
-            service.getMenus()
-        ]);
-
-        expect(first).toEqual(second);
-        expect(edisonMock).toHaveBeenCalledTimes(1);
-        expect(bricksMock).toHaveBeenCalledTimes(1);
+        expect(edisonMock).toHaveBeenCalledTimes(2);
+        expect(bricksMock).toHaveBeenCalledTimes(2);
     });
 
     test('returns empty list for rejected scraper while keeping others', async () => {
-        const service = new MenuService(false);
+        const service = new MenuService();
         bricksMock.mockRejectedValue(new Error('bricks failed'));
 
         const result = await service.getMenus();
@@ -97,34 +80,5 @@ describe('MenuService cache behavior', () => {
         expect(result.find(restaurant => restaurant.key === 'edison')?.menu).toEqual([
             { name: 'Edison item', day: 'Måndag', price: 100 }
         ]);
-    });
-
-    test('invalidateCache forces refetch', async () => {
-        const service = new MenuService(false);
-
-        await service.getMenus();
-        await service.invalidateCache();
-
-        expect(edisonMock).toHaveBeenCalledTimes(2);
-        expect(grendenMock).toHaveBeenCalledTimes(2);
-    });
-
-    test('does not return cached data when a fresh fetch fails', async () => {
-        const service = new MenuService(false);
-        await service.getMenus();
-
-        edisonMock.mockRejectedValue(new Error('edison failed'));
-        bricksMock.mockRejectedValue(new Error('bricks failed'));
-        kantinMock.mockRejectedValue(new Error('kantin failed'));
-        smakapakinaMock.mockRejectedValue(new Error('smakapakina failed'));
-        eateryMock.mockRejectedValue(new Error('eatery failed'));
-        foodhallMock.mockRejectedValue(new Error('foodhall failed'));
-        grendenMock.mockRejectedValue(new Error('grenden failed'));
-        linneabasilikaMock.mockRejectedValue(new Error('linneabasilika failed'));
-        troppoMock.mockRejectedValue(new Error('troppo failed'));
-
-        const result = await service.invalidateCache();
-
-        expect(result.every(restaurant => restaurant.menu.length === 0)).toBe(true);
     });
 });

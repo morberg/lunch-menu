@@ -1,13 +1,13 @@
 # Makefile for lunch-menu-scraper
 
-.PHONY: install build start dev clean deploy test lint setup debug-% profile-scrapers
+.PHONY: install build start dev clean deploy test lint check setup debug-%
 
 install:
 	npm install
 
 setup: install
 	cp -n .git/hooks/pre-commit .git/hooks/pre-commit.bak 2>/dev/null || true
-	printf '#!/bin/sh\necho "Running lint before commit..."\nnpm run lint\necho "Running tests before commit..."\nnpm test\n' > .git/hooks/pre-commit
+	printf '#!/bin/sh\nset -e\nmake check\n' > .git/hooks/pre-commit
 	chmod +x .git/hooks/pre-commit
 	@echo "Git hooks installed."
 
@@ -28,14 +28,14 @@ test:
 lint:
 	npm run lint
 
+check:
+	npm run check
+
 debug-%:
 	npx tsx debug/debug.ts $*
-
-profile-scrapers:
-	npx tsx debug/profile-scrapers.ts
 
 clean:
 	rm -rf node_modules dist
 
-deploy: build
+deploy: check
 	npx vercel --prod

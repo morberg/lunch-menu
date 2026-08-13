@@ -1,33 +1,36 @@
 # Lunch Menu Scraper
-<!-- See .github/copilot-instructions.md for development guidelines -->
 
-Scrapes lunch menus for selected restaurants in Lund and serves them via a small web app.
+Scrapes lunch menus for selected restaurants in Lund and serves them through a small Vercel-hosted web app.
 
 Restaurants:
 - Edison
-- Brick's Eatery
+- Bricks Eatery
 - Kantin
-- Smakapåkina
+- Smaka på Kina
 - Eatery
 - Food Hall
 - Grenden
 - Linnea & Basilika
 - Troppo
 
-## API Documentation
+## Runtime
 
-The lunch menus are available via a public API. See [API.md](API.md) for complete documentation, or visit `/api/docs` when running the application.
+- [src/web/app.ts](src/web/app.ts) fetches menus and embeds them in the rendered home page for Vercel and route tests.
+- [src/web/server.ts](src/web/server.ts) starts the local development process.
+- Vercel caches the rendered home page until the next 10:00 refresh in `Europe/Stockholm`. Cron requests warm it across daylight-saving changes.
 
-## Quick start
+## Development
+
 - First time setup: `make setup` (installs deps + git hooks)
-- Run app: `make start`
-- Tests: `make test`
-- Lint: `make lint`
+- Development server with reload: `make dev`
+- Production-style local server: `make start`
+- Full verification: `make check`
 
-## Fixture testing
+## Scraper Fixtures
+
 Test fixtures (HTML snapshots) are in [test/fixtures](test/fixtures) and expected outputs in [test/expected](test/expected).
 
-When a scraper breaks: fetch the new HTML with `curl`, update the fixture and expected output manually, then run `make test`.
+When a scraper breaks, capture the raw source response, update the matching fixture and expected JSON, add a narrow parser regression test for the markup change, and run `make check`. The expected JSON must describe the fixture, not a live response that may have changed meanwhile.
 
 ## Debug a scraper live
 ```

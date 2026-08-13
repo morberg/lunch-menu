@@ -4,9 +4,16 @@ import * as cheerio from 'cheerio';
 import pdfParse from 'pdf-parse';
 import { MenuItem } from '../types/menu';
 import { findDay, SwedishDay } from '../utils/days';
-import { normalizeWhitespace, splitNormalizedLines, isFileFixtureUrl } from '../utils/scraper';
+import {
+    isFileFixtureUrl,
+    loadHtmlSource,
+    normalizeWhitespace,
+    splitNormalizedLines,
+    withScraperRequestDefaults
+} from '../utils/scraper';
 
 const EATERY_LUNCH_PRICE = 139;
+const EATERY_PAGE_URL = 'https://eatery.se/anlaggningar/lund';
 
 export const scrapeEatery = async (fixtureUrl?: string): Promise<MenuItem[]> => {
     try {
@@ -15,23 +22,8 @@ export const scrapeEatery = async (fixtureUrl?: string): Promise<MenuItem[]> => 
         if (isFileFixtureUrl(fixtureUrl)) {
             pdfBuffer = fs.readFileSync((fixtureUrl as string).replace('file://', ''));
         } else {
-            const mainPageResponse = await axios.get('https://eatery.se/anlaggningar/lund');
-            const $ = cheerio.load(mainPageResponse.data);
-
-            let lunchMenuUrl = '';
-            $('a').each((_, element) => {
-                const linkText = $(element).text().trim();
-                const href = $(element).attr('href');
-
-                if (linkText.toLowerCase().includes('lunchmeny') && href && href.includes('.pdf')) {
-                    try {
-                        lunchMenuUrl = new URL(href, 'https://eatery.se').toString();
-                    } catch {
-                        lunchMenuUrl = href;
-                    }
-                    return false;
-                }
-            });
+            const mainPageHtml = await loadHtmlSource(undefined, EATERY_PAGE_URL);
+            const lunchMenuUrl = findEateryLunchMenuPdfUrl(mainPageHtml);
 
             if (!lunchMenuUrl) {
                 console.error('Could not find lunch menu PDF URL');
@@ -39,8 +31,8 @@ export const scrapeEatery = async (fixtureUrl?: string): Promise<MenuItem[]> => 
             }
 
             const pdfResponse = await axios.get(lunchMenuUrl, {
-                responseType: 'arraybuffer',
-                timeout: 10000
+                ...withScraperRequestDefaults(),
+                responseType: 'arraybuffer'
             });
             pdfBuffer = Buffer.from(pdfResponse.data);
         }
@@ -52,6 +44,29 @@ export const scrapeEatery = async (fixtureUrl?: string): Promise<MenuItem[]> => 
         return [];
     }
 };
+
+export function findEateryLunchMenuPdfUrl(html: string): string | null {
+    const $ = cheerio.load(html);
+
+    for (const element of $('a').toArray()) {
+        const linkText = normalizeWhitespace($(element).text()).toLowerCase();
+        const href = $(element).attr('href');
+        if (!linkText.includes('lunchmeny') || !href) {
+            continue;
+        }
+
+        try {
+            const url = new URL(href, EATERY_PAGE_URL);
+            if (url.pathname.toLowerCase().endsWith('.pdf')) {
+                return url.toString();
+            }
+        } catch {
+            continue;
+        }
+    }
+
+    return null;
+}
 
 export function parsePdfMenu(pdfText: string): MenuItem[] {
     const menuItems: MenuItem[] = [];

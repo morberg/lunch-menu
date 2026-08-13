@@ -11,10 +11,11 @@ make debug-edison
 make debug-foodhall
 make debug-grenden
 make debug-kantin
+make debug-linneabasilika
 make debug-smakapakina
+make debug-troppo
 ```
 
 ## Files
 
 - `debug.ts` - Unified debug runner (accepts scraper name as argument)
-- `profile-scrapers.ts` - Benchmarks parse time for each scraper using fixture files

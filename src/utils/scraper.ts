@@ -2,6 +2,12 @@ import axios, { AxiosRequestConfig } from 'axios';
 import * as fs from 'fs';
 import { MenuItem } from '../types/menu';
 
+export const SCRAPER_REQUEST_TIMEOUT_MS = 10_000;
+export const SCRAPER_REQUEST_HEADERS = {
+    Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'User-Agent': 'lunch-menu-scraper/1.0 (+https://github.com/morberg/lunch-menu)'
+} as const;
+
 interface ScrapeHtmlMenuOptions {
     scraperName: string;
     fixtureUrl?: string;
@@ -32,6 +38,17 @@ export function readFixtureHtml(fixtureUrl: string): string {
     return fs.readFileSync(fixtureUrl.replace('file://', ''), 'utf8');
 }
 
+export function withScraperRequestDefaults(requestConfig: AxiosRequestConfig = {}): AxiosRequestConfig {
+    return {
+        ...requestConfig,
+        timeout: requestConfig.timeout ?? SCRAPER_REQUEST_TIMEOUT_MS,
+        headers: {
+            ...SCRAPER_REQUEST_HEADERS,
+            ...requestConfig.headers
+        }
+    };
+}
+
 export async function loadHtmlSource(
     fixtureUrl: string | undefined,
     url: string,
@@ -41,7 +58,10 @@ export async function loadHtmlSource(
         return readFixtureHtml(fixtureUrl as string);
     }
 
-    const response = await axios.get<string>(url, requestConfig);
+    const response = await axios.get<string>(url, withScraperRequestDefaults(requestConfig));
+    if (typeof response.data !== 'string') {
+        throw new Error(`Expected text response from ${url}`);
+    }
     return response.data;
 }
 

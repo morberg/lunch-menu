@@ -4,8 +4,11 @@ import * as path from 'path';
 import axios from 'axios';
 import {
     loadHtmlSource,
+    SCRAPER_REQUEST_HEADERS,
+    SCRAPER_REQUEST_TIMEOUT_MS,
     scrapeHtmlMenu,
-    splitNormalizedLines
+    splitNormalizedLines,
+    withScraperRequestDefaults
 } from '../../src/utils/scraper';
 
 jest.mock('axios');
@@ -41,7 +44,25 @@ describe('scraper utils', () => {
         const html = await loadHtmlSource(undefined, 'https://example.com', { timeout: 5000 });
 
         expect(html).toBe('<html>remote</html>');
-        expect(mockedAxios.get).toHaveBeenCalledWith('https://example.com', { timeout: 5000 });
+        expect(mockedAxios.get).toHaveBeenCalledWith('https://example.com', {
+            timeout: 5000,
+            headers: SCRAPER_REQUEST_HEADERS
+        });
+    });
+
+    test('adds a timeout and request headers by default', () => {
+        expect(withScraperRequestDefaults()).toEqual({
+            timeout: SCRAPER_REQUEST_TIMEOUT_MS,
+            headers: SCRAPER_REQUEST_HEADERS
+        });
+    });
+
+    test('rejects a remote response that is not text', async () => {
+        mockedAxios.get.mockResolvedValue({ data: { unexpected: true } } as any);
+
+        await expect(loadHtmlSource(undefined, 'https://example.com')).rejects.toThrow(
+            'Expected text response from https://example.com'
+        );
     });
 
     test('scrapeHtmlMenu returns fallback on load failure', async () => {

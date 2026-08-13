@@ -163,22 +163,6 @@
             opacity: 0.7;
         }
 
-        .page-footer {
-            text-align: center;
-            margin-top: 24px;
-            padding-bottom: 12px;
-        }
-
-        .api-docs-link {
-            color: #588157;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .api-docs-link:hover {
-            text-decoration: underline;
-        }
-
         @media (max-width: 600px) {
             body {
                 padding: 6px;
@@ -196,35 +180,34 @@
             }
         }
 
-        /* Fredagskaka banner */
         #fredagskaka-banner {
             position: fixed;
-            bottom: 20px;
             right: 20px;
+            bottom: 20px;
             z-index: 1000;
             width: 200px;
-            background: #faf7ed;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             overflow: hidden;
+            background: #faf7ed;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             transition: box-shadow 0.2s ease;
         }
 
         #fredagskaka-banner.minimized {
             width: auto;
+            overflow: visible;
             background: none;
             box-shadow: none;
-            overflow: visible;
         }
 
         .fredagskaka-minimized-btn {
             display: none;
-            background: #faf7ed;
-            border: none;
-            border-radius: 999px;
             padding: 10px 14px;
             font-size: 22px;
             cursor: pointer;
+            background: #faf7ed;
+            border: none;
+            border-radius: 999px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             transition: transform 0.15s ease;
         }
@@ -239,6 +222,7 @@
 
         .fredagskaka-card {
             padding: 12px;
+            cursor: pointer;
         }
 
         #fredagskaka-banner.minimized .fredagskaka-card {
@@ -247,30 +231,24 @@
 
         .fredagskaka-top {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             margin-bottom: 8px;
         }
 
         .fredagskaka-title {
-            font-weight: 700;
             font-size: 16px;
+            font-weight: 700;
             color: #344e41;
-            /* letter-spacing: 0.5px; */
-        }
-
-        .fredagskaka-card {
-            cursor: pointer;
         }
 
         .fredagskaka-img {
-            width: 100%;
-            /* height: 110px; */
-            object-fit: cover;
-            border-radius: 8px;
             display: block;
+            width: 100%;
             margin-bottom: 8px;
+            object-fit: cover;
             background: #e8e3d5;
+            border-radius: 8px;
         }
 
         .fredagskaka-name {
@@ -295,12 +273,6 @@
         <div id="content" class="hidden"></div>
     </main>
 
-    <footer class="page-footer">
-        <a href="/api/docs" class="api-docs-link">API Documentation</a>
-        <span style="margin: 0 8px; color: #888">&middot;</span>
-        <a href="#" class="api-docs-link" id="refresh-link" onclick="forceRefresh(); return false;">Uppdatera menyer</a>
-    </footer>
-
     <div id="fredagskaka-banner" class="hidden">
         <button class="fredagskaka-minimized-btn" id="fredagskaka-restore" title="Veckans fredagskaka"
             aria-label="Visa fredagskaka">🍪</button>
@@ -308,42 +280,22 @@
             <div class="fredagskaka-top">
                 <span class="fredagskaka-title">Fredagskaka</span>
             </div>
-            <img id="fredagskaka-img" class="fredagskaka-img" src="" alt="" />
+            <img id="fredagskaka-img" class="fredagskaka-img" src="" alt="">
             <div id="fredagskaka-name" class="fredagskaka-name"></div>
         </div>
     </div>
 
     <script>
-        async function loadMenus() {
+        function loadMenus() {
             try {
-                const response = await fetch('/api/menus');
-                const data = await response.json();
                 document.getElementById('loading').classList.add('hidden');
                 const contentEl = document.getElementById('content');
                 contentEl.classList.remove('hidden');
-                displayMenus(data.restaurants);
+                displayMenus(window.INITIAL_MENUS);
             } catch (error) {
                 const loading = document.getElementById('loading');
                 loading.innerHTML = '<div class="error">Kunde inte ladda menyer. Försök igen senare.</div>';
                 console.error('Error loading menus:', error);
-            }
-        }
-
-        async function forceRefresh() {
-            const link = document.getElementById('refresh-link');
-            link.textContent = 'Hämtar...';
-            try {
-                const response = await fetch('/api/menus/refresh', { method: 'POST' });
-                if (!response.ok) throw new Error('Refresh failed');
-                const { restaurants } = await response.json();
-                document.getElementById('content').innerHTML = '';
-                displayMenus(restaurants);
-                link.textContent = 'Uppdaterad';
-                setTimeout(() => { link.textContent = 'Uppdatera menyer'; }, 2000);
-            } catch (error) {
-                console.error('Force refresh failed:', error);
-                link.textContent = 'Försök igen';
-                setTimeout(() => { link.textContent = 'Uppdatera menyer'; }, 2000);
             }
         }
 
@@ -361,15 +313,39 @@
             const collapsedKey = 'collapsedRestaurantsV1';
             const collapsed = new Set(JSON.parse(localStorage.getItem(collapsedKey) || '[]'));
             function persist() { localStorage.setItem(collapsedKey, JSON.stringify([...collapsed])); }
-            function buildRestaurantHeader(r, hasUniformPrice, uniformPrice) {
+            function createRestaurantHeader(r, hasUniformPrice, uniformPrice) {
                 const isCollapsed = collapsed.has(r.key);
-                const priceSpan = (hasUniformPrice && uniformPrice !== null) ? `<span class="price">${uniformPrice} kr</span>` : '';
-                return `<div class="restaurant-header">
-  <div class="restaurant-title-wrap">
-    <button class="toggle-btn" data-rest="${r.key}" aria-expanded="${!isCollapsed}">${isCollapsed ? '+' : '−'}</button>
-    <strong><a href="${r.url}" target="_blank" class="restaurant-link">${r.name}</a></strong>${priceSpan}
-  </div>
-</div>`;
+                const header = document.createElement('div');
+                header.className = 'restaurant-header';
+
+                const titleWrap = document.createElement('div');
+                titleWrap.className = 'restaurant-title-wrap';
+
+                const toggle = document.createElement('button');
+                toggle.className = 'toggle-btn';
+                toggle.dataset.rest = r.key;
+                toggle.setAttribute('aria-expanded', String(!isCollapsed));
+                toggle.textContent = isCollapsed ? '+' : '−';
+
+                const title = document.createElement('strong');
+                const restaurantLink = document.createElement('a');
+                restaurantLink.href = r.url;
+                restaurantLink.target = '_blank';
+                restaurantLink.rel = 'noopener noreferrer';
+                restaurantLink.className = 'restaurant-link';
+                restaurantLink.textContent = r.name;
+                title.appendChild(restaurantLink);
+
+                titleWrap.append(toggle, title);
+                if (hasUniformPrice && uniformPrice !== null) {
+                    const price = document.createElement('span');
+                    price.className = 'price';
+                    price.textContent = `${uniformPrice} kr`;
+                    titleWrap.appendChild(price);
+                }
+
+                header.appendChild(titleWrap);
+                return header;
             }
             function applyToggleHandlers(scope) {
                 scope.querySelectorAll('.toggle-btn').forEach(btn => {
@@ -400,18 +376,24 @@
             function createMenuTable(items, hasUniformPrice) {
                 const table = document.createElement('table');
                 table.className = 'menu-table';
-                table.innerHTML = '<tbody></tbody>';
-                const tbody = table.querySelector('tbody');
+                const tbody = document.createElement('tbody');
                 items.forEach(item => {
                     const tr = document.createElement('tr');
-                    if (hasUniformPrice) {
-                        tr.innerHTML = `<td class="cell">${item.name}</td>`;
-                    } else {
+                    const nameCell = document.createElement('td');
+                    nameCell.className = 'cell';
+                    nameCell.textContent = item.name;
+                    tr.appendChild(nameCell);
+
+                    if (!hasUniformPrice) {
                         const price = (item.price !== null && item.price !== undefined) ? `${item.price} kr` : '-';
-                        tr.innerHTML = `<td class="cell">${item.name}</td><td class="price">${price}</td>`;
+                        const priceCell = document.createElement('td');
+                        priceCell.className = 'price';
+                        priceCell.textContent = price;
+                        tr.appendChild(priceCell);
                     }
                     tbody.appendChild(tr);
                 });
+                table.appendChild(tbody);
                 return table;
             }
 
@@ -426,16 +408,19 @@
                     const uniquePrices = [...new Set(prices)];
                     const hasUniformPrice = uniquePrices.length === 1;
                     const uniformPrice = hasUniformPrice ? uniquePrices[0] : null;
-                    restaurantDiv.innerHTML = buildRestaurantHeader(r, hasUniformPrice, uniformPrice);
+                    restaurantDiv.appendChild(createRestaurantHeader(r, hasUniformPrice, uniformPrice));
                     const contentWrap = document.createElement('div');
                     contentWrap.className = 'restaurant-content';
                     contentWrap.appendChild(createMenuTable(items, hasUniformPrice));
                     restaurantDiv.appendChild(contentWrap);
                 } else {
-                    restaurantDiv.innerHTML = buildRestaurantHeader(r, false, null);
+                    restaurantDiv.appendChild(createRestaurantHeader(r, false, null));
                     const contentWrap = document.createElement('div');
                     contentWrap.className = 'restaurant-content';
-                    contentWrap.innerHTML = `<div class="placeholder-note">${placeholderText}</div>`;
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'placeholder-note';
+                    placeholder.textContent = placeholderText;
+                    contentWrap.appendChild(placeholder);
                     restaurantDiv.appendChild(contentWrap);
                 }
                 if (isCollapsed) restaurantDiv.classList.add('collapsed');
@@ -511,21 +496,19 @@
             const defaultDay = days.includes(todayName) ? todayName : days[0];
             setActiveDay(defaultDay);
         }
-        async function loadFredagskaka() {
+
+        function loadFredagskaka() {
             const banner = document.getElementById('fredagskaka-banner');
-            if (!banner) return;
+            const data = window.FREDAGSKAKA;
+            if (!banner || !data || !data.Kaka || !data.URL) return;
 
             try {
-                const res = await fetch('/api/fredagskaka');
-                if (!res.ok) return;
-                const data = await res.json();
-                if (!data || !data.Kaka) return;
-
                 const dismissKey = `fredagskaka-${data.Year}-${data.Week}`;
                 if (localStorage.getItem(dismissKey) === 'dismissed') return;
 
-                document.getElementById('fredagskaka-img').src = data.URL;
-                document.getElementById('fredagskaka-img').alt = data.Kaka;
+                const image = document.getElementById('fredagskaka-img');
+                image.src = data.URL;
+                image.alt = data.Kaka;
                 document.getElementById('fredagskaka-name').textContent = data.Kaka;
 
                 if (localStorage.getItem(dismissKey) !== 'expanded') {
@@ -538,23 +521,10 @@
                     banner.classList.toggle('hidden', !isFredag);
                 }
 
-                // Wait for tabs to be rendered before syncing initial visibility
-                function waitForTabs() {
-                    return new Promise(resolve => {
-                        function check() {
-                            if (document.querySelectorAll('.day-tab').length > 0) resolve();
-                            else requestAnimationFrame(check);
-                        }
-                        check();
-                    });
-                }
-                await waitForTabs();
                 syncVisibility();
 
-                // Keep in sync when the user switches tabs
-                document.addEventListener('click', e => {
-                    if (e.target.classList.contains('day-tab')) {
-                        // Let setActiveDay update aria-selected first, then sync
+                document.addEventListener('click', event => {
+                    if (event.target.classList.contains('day-tab')) {
                         requestAnimationFrame(syncVisibility);
                     }
                 });
@@ -568,12 +538,15 @@
                     banner.classList.remove('minimized');
                     localStorage.setItem(dismissKey, 'expanded');
                 });
-            } catch (e) {
-                // Silently ignore — don't break the page if the API is unavailable
+            } catch (error) {
+                console.error('Error displaying fredagskaka:', error);
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => { loadMenus(); loadFredagskaka(); });
+        window.addEventListener('DOMContentLoaded', () => {
+            loadMenus();
+            loadFredagskaka();
+        });
     </script>
 </body>
 

@@ -24,21 +24,3 @@ export function parsePrice(priceText: string): number | null {
     // If no pattern matches, return null
     return null;
 }
-
-/**
- * Format a price for display
- * @param amount - Price amount in SEK
- * @returns Formatted price string or '-' if null
- */
-export function formatPrice(amount: number | null): string {
-    if (amount === null) {
-        return '-';
-    }
-
-    // Format as whole number if no decimals, otherwise with decimals
-    if (amount % 1 === 0) {
-        return `${amount} kr`;
-    } else {
-        return `${amount.toFixed(2)} kr`;
-    }
-}

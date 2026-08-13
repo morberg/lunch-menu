@@ -1,17 +1,17 @@
 ---
 name: add-restaurant-scraper
-description: 'Step-by-step workflow for adding a new restaurant lunch-menu scraper to this project. USE WHEN: the user asks to "add a restaurant", "add a scraper", "scrape <restaurant> lunch menu", "support a new lunch place", or wire a new menu source into the app. Covers source discovery (static HTML / WordPress REST / PDF / Castit CMS), creating and registering the scraper, and adding fixtures, snapshots, and tests. DO NOT USE FOR: fixing an existing scraper that broke due to markup drift (just edit the scraper + its parser test), or general TypeScript questions.'
+description: 'Use when adding a restaurant, scraper, lunch-menu source, or new supported lunch place. Covers source discovery, fixture capture, parser implementation, registration, snapshot tests, explicit service-test updates, and documentation. Do not use for a broken existing source; use maintain-scraper instead.'
 ---
 
 # Add a Restaurant Scraper
 
-A scraper fetches one restaurant's weekly lunch menu and returns `MenuItem[]`. All 9 existing
-scrapers share one contract and a small set of utilities. Follow the steps in order — each new
-scraper touches the same 6-8 files.
+A scraper fetches one restaurant's weekly lunch menu and returns `MenuItem[]`. Follow the steps in
+order. A new scraper normally changes its module, the registry, a fixture, expected output,
+snapshot coverage, explicit service mocks, and public documentation.
 
 ## Contract
 
-Every scraper lives in `src/scrapers/<name>.ts` and exports **two** things:
+Every scraper lives in `src/scrapers/<name>.ts` and exports an async wrapper plus a pure parser:
 
 ```ts
 // Pure parser — takes raw source, returns items. Unit-testable, no I/O.
@@ -21,6 +21,9 @@ export function parse<Name>Html(html: string): MenuItem[] { /* ... */ }
 export const scrape<Name>Menu = async (fixtureUrl?: string): Promise<MenuItem[]> =>
     scrapeHtmlMenu({ scraperName: '<Name>', fixtureUrl, url: '<liveUrl>', parseHtml: parse<Name>Html });
 ```
+
+Match the naming used by the nearest scraper; older modules use names such as `parseTroppoHtml` and
+`parseKantinMenuFromHtml`. The exported parser must remain free of network and file I/O.
 
 `MenuItem` (`src/types/menu.ts`) is `{ name: string; price: number | null; day: SwedishDay }`.
 `day` MUST be a value from `SWEDISH_DAYS` (`Måndag`…`Fredag`). Expand courses available all week
@@ -42,13 +45,11 @@ HTML contains it. Common cases seen in this repo:
 | PDF | Menu is a linked PDF | Discover PDF URL, `pdfParse` | `eatery.ts` |
 | Castit CMS | `.castit-lunch-*` classes present | `parseCastitMenu(html)` | `foodhall.ts`, `grenden.ts` |
 
-Save the exact raw response you parsed as the fixture (`test/fixtures/<name>.html`, or `.json`
-for REST/JSON sources). The fixture must be the *same bytes* the parser will receive at runtime.
+Save the exact raw response you parsed as the fixture (`test/fixtures/<name>.html`, `.pdf`, or `.json`). The fixture must be the same bytes the parser receives at runtime. Do not put secrets, cookies, or credentials in fixtures.
 
 ### JSON / REST endpoints
 
-`loadHtmlSource` uses `axios.get`, which auto-parses JSON into an object. If your source is JSON,
-force a raw string so the parser can `JSON.parse` it itself (and so the file fixture round-trips):
+`loadHtmlSource` applies the shared request timeout, headers, and text-response validation. If your source is JSON, force a raw string so the parser can `JSON.parse` it itself and the fixture round-trips:
 
 ```ts
 requestConfig: { responseType: 'text', transformResponse: (r) => r }
@@ -88,18 +89,14 @@ In `src/restaurants.ts`:
 1. Import `scrape<Name>Menu` from `./scrapers/<name>`.
 2. Add one `RESTAURANTS` entry with its canonical `key`, display `name`, menu `url`, and `scrape` function.
 
-The menu service, API response, frontend order, and debug runner all derive from this registry. Do not
+The menu service, rendered page, frontend order, and debug runner all derive from this registry. Do not
 add separate restaurant entries to those files.
 
 ## Step 3 — Fixture + expected output
 
-1. Save the Step 0 raw response to `test/fixtures/<name>.html` (or `.json`).
-2. Generate expected output and save it to `test/expected/<name>.json`:
-   ```sh
-   make debug-<name>          # runs against the LIVE site; sanity-check the items
-   ```
-   Build the JSON to match the parser's output for the **fixture** (use a fixed reference date if
-   the parser takes one), not whatever the live site shows today.
+1. Save the Step 0 raw response to `test/fixtures/<name>.html` (or `.pdf`/`.json`).
+2. Author `test/expected/<name>.json` from the parser output for that fixture. Use a fixed reference date when the parser accepts one.
+3. Run `make debug-<name>` only as a live sanity check. It does not generate fixture expectations; never copy live output into a fixture expectation without comparing it to the captured source.
 
 ## Step 4 — Tests
 
@@ -112,22 +109,19 @@ Add `test/scrapers/<name>.parser.test.ts` for edge cases (week selection, price 
 lowercase day labels). Import the pure `parse<Name>Html` directly. Casing/markup-drift tests are
 required for label-based parsers — snapshots alone miss live drift.
 
+`test/services/menu-service.test.ts` deliberately mocks each registered scraper. Add the new mock,
+import, typed mock variable, and resolved sample there until that test is refactored to derive its setup from the registry.
+
 ## Step 5 — Docs & frontend
 
 - Add the restaurant to `README.md`.
-- Add the restaurant to the supported-restaurants table and response example in `API.md`.
-- Do not add it to `src/web/views/index.html`; the frontend consumes the canonical registry through the API.
+- Do not add it to `src/web/views/index.html`; the page receives the canonical registry through its initial data.
 
 ## Step 6 — Verify
 
 ```sh
 make debug-<name>   # live site returns sensible, priced, correctly-dayed items
-make test           # snapshot + structure validation pass
+make check          # type-check, unit tests, snapshots, and production build
 ```
 
-## Conventions (from copilot-instructions.md)
-
-- TypeScript only — build before running; use `make` targets, never `node` on `.ts` directly.
-- Use `as const` for constant arrays (not `readonly T[]`).
-- Warnings are errors; keep it simple; avoid hardcoding.
-- Do not commit until `make test` passes.
+See [project instructions](../../copilot-instructions.md) for shared runtime, test, and documentation rules.

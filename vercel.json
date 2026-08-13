@@ -11,11 +11,5 @@
       "src": "/(.*)",
       "dest": "dist/web/app.js"
     }
-  ],
-  "crons": [
-    {
-      "path": "/",
-      "schedule": "0 8,9 * * *"
-    }
   ]
 }

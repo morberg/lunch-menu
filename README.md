@@ -17,7 +17,7 @@ Restaurants:
 
 - [src/web/app.ts](src/web/app.ts) fetches menus and embeds them in the rendered home page for Vercel and route tests.
 - [src/web/server.ts](src/web/server.ts) starts the local development process.
-- Vercel caches the rendered home page until the next 10:00 refresh in `Europe/Stockholm`. Cron requests warm it across daylight-saving changes.
+- Vercel caches the rendered home page until the next 10:00 refresh in `Europe/Stockholm`. The next page request after expiry fetches fresh menus.
 
 ## Development
 

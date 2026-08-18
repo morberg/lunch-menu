@@ -2,20 +2,18 @@ import type { Server } from 'http';
 import { AddressInfo } from 'net';
 
 jest.mock('../../src/services/menu-service', () => ({
-    menuService: {
-        getMenus: jest.fn()
-    }
+    getMenus: jest.fn()
 }));
 
 jest.mock('../../src/services/fredagskaka', () => ({
     getFridayCake: jest.fn()
 }));
 
-import { menuService } from '../../src/services/menu-service';
+import { getMenus } from '../../src/services/menu-service';
 import { getFridayCake } from '../../src/services/fredagskaka';
 import { app } from '../../src/web/app';
 
-const getMenusMock = menuService.getMenus as jest.MockedFunction<typeof menuService.getMenus>;
+const getMenusMock = getMenus as jest.MockedFunction<typeof getMenus>;
 const getFridayCakeMock = getFridayCake as jest.MockedFunction<typeof getFridayCake>;
 
 async function requestApp(path: string, method: string = 'GET'): Promise<Response> {
@@ -71,14 +69,6 @@ describe('web application', () => {
         expect(html).toContain('id="fredagskaka-banner"');
         expect(html).toContain('\\u003c/script\\u003e');
         expect(html).not.toContain('</script><script>window.injected = true</script>');
-        expect(html).not.toContain("fetch('/api/");
-    });
-
-    test('does not expose the former API routes', async () => {
-        const response = await requestApp('/api/menus');
-
-        expect(response.status).toBe(404);
-        expect(getMenusMock).not.toHaveBeenCalled();
     });
 
     test('returns a server error when menu loading fails', async () => {

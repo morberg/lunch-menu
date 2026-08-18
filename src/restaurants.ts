@@ -9,8 +9,8 @@ import { scrapeSmakapakina } from './scrapers/smakapakina';
 import { scrapeTroppoMenu } from './scrapers/troppo';
 import { MenuItem } from './types/menu';
 
-interface RestaurantDefinition {
-    key: string;
+export interface RestaurantDefinition<Key extends string = string> {
+    key: Key;
     name: string;
     url: string;
     scrape: () => Promise<MenuItem[]>;
@@ -30,8 +30,8 @@ export const RESTAURANTS = [
 
 export type RestaurantKey = typeof RESTAURANTS[number]['key'];
 
-export interface RestaurantMenu {
-    key: RestaurantKey;
+export interface RestaurantMenu<Key extends string = RestaurantKey> {
+    key: Key;
     name: string;
     url: string;
     menu: MenuItem[];

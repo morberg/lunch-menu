@@ -7,7 +7,6 @@ import { DayGroup, parseDayGroupedHtml } from '../utils/day-grouped-html';
 
 export const scrapeBricksMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
     return scrapeHtmlMenu({
-        scraperName: 'Bricks',
         fixtureUrl,
         url: 'https://brickseatery.se/lunch/',
         parseHtml: parseBricksHtml

@@ -504,7 +504,6 @@
 
             try {
                 const dismissKey = `fredagskaka-${data.Year}-${data.Week}`;
-                if (localStorage.getItem(dismissKey) === 'dismissed') return;
 
                 const image = document.getElementById('fredagskaka-img');
                 image.src = data.URL;

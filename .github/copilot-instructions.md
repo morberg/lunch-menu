@@ -3,6 +3,7 @@
 ## Architecture
 
 - `src/restaurants.ts` is the canonical restaurant registry. The menu service, rendered page, frontend, and debug runner derive runtime behavior from it.
+- `getMenus` is the failure boundary for restaurant scrapers. Scrapers should reject on source failures; aggregation logs the error and returns an empty menu for that restaurant.
 - `src/web/app.ts` exports the Vercel/test handler. `src/web/server.ts` is the local listener only; do not add listener side effects to the app module.
 - Vercel caches the rendered home page until the next Stockholm 10:00 refresh. Do not add a public JSON API without an identified consumer.
 
@@ -17,10 +18,10 @@
 
 - Keep parsing separate from network and file I/O. Capture the raw runtime response as a fixture and add a focused parser regression test for markup drift.
 - Reuse `src/utils/scraper.ts` for HTML requests so the shared timeout, headers, and response validation apply.
-- Add each restaurant only to `RESTAURANTS`; update the explicit scraper imports/mocks in tests that intentionally enumerate the registry.
+- Add each restaurant only to `RESTAURANTS` and the fixture-contract case table.
 - Use `as const` for literal constant arrays. Define named source-specific constants when a restaurant has a stable published price or label.
 
 ## Documentation
 
-- Update [README.md](../README.md), debug documentation, and relevant skills only when the affected behavior changes.
+- Update [README.md](../README.md) and relevant skills only when their workflows change.
 - Search for stale commands, endpoints, and renamed concepts after removing or renaming them.

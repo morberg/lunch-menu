@@ -7,7 +7,6 @@ import { DayGroup, parseDayGroupedHtml } from '../utils/day-grouped-html';
 
 export const scrapeEdisonMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
     return scrapeHtmlMenu({
-        scraperName: 'Edison',
         fixtureUrl,
         url: 'https://restaurangedison.se/lunch/',
         parseHtml: parseEdisonMenuFromHtml

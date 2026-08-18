@@ -74,7 +74,6 @@ export function parseTroppoHtml(html: string): MenuItem[] {
 
 export const scrapeTroppoMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
     return scrapeHtmlMenu({
-        scraperName: 'Troppo',
         fixtureUrl,
         url: 'https://www.troppo.se/lunch',
         parseHtml: parseTroppoHtml

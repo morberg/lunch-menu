@@ -16,33 +16,27 @@ const EATERY_LUNCH_PRICE = 139;
 const EATERY_PAGE_URL = 'https://eatery.se/anlaggningar/lund';
 
 export const scrapeEatery = async (fixtureUrl?: string): Promise<MenuItem[]> => {
-    try {
-        let pdfBuffer: Buffer;
+    let pdfBuffer: Buffer;
 
-        if (isFileFixtureUrl(fixtureUrl)) {
-            pdfBuffer = fs.readFileSync((fixtureUrl as string).replace('file://', ''));
-        } else {
-            const mainPageHtml = await loadHtmlSource(undefined, EATERY_PAGE_URL);
-            const lunchMenuUrl = findEateryLunchMenuPdfUrl(mainPageHtml);
+    if (isFileFixtureUrl(fixtureUrl)) {
+        pdfBuffer = fs.readFileSync((fixtureUrl as string).replace('file://', ''));
+    } else {
+        const mainPageHtml = await loadHtmlSource(undefined, EATERY_PAGE_URL);
+        const lunchMenuUrl = findEateryLunchMenuPdfUrl(mainPageHtml);
 
-            if (!lunchMenuUrl) {
-                console.error('Could not find lunch menu PDF URL');
-                return [];
-            }
-
-            const pdfResponse = await axios.get(lunchMenuUrl, {
-                ...withScraperRequestDefaults(),
-                responseType: 'arraybuffer'
-            });
-            pdfBuffer = Buffer.from(pdfResponse.data);
+        if (!lunchMenuUrl) {
+            throw new Error('Could not find Eatery lunch menu PDF URL');
         }
 
-        const pdfData = await pdfParse(pdfBuffer);
-        return parsePdfMenu(pdfData.text);
-    } catch (error) {
-        console.error('Error scraping Eatery menu:', error);
-        return [];
+        const pdfResponse = await axios.get(lunchMenuUrl, {
+            ...withScraperRequestDefaults(),
+            responseType: 'arraybuffer'
+        });
+        pdfBuffer = Buffer.from(pdfResponse.data);
     }
+
+    const pdfData = await pdfParse(pdfBuffer);
+    return parsePdfMenu(pdfData.text);
 };
 
 export function findEateryLunchMenuPdfUrl(html: string): string | null {

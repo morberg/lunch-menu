@@ -29,4 +29,17 @@ describe('Castit menu parser', () => {
             { name: 'Kyckling, med ris', price: 110, day: 'Måndag' }
         ]);
     });
+
+    test('skips day-note dishes', () => {
+        const html = `
+            <section class="castit-day">
+                <h3 class="castit-day__title"><span class="castit-i18n" data-sv="Fredag">Friday</span></h3>
+                <div class="castit-dish castit-dish--day-note">
+                    <div class="castit-dish__title"><span class="castit-i18n" data-sv="Closed">Closed</span></div>
+                </div>
+            </section>
+        `;
+
+        expect(parseCastitMenu(html)).toEqual([]);
+    });
 });

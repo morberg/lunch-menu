@@ -1,84 +1,51 @@
-jest.mock('../../src/scrapers/edison', () => ({ scrapeEdisonMenu: jest.fn() }));
-jest.mock('../../src/scrapers/bricks', () => ({ scrapeBricksMenu: jest.fn() }));
-jest.mock('../../src/scrapers/kantin', () => ({ scrapeKantinMenu: jest.fn() }));
-jest.mock('../../src/scrapers/smakapakina', () => ({ scrapeSmakapakina: jest.fn() }));
-jest.mock('../../src/scrapers/eatery', () => ({ scrapeEatery: jest.fn() }));
-jest.mock('../../src/scrapers/foodhall', () => ({ scrapeFoodHallMenu: jest.fn() }));
-jest.mock('../../src/scrapers/grenden', () => ({ scrapeGrendenMenu: jest.fn() }));
-jest.mock('../../src/scrapers/linneabasilika', () => ({ scrapeLinneaBasilikaMenu: jest.fn() }));
-jest.mock('../../src/scrapers/troppo', () => ({ scrapeTroppoMenu: jest.fn() }));
+import { RestaurantDefinition } from '../../src/restaurants';
+import { getMenus } from '../../src/services/menu-service';
 
-import { scrapeEdisonMenu } from '../../src/scrapers/edison';
-import { scrapeBricksMenu } from '../../src/scrapers/bricks';
-import { scrapeKantinMenu } from '../../src/scrapers/kantin';
-import { scrapeSmakapakina } from '../../src/scrapers/smakapakina';
-import { scrapeEatery } from '../../src/scrapers/eatery';
-import { scrapeFoodHallMenu } from '../../src/scrapers/foodhall';
-import { scrapeGrendenMenu } from '../../src/scrapers/grenden';
-import { scrapeLinneaBasilikaMenu } from '../../src/scrapers/linneabasilika';
-import { scrapeTroppoMenu } from '../../src/scrapers/troppo';
-import MenuService from '../../src/services/menu-service';
+const mondayMenu = [{ name: 'Lunch', day: 'Måndag' as const, price: 100 }];
 
-const edisonMock = scrapeEdisonMenu as jest.MockedFunction<typeof scrapeEdisonMenu>;
-const bricksMock = scrapeBricksMenu as jest.MockedFunction<typeof scrapeBricksMenu>;
-const kantinMock = scrapeKantinMenu as jest.MockedFunction<typeof scrapeKantinMenu>;
-const smakapakinaMock = scrapeSmakapakina as jest.MockedFunction<typeof scrapeSmakapakina>;
-const eateryMock = scrapeEatery as jest.MockedFunction<typeof scrapeEatery>;
-const foodhallMock = scrapeFoodHallMenu as jest.MockedFunction<typeof scrapeFoodHallMenu>;
-const grendenMock = scrapeGrendenMenu as jest.MockedFunction<typeof scrapeGrendenMenu>;
-const linneabasilikaMock = scrapeLinneaBasilikaMenu as jest.MockedFunction<typeof scrapeLinneaBasilikaMenu>;
-const troppoMock = scrapeTroppoMenu as jest.MockedFunction<typeof scrapeTroppoMenu>;
-
-function mockAllScrapersResolved(): void {
-    edisonMock.mockResolvedValue([{ name: 'Edison item', day: 'Måndag', price: 100 }]);
-    bricksMock.mockResolvedValue([{ name: 'Bricks item', day: 'Måndag', price: 101 }]);
-    kantinMock.mockResolvedValue([{ name: 'Kantin item', day: 'Måndag', price: 102 }]);
-    smakapakinaMock.mockResolvedValue([{ name: 'Smakapakina item', day: 'Måndag', price: 103 }]);
-    eateryMock.mockResolvedValue([{ name: 'Eatery item', day: 'Måndag', price: 104 }]);
-    foodhallMock.mockResolvedValue([{ name: 'Food Hall item', day: 'Måndag', price: 105 }]);
-    grendenMock.mockResolvedValue([{ name: 'Grenden item', day: 'Måndag', price: 106 }]);
-    linneabasilikaMock.mockResolvedValue([{ name: 'Linnea & Basilika item', day: 'Måndag', price: 155 }]);
-    troppoMock.mockResolvedValue([{ name: 'Troppo item', day: 'Måndag', price: 149 }]);
-}
-
-describe('MenuService', () => {
-    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => undefined);
+describe('getMenus', () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
 
-    beforeEach(() => {
-        jest.clearAllMocks();
-        mockAllScrapersResolved();
-    });
-
     afterAll(() => {
-        logSpy.mockRestore();
         errorSpy.mockRestore();
     });
 
-    test('fetches menus for each service call', async () => {
-        const service = new MenuService();
+    test('preserves restaurant order and menu metadata', async () => {
+        const restaurants = [
+            restaurant('first', jest.fn().mockResolvedValue(mondayMenu)),
+            restaurant('second', jest.fn().mockResolvedValue([]))
+        ] as const;
 
-        const first = await service.getMenus();
-        const second = await service.getMenus();
-
-        expect(first).toEqual(second);
-        expect(edisonMock).toHaveBeenCalledTimes(2);
-        expect(bricksMock).toHaveBeenCalledTimes(2);
-    });
-
-    test('returns empty list for rejected scraper while keeping others', async () => {
-        const service = new MenuService();
-        bricksMock.mockRejectedValue(new Error('bricks failed'));
-
-        const result = await service.getMenus();
-
-        expect(result.find(restaurant => restaurant.key === 'bricks')).toMatchObject({
-            name: 'Bricks Eatery',
-            url: 'https://brickseatery.se/lunch/',
-            menu: []
-        });
-        expect(result.find(restaurant => restaurant.key === 'edison')?.menu).toEqual([
-            { name: 'Edison item', day: 'Måndag', price: 100 }
+        await expect(getMenus(restaurants)).resolves.toEqual([
+            { key: 'first', name: 'First', url: 'https://example.com/first', menu: mondayMenu },
+            { key: 'second', name: 'Second', url: 'https://example.com/second', menu: [] }
         ]);
     });
+
+    test('isolates a rejected scraper without suppressing successful menus', async () => {
+        const restaurants = [
+            restaurant('working', jest.fn().mockResolvedValue(mondayMenu)),
+            restaurant('failing', jest.fn().mockRejectedValue(new Error('unavailable')))
+        ] as const;
+
+        const result = await getMenus(restaurants);
+
+        expect(result.map(({ key, menu }) => ({ key, menu }))).toEqual([
+            { key: 'working', menu: mondayMenu },
+            { key: 'failing', menu: [] }
+        ]);
+        expect(errorSpy).toHaveBeenCalledWith('failing scraper failed:', expect.any(Error));
+    });
 });
+
+function restaurant<Key extends string>(
+    key: Key,
+    scrape: RestaurantDefinition<Key>['scrape']
+): RestaurantDefinition<Key> {
+    return {
+        key,
+        name: key[0].toUpperCase() + key.slice(1),
+        url: `https://example.com/${key}`,
+        scrape
+    };
+}

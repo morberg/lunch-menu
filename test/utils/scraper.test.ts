@@ -65,20 +65,12 @@ describe('scraper utils', () => {
         );
     });
 
-    test('scrapeHtmlMenu returns fallback on load failure', async () => {
+    test('scrapeHtmlMenu rejects on load failure', async () => {
         mockedAxios.get.mockRejectedValue(new Error('network down'));
-        const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
 
-        const menu = await scrapeHtmlMenu({
-            scraperName: 'TestScraper',
+        await expect(scrapeHtmlMenu({
             url: 'https://example.com',
-            parseHtml: () => [{ name: 'ignored', day: 'Måndag', price: 100 }],
-            fallback: [{ name: 'fallback', day: 'Måndag', price: null }]
-        });
-
-        expect(menu).toEqual([{ name: 'fallback', day: 'Måndag', price: null }]);
-        expect(errorSpy).toHaveBeenCalled();
-
-        errorSpy.mockRestore();
+            parseHtml: () => [{ name: 'ignored', day: 'Måndag', price: 100 }]
+        })).rejects.toThrow('network down');
     });
 });

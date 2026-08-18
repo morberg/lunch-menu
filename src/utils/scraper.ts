@@ -9,12 +9,10 @@ export const SCRAPER_REQUEST_HEADERS = {
 } as const;
 
 interface ScrapeHtmlMenuOptions {
-    scraperName: string;
     fixtureUrl?: string;
     url: string;
     parseHtml: (html: string) => MenuItem[];
     requestConfig?: AxiosRequestConfig;
-    fallback?: MenuItem[];
 }
 
 export function normalizeWhitespace(text: string): string {
@@ -34,7 +32,7 @@ export function isFileFixtureUrl(url?: string): boolean {
     return Boolean(url && url.startsWith('file://'));
 }
 
-export function readFixtureHtml(fixtureUrl: string): string {
+function readFixtureHtml(fixtureUrl: string): string {
     return fs.readFileSync(fixtureUrl.replace('file://', ''), 'utf8');
 }
 
@@ -66,18 +64,11 @@ export async function loadHtmlSource(
 }
 
 export async function scrapeHtmlMenu({
-    scraperName,
     fixtureUrl,
     url,
     parseHtml,
-    requestConfig,
-    fallback = []
+    requestConfig
 }: ScrapeHtmlMenuOptions): Promise<MenuItem[]> {
-    try {
-        const html = await loadHtmlSource(fixtureUrl, url, requestConfig);
-        return parseHtml(html);
-    } catch (error) {
-        console.error(`Error scraping ${scraperName} menu:`, error);
-        return fallback;
-    }
+    const html = await loadHtmlSource(fixtureUrl, url, requestConfig);
+    return parseHtml(html);
 }

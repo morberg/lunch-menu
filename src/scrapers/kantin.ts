@@ -69,7 +69,6 @@ export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
 
 export const scrapeKantinMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {
     return scrapeHtmlMenu({
-        scraperName: 'Kantin',
         fixtureUrl,
         url: 'https://www.kantinlund.se/',
         parseHtml: parseKantinMenuFromHtml

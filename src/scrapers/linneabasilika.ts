@@ -8,7 +8,6 @@ import { DayGroup, parseDayGroupedHtml } from '../utils/day-grouped-html';
 
 export async function scrapeLinneaBasilikaMenu(fixtureUrl?: string): Promise<MenuItem[]> {
     return scrapeHtmlMenu({
-        scraperName: 'Linnea & Basilika',
         fixtureUrl,
         url: 'https://www.linneabasilika.se/lund-brunnshog/',
         parseHtml: parseLinneaBasilikaMenuFromHtml

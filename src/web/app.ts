@@ -1,7 +1,8 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
-import { menuService } from '../services/menu-service';
+import { RESTAURANTS } from '../restaurants';
+import { getMenus } from '../services/menu-service';
 import { getFridayCake } from '../services/fredagskaka';
 import { SWEDISH_DAYS } from '../utils/days';
 import { secondsUntilNextStockholmRefresh } from '../utils/stockholm-time';
@@ -35,7 +36,7 @@ function serializeInitialData(value: unknown): string {
 
 app.get('/', async (_req, res) => {
     try {
-        const [menus, fridayCake] = await Promise.all([menuService.getMenus(), getFridayCake()]);
+        const [menus, fridayCake] = await Promise.all([getMenus(RESTAURANTS), getFridayCake()]);
         const initialDataScript = `<script>window.SWEDISH_DAYS = ${JSON.stringify(SWEDISH_DAYS)}; window.INITIAL_MENUS = ${serializeInitialData(menus)}; window.FREDAGSKAKA = ${serializeInitialData(fridayCake)};</script>`;
         const html = getIndexTemplate().replace('</head>', `    ${initialDataScript}\n</head>`);
 

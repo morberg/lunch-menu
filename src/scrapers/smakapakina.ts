@@ -14,17 +14,12 @@ import { compareDays, parseDay } from '../utils/days';
  *  - Remove dates, enumeration indexes, Chinese parenthetical parts, duplicated dishes, and trailing punctuation.
  */
 export async function scrapeSmakapakina(fixtureUrl?: string): Promise<MenuItem[]> {
-    try {
-        const html = await loadHtmlSource(
-            fixtureUrl,
-            'https://www.smakapakina.se/meny/',
-            { headers: { 'User-Agent': 'Mozilla/5.0' } }
-        );
-        return parseModernMainPage(html);
-    } catch (err) {
-        console.error('Error scraping Smakapakina:', err);
-        return [];
-    }
+    const html = await loadHtmlSource(
+        fixtureUrl,
+        'https://www.smakapakina.se/meny/',
+        { headers: { 'User-Agent': 'Mozilla/5.0' } }
+    );
+    return parseModernMainPage(html);
 }
 
 function parseModernMainPage(html: string): MenuItem[] {

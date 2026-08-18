@@ -12,7 +12,7 @@ const DAY_BY_LABEL: Record<string, SwedishDay> = {
     ...Object.fromEntries(SWEDISH_DAYS.map((day) => [day.toLowerCase(), day])),
     ...Object.fromEntries(ENGLISH_DAYS.map((day) => [day.toLowerCase(), ENGLISH_TO_SWEDISH_DAY[day]]))
 };
-const LEADING_DATE_PATTERN = /^\d{1,2}\/\d{1,2}(?:\s*[-–—:]\s*|\s+|$)/;
+const LEADING_DATE_PATTERN = /^\d{1,2}\/\d{1,2}(?:\s*[-–—:]\s*|\s+|$)?/;
 
 const normalizeDayName = (value: string): SwedishDay | null =>
     DAY_BY_LABEL[value.trim().toLowerCase()] ?? null;

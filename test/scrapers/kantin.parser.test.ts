@@ -84,4 +84,27 @@ describe('Kantin parser robustness', () => {
             }
         ]);
     });
+
+    test('strips dates glued to dish text', () => {
+        const html = `
+            <html>
+                <body>
+                    <h1>Meny</h1>
+                    <div>
+                        <p><strong>tisdag 18/8</strong>Ribbestek, red dragonsauce, strimald kål, japansk majjo, broccoli, ris</p>
+                    </div>
+                </body>
+            </html>
+        `;
+
+        const result = parseKantinMenuFromHtml(html);
+
+        expect(result).toEqual([
+            {
+                name: 'Ribbestek, red dragonsauce, strimald kål, japansk majjo, broccoli, ris',
+                day: 'Tisdag',
+                price: 145
+            }
+        ]);
+    });
 });

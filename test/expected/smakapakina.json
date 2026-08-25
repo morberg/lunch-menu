@@ -1,27 +1,27 @@
 [
     {
         "day": "Måndag",
-        "name": "Krispig saltade kyckling, Peking fläskstrimlor, Yuxiang aubergine",
+        "name": "General Tsos kyckling, Fläsk med grönabönor, Snabbstekt blomkål",
         "price": 110
     },
     {
         "day": "Tisdag",
-        "name": "Wokade kyckling med chili, Sötsur kamben, Snabbstekd spetskål med glasnudlar",
+        "name": "Biff med tomat och ägg, Kryddig grillad kycklingvingar, Snabbstekt spetskål",
         "price": 110
     },
     {
         "day": "Onsdag",
-        "name": "Dongpo sidfläsk, Yuxiang kyckling, Bakad pumpa med saltad ankäggula, Spenat med tofu",
+        "name": "Rött bräserat sidfläsk, Kyckling med chili olja sås, Potatis med inlagd chili, Mapo Tofu",
         "price": 110
     },
     {
         "day": "Torsdag",
-        "name": "Bondes stekt fläsk, Ångkokt fisk, Snabbstekt pak choi med shitake",
+        "name": "Ångkokt fläsk med senapskål, Spicy pot mix, Homestyle tofu",
         "price": 110
     },
     {
         "day": "Fredag",
-        "name": "Chili kyckling, Biff med ostronsås, gul lök och paprika, Snabbstekt champinjon",
+        "name": "Sötsur fläsk med anannas, Rött bräserat lammribs, Selleri med cashewnötter och liljalök",
         "price": 110
     }
 ]

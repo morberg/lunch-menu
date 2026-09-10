@@ -107,4 +107,27 @@ describe('Kantin parser robustness', () => {
             }
         ]);
     });
+
+    test('parses weekday labels glued directly to dish names', () => {
+        const html = `
+            <html>
+                <body>
+                    <h1>Meny</h1>
+                    <div>
+                        <p><strong>Måndag</strong>Spidersteak - sås romesco</p>
+                    </div>
+                </body>
+            </html>
+        `;
+
+        const result = parseKantinMenuFromHtml(html);
+
+        expect(result).toEqual([
+            {
+                name: 'Spidersteak - sås romesco',
+                day: 'Måndag',
+                price: 145
+            }
+        ]);
+    });
 });

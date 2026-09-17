@@ -5,6 +5,7 @@ import { scrapeFoodHallMenu } from './scrapers/foodhall';
 import { scrapeGrendenMenu } from './scrapers/grenden';
 import { scrapeKantinMenu } from './scrapers/kantin';
 import { scrapeLinneaBasilikaMenu } from './scrapers/linneabasilika';
+import { scrapeRootMenu } from './scrapers/root';
 import { scrapeSmakapakina } from './scrapers/smakapakina';
 import { scrapeTroppoMenu } from './scrapers/troppo';
 import { MenuItem } from './types/menu';
@@ -19,6 +20,7 @@ export interface RestaurantDefinition<Key extends string = string> {
 export const RESTAURANTS = [
     { key: 'edison', name: 'Edison', url: 'https://restaurangedison.se/lunch/', scrape: scrapeEdisonMenu },
     { key: 'grenden', name: 'Grenden', url: 'https://www.nordrest.se/restaurang/grenden/', scrape: scrapeGrendenMenu },
+    { key: 'root', name: 'Root', url: 'https://www.nordrest.se/restaurang/root/', scrape: scrapeRootMenu },
     { key: 'foodhall', name: 'Food Hall', url: 'https://www.nordrest.se/restaurang/food-hall/', scrape: scrapeFoodHallMenu },
     { key: 'bricks', name: 'Bricks Eatery', url: 'https://brickseatery.se/lunch/', scrape: scrapeBricksMenu },
     { key: 'kantin', name: 'Kantin', url: 'https://www.kantinlund.se/', scrape: scrapeKantinMenu },

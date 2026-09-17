@@ -1,0 +1,72 @@
+[
+    {
+        "name": "Salmon tataki with olive oil potato mash, carrot and fennel salad and chimichurri",
+        "price": 125,
+        "day": "Måndag"
+    },
+    {
+        "name": "Salmon tataki with olive oil potato mash, carrot and fennel salad and chimichurri",
+        "price": 125,
+        "day": "Tisdag"
+    },
+    {
+        "name": "Salmon tataki with olive oil potato mash, carrot and fennel salad and chimichurri",
+        "price": 125,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Salmon tataki with olive oil potato mash, carrot and fennel salad and chimichurri",
+        "price": 125,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Salmon tataki with olive oil potato mash, carrot and fennel salad and chimichurri",
+        "price": 125,
+        "day": "Fredag"
+    },
+    {
+        "name": "Pearl couscous salad with hummus, roasted autumn vegetables, almonds and pomegranate",
+        "price": 125,
+        "day": "Måndag"
+    },
+    {
+        "name": "Pearl couscous salad with hummus, roasted autumn vegetables, almonds and pomegranate",
+        "price": 125,
+        "day": "Tisdag"
+    },
+    {
+        "name": "Pearl couscous salad with hummus, roasted autumn vegetables, almonds and pomegranate",
+        "price": 125,
+        "day": "Onsdag"
+    },
+    {
+        "name": "Pearl couscous salad with hummus, roasted autumn vegetables, almonds and pomegranate",
+        "price": 125,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Pearl couscous salad with hummus, roasted autumn vegetables, almonds and pomegranate",
+        "price": 125,
+        "day": "Fredag"
+    },
+    {
+        "name": "Fried chicken with white beans, spinach and lemon",
+        "price": 90,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Baked halloumi with roasted bell peppers, beets and rhye bread",
+        "price": 90,
+        "day": "Torsdag"
+    },
+    {
+        "name": "Poached haddock with bell peppers, beets and chickpeas",
+        "price": 90,
+        "day": "Fredag"
+    },
+    {
+        "name": "Deep-fried tofu with sweet potato, pickled onion and miso/sesame dressing",
+        "price": 90,
+        "day": "Fredag"
+    }
+]

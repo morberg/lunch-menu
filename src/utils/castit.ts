@@ -65,7 +65,7 @@ function extractPrices($: cheerio.CheerioAPI, defaults?: CastitPrices): CastitPr
         const price = parsePrice(text);
         if (price === null) return;
 
-        if (/weekly|vecka/i.test(text)) {
+        if (/week|vecka/i.test(text)) {
             weeklyPrice = price;
         } else {
             dailyPrice = price;

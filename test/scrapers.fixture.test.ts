@@ -7,6 +7,7 @@ import { scrapeFoodHallMenu } from '../src/scrapers/foodhall';
 import { scrapeGrendenMenu } from '../src/scrapers/grenden';
 import { scrapeKantinMenu } from '../src/scrapers/kantin';
 import { scrapeLinneaBasilikaMenu } from '../src/scrapers/linneabasilika';
+import { scrapeRootMenu } from '../src/scrapers/root';
 import { scrapeSmakapakina } from '../src/scrapers/smakapakina';
 import { scrapeTroppoMenu } from '../src/scrapers/troppo';
 import { MenuItem } from '../src/types/menu';
@@ -25,6 +26,7 @@ const fixtureCases: readonly FixtureCase[] = [
     ['Eatery', 'eatery-menu.pdf', 'eatery.json', scrapeEatery],
     ['Food Hall', 'foodhall.html', 'foodhall.json', scrapeFoodHallMenu],
     ['Grenden', 'grenden.html', 'grenden.json', scrapeGrendenMenu],
+    ['Root', 'root.html', 'root.json', scrapeRootMenu],
     ['Linnea & Basilika', 'linneabasilika.html', 'linneabasilika.json', scrapeLinneaBasilikaMenu],
     ['Troppo', 'troppo.html', 'troppo.json', scrapeTroppoMenu]
 ] as const;

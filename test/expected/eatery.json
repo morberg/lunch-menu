@@ -1,91 +1,86 @@
 [
     {
-        "name": "BBQ glazed revben med friterad majs, chipotle och honungsmajo, klyftpotatis med lagrad ost",
+        "name": "Sticky koreansk kyckling med gochujang och soja, gurksallad, sesamris och salladslök",
         "day": "Måndag",
         "price": 139
     },
     {
-        "name": "Prästost bakad sej med äpple, spenat och fänkålsallad, krämig potatis med senap och persilja, citron och krassekräm",
+        "name": "Färskostbakad hokifilé med betor, spenat, hasselnötter och brynt smör, dillkräm och koktpotatis",
         "day": "Måndag",
         "price": 139
     },
     {
-        "name": "Krispig polenta med aubergine caponata, ruccola och bakad salladsost, örtpesto",
+        "name": "Indisk kokos och linsgryta med bakad pumpa, picklade rotfrukter, mynta yoghurt och basmatiris med nejlika och stjärnanis",
         "day": "Måndag",
         "price": 139
     },
     {
-        "name": "Nattbakad fläskkarré med pepparsås & potatisgratäng, rostade rotfrukter med dragon och timjan",
+        "name": "BBQ marinerad pluma med majskräm, tomatsallad och klyftpotatis, chilibéarnaise",
         "day": "Tisdag",
         "price": 139
     },
     {
-        "name": "Kolja peri peri med sotad purjolök, picklad gulbeta, limeyoghurt, kokt potatis med smör och citron",
+        "name": "Sesamstekt kungsfisk med sesammarinerad morot, krämig vittvinsås med miso och ingefära, potatismos med brynt smör",
         "day": "Tisdag",
         "price": 139
     },
     {
-        "name": "Tomat- & fetaostpaj med kronärtskocka, oliver & ruccola",
+        "name": "Dan dan nudlar med spicy vegfärs, jordnötter, salladslök och sesam",
         "day": "Tisdag",
         "price": 139
     },
     {
-        "name": "Sweet Tuesday: Vi bjuder på något sött till kaffet!",
+        "name": "Sweet Tuesday – vi bjuder på något sött till kaffet! 🍬",
         "day": "Tisdag",
         "price": 139
     },
     {
-        "name": "Stekt rimmat fläsk med löksås & kokt potatis, lingon",
+        "name": "Färsbiffar med krämig svampsås, rostad potatis, grönabönor med bakad lök och bacon",
         "day": "Onsdag",
         "price": 139
     },
     {
-        "name": "Pocherad kummel med hummersås, potatismos & citrondressad kålsallad",
+        "name": "Vin och tomatbakad kummel med basilikapesto, marinerad paprika och zucchini, bakad potatis med gremolata",
         "day": "Onsdag",
         "price": 139
     },
     {
-        "name": "Halloumiburgare med jalapeno, coleslaw med ingefära och sesam, asiatisk ketchup, klyftpotatis",
+        "name": "Majs och yoghurtplättar med pico de gallo, rostad sötpotatissallad och rökt paprikakräm",
         "day": "Onsdag",
         "price": 139
     },
     {
-        "name": "Kycklingcurry rendang med limeblad, chili, citrongräs, kokosmjölk, stjärnanis och basmatiris",
+        "name": "Kyckling Thai curry med kokos, röd curry, lime och ingefära, rostad broccoli och jasminris",
         "day": "Torsdag",
         "price": 139
     },
     {
-        "name": "Krämig laxpasta med kallrökt lax, spenat och soltorkad tomat, ört och rotfruktscrudité",
+        "name": "Kungsfisk bakad i skaldjursfond med saffransås, dill picklad kålrot, potatis med gräslök, purjolök och smör",
         "day": "Torsdag",
         "price": 139
     },
     {
-        "name": "Gratinerad cannelloni med ricotta & spenat, rostad zucchini med tomat och , lagrad ost och örtolja",
+        "name": "Krispig halloumiburgare med grön aioli, picklad gurka, sallad och klyftpotatis",
         "day": "Torsdag",
         "price": 139
     },
     {
-        "name": "Bonus: Ärtsoppa med rimmad bog",
+        "name": "Pancake Thursday – vi bjuder på pannkakor, lättvispad grädde och hemmagjord sylt! 🥞",
         "day": "Torsdag",
         "price": 139
     },
     {
-        "name": "Pancake Thursday: Vi bjuder på pannkakor, lättvispad grädde och hemmagjord sylt!",
-        "day": "Torsdag",
-        "price": 139
-    },
-    {
-        "name": "Krispig kycklingburgare med inlagd ingefärsgurka, soja & chilimajo, pepper jack ost & klyftpotatis",
+        "name": "Dansk fläskstekburgare med rödkål, örtmajo, äpple och rostad klyftpotatis",
         "day": "Fredag",
         "price": 139
     },
     {
-        "name": "Thai fishcakes med chili, ingefära & röd curry, sweet chili sås, jasminris med sesam och salladslök",
+        "name": "Panerad tilapia med remoulad, kokt potatis och picklade rotfrukter",
         "day": "Fredag",
         "price": 139
     },
     {
-        "name": "Tomat och örtrisotto med krispig palsternacka, lagrad ost och basilika olja",
+        "name": "Gnocchi med tomatsås sallad på oliver, kronärtskocka och spenat, ruccola och lagrad ost",
         "day": "Fredag",
         "price": 139
     }

@@ -1,26 +1,52 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { findEateryLunchMenuPdfUrl } from '../../src/scrapers/eatery';
+import {
+    findEateryOrdinaryPrice,
+    parseEateryMenuFromHtml
+} from '../../src/scrapers/eatery';
 
-describe('Eatery source discovery', () => {
-    test('finds the lunch PDF in the captured main page', () => {
+describe('Eatery menu parser', () => {
+    test('parses the weekly HTML menu and uses the ordinary lunch price', () => {
+        const html = `
+            <main class="menu-public menu-public--weekly">
+                <section class="day">
+                    <h2 class="day__title">Monday</h2>
+                    <div class="day__items">
+                        <div class="item">
+                            <p class="item__name">Sticky koreansk kyckling</p>
+                            <p class="item__description">med gochujang och soja</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="day">
+                    <h2 class="day__title">Tisdag</h2>
+                    <div class="day__items">
+                        <div class="item">
+                            <p class="item__name">Dan dan nudlar</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        `;
+
+        expect(parseEateryMenuFromHtml(html)).toEqual([
+            {
+                name: 'Sticky koreansk kyckling med gochujang och soja',
+                day: 'Måndag',
+                price: 139
+            },
+            {
+                name: 'Dan dan nudlar',
+                day: 'Tisdag',
+                price: 139
+            }
+        ]);
+    });
+
+    test('extracts the ordinary price instead of the early-bird price', () => {
         const fixturePath = path.join(__dirname, '..', 'fixtures', 'eatery-main.html');
         const html = fs.readFileSync(fixturePath, 'utf8');
 
-        expect(findEateryLunchMenuPdfUrl(html)).toBe(
-            'https://static.thatsup.website/462/77098/Lund_sv_V6.pdf?v=1769777752'
-        );
-    });
-
-    test('resolves a relative lunch PDF link', () => {
-        const html = '<a href="/menus/lunch.pdf">Lunchmeny</a>';
-
-        expect(findEateryLunchMenuPdfUrl(html)).toBe('https://eatery.se/menus/lunch.pdf');
-    });
-
-    test('ignores lunch links that are not PDFs', () => {
-        const html = '<a href="/menus/lunch">Lunchmeny</a>';
-
-        expect(findEateryLunchMenuPdfUrl(html)).toBeNull();
+        expect(findEateryOrdinaryPrice(html)).toBe(139);
     });
 });

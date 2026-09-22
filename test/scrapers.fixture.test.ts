@@ -23,7 +23,12 @@ const fixtureCases: readonly FixtureCase[] = [
     ['Bricks', 'bricks.html', 'bricks.json', scrapeBricksMenu],
     ['Kantin', 'kantin.html', 'kantin.json', scrapeKantinMenu],
     ['Smaka på Kina', 'smakapakina.html', 'smakapakina.json', scrapeSmakapakina],
-    ['Eatery', 'eatery-menu.pdf', 'eatery.json', scrapeEatery],
+    [
+        'Eatery',
+        'eatery.json',
+        'eatery.json',
+        (fixtureUrl?: string) => scrapeEatery(fixtureUrl, new Date('2026-09-22T12:00:00Z'))
+    ],
     ['Food Hall', 'foodhall.html', 'foodhall.json', scrapeFoodHallMenu],
     ['Grenden', 'grenden.html', 'grenden.json', scrapeGrendenMenu],
     ['Root', 'root.html', 'root.json', scrapeRootMenu],

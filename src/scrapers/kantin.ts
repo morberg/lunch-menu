@@ -1,81 +1,79 @@
 import * as cheerio from 'cheerio';
-import type { Element } from 'domhandler';
 import { MenuItem } from '../types/menu';
-import { extractLeadingDay, forEachDay } from '../utils/days';
-import { normalizeWhitespace, scrapeHtmlMenu } from '../utils/scraper';
+import { extractLeadingDay, forEachDay, SwedishDay } from '../utils/days';
+import { normalizeWhitespace, scrapeHtmlMenu, splitNormalizedLines } from '../utils/scraper';
 
 const WEEKLY_LABELS = ['Veckans vegetariska', 'Månadens alternativ'] as const;
 const KANTIN_LUNCH_PRICE = 145;
 
-const parseKantinParagraphs = (paragraphTexts: string[]): MenuItem[] => {
+const parseKantinLines = (lines: string[]): MenuItem[] => {
     const menuItems: MenuItem[] = [];
+    let currentDay: SwedishDay | undefined;
+    let currentWeeklyLabel: typeof WEEKLY_LABELS[number] | undefined;
+    let descriptionParts: string[] = [];
 
-    for (const paragraphTextRaw of paragraphTexts) {
-        const paragraphText = normalizeWhitespace(paragraphTextRaw);
-        if (!paragraphText) {
-            continue;
+    const flushItem = (): void => {
+        const description = normalizeWhitespace(descriptionParts.join(' '));
+        if (description && currentWeeklyLabel) {
+            menuItems.push(...forEachDay({
+                name: `${currentWeeklyLabel}: ${description}`,
+                price: KANTIN_LUNCH_PRICE
+            }));
+        } else if (description && currentDay) {
+            menuItems.push({ name: description, price: KANTIN_LUNCH_PRICE, day: currentDay });
         }
+        descriptionParts = [];
+    };
 
-        const paragraphTextLower = paragraphText.toLowerCase();
+    for (const line of lines) {
         const weeklyLabel = WEEKLY_LABELS.find((label) =>
-            paragraphTextLower.startsWith(label.toLowerCase())
+            line.toLowerCase().startsWith(label.toLowerCase())
         );
         if (weeklyLabel) {
-            const description = paragraphText
+            flushItem();
+            currentDay = undefined;
+            currentWeeklyLabel = weeklyLabel;
+            const description = line
                 .slice(weeklyLabel.length)
                 .replace(/^\s*[-–—:]\s*/, '')
                 .trim();
             if (description) {
-                menuItems.push(...forEachDay({
-                    name: `${weeklyLabel}: ${description}`,
-                    price: KANTIN_LUNCH_PRICE
-                }));
+                descriptionParts.push(description);
             }
             continue;
         }
 
-        const leadingDay = extractLeadingDay(paragraphText);
-        if (leadingDay?.text) {
-            menuItems.push({
-                name: leadingDay.text,
-                price: KANTIN_LUNCH_PRICE,
-                day: leadingDay.day
-            });
+        const leadingDay = extractLeadingDay(line);
+        if (leadingDay) {
+            flushItem();
+            currentWeeklyLabel = undefined;
+            currentDay = leadingDay.day;
+            if (leadingDay.text) {
+                descriptionParts.push(leadingDay.text);
+            }
+        } else if (currentDay || currentWeeklyLabel) {
+            descriptionParts.push(line);
         }
     }
 
+    flushItem();
     return menuItems;
 };
 
 export const parseKantinMenuFromHtml = (html: string): MenuItem[] => {
     const $ = cheerio.load(html);
-    const getParagraphText = (paragraph: Element): string => {
-        const $paragraph = $(paragraph);
-        const leadingStrong = $paragraph.children('strong').first();
-        if (leadingStrong.length === 0) {
-            return $paragraph.text();
-        }
-
-        const trailingText = $paragraph.clone().children('strong').remove().end().text();
-        return normalizeWhitespace(`${leadingStrong.text()} ${trailingText}`);
-    };
-
     const menuHeading = $('h1').filter((_, element) => {
         const text = normalizeWhitespace($(element).text());
         return text.toLowerCase().startsWith('meny');
     }).first();
 
-    if (menuHeading.length > 0) {
-        const menuRoot = menuHeading.closest('div');
-        const menuParagraphs = menuRoot.find('p').toArray().map(getParagraphText);
-        const menuItems = parseKantinParagraphs(menuParagraphs);
-        if (menuItems.length > 0) {
-            return menuItems;
-        }
-    }
-
-    const bodyParagraphs = $('p').toArray().map(getParagraphText);
-    return parseKantinParagraphs(bodyParagraphs);
+    const headingRoot = menuHeading.closest('div');
+    const menuRoot = (headingRoot.length > 0 ? headingRoot : $('body')).clone();
+    menuRoot.find('script, style').remove();
+    menuRoot.find('br').replaceWith('\n');
+    menuRoot.find('p, div, h1, h2, h3, li').prepend('\n').append('\n');
+    menuRoot.find('strong, b').prepend('\n').append(' ');
+    return parseKantinLines(splitNormalizedLines(menuRoot.text()));
 };
 
 export const scrapeKantinMenu = async (fixtureUrl?: string): Promise<MenuItem[]> => {

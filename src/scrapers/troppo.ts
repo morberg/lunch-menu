@@ -9,6 +9,8 @@ const stripInvisibleChars = (text: string): string => text.replace(/[\u200B-\u20
 
 const normalizeTroppoText = (text: string): string => normalizeWhitespace(stripInvisibleChars(text));
 
+const stripTrailingDash = (text: string): string => text.replace(/\s*[-–]\s*$/, '');
+
 const isDishName = (dishName: string): boolean => {
     const firstCharacter = dishName.charAt(0);
     return (
@@ -35,7 +37,7 @@ const extractLunchPrice = (html: string): number | null => {
 
 const extractWeeklyDishes = (html: string): string[] => {
     const $ = cheerio.load(html);
-    const mondayFridayHeading = $('h2').filter((_, element) => normalizeTroppoText($(element).text()).toLowerCase() === 'monday-friday').first();
+    const mondayFridayHeading = $('h2').filter((_, element) => /^(?:monday|saturday)-friday\b/i.test(normalizeTroppoText($(element).text()))).first();
     if (mondayFridayHeading.length === 0) {
         return [];
     }
@@ -49,7 +51,7 @@ const extractWeeklyDishes = (html: string): string[] => {
     const seen = new Set<string>();
 
     mondayFridayMenuSection.find('.w-richtext strong').each((_, element) => {
-        const dishName = normalizeTroppoText($(element).text());
+        const dishName = stripTrailingDash(normalizeTroppoText($(element).text()));
         if (!isDishName(dishName)) {
             return;
         }

@@ -57,4 +57,22 @@ describe('Troppo parser robustness', () => {
             )
         );
     });
+
+    test('accepts the saturday-friday heading and strips trailing dashes from dish names', () => {
+        const html = `
+            <h2>SATURDAY-FRIDAY LUnch Menu</h2>
+            <div><div class="w-richtext">
+                <p><strong>Kampong Style Hainanese Chicken -<br>‍<br>‍</strong>Rice steamed in chicken broth.<br>(Chinese)<br>or<br><strong>Pad Thai Chicken - <br></strong>Stir-fried chicken.</p>
+            </div></div>
+            <p>Lunch 159-169kr</p>
+        `;
+
+        const result = parseTroppoHtml(html);
+
+        expect(result).toEqual(
+            ['Kampong Style Hainanese Chicken', 'Pad Thai Chicken'].flatMap((name) =>
+                SWEDISH_DAYS.map((day) => ({ name, price: 169, day }))
+            )
+        );
+    });
 });

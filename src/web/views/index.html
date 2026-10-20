@@ -403,7 +403,43 @@
                 return table;
             }
 
-            function appendRestaurantBlock(target, r, items, showPlaceholder, placeholderText) {
+            const BUG_REPORT_URL = 'https://github.com/morberg/lunch-menu/issues/new';
+
+            function buildBugReportUrl(r, daySv) {
+                const dayLower = daySv.toLowerCase();
+                const title = `Ingen meny hittades för ${r.name} (${dayLower})`;
+                const body = [
+                    '## Restaurang',
+                    `- Namn: ${r.name}`,
+                    `- Nyckel: \`${r.key}\``,
+                    `- Källa: ${r.url}`,
+                    '',
+                    '## Vad gick fel',
+                    `Sidan visade "Ingen meny hittades för ${dayLower}" för ${r.name}, trots att restaurangen kan ha en meny på källsidan. Verifiera mot källsidan och åtgärda scrapern för \`${r.key}\` (se \`src/restaurants.ts\`).`,
+                    '',
+                    '## Miljö',
+                    `- Sida: ${window.location.href}`,
+                    `- Dag: ${daySv}`,
+                    `- Rapporterad: ${new Date().toISOString()}`
+                ].join('\n');
+                const params = new URLSearchParams({ title, body, labels: 'bug' });
+                return `${BUG_REPORT_URL}?${params.toString()}`;
+            }
+
+            function createMissingMenuNote(r, daySv) {
+                const note = document.createElement('div');
+                note.className = 'placeholder-note';
+                note.append(`Ingen meny hittades för ${daySv.toLowerCase()}. `);
+                const link = document.createElement('a');
+                link.href = buildBugReportUrl(r, daySv);
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.textContent = 'Rapportera felet';
+                note.appendChild(link);
+                return note;
+            }
+
+            function appendRestaurantBlock(target, r, items, showPlaceholder, daySv) {
                 if (!items.length && !showPlaceholder) return;
                 const restaurantDiv = document.createElement('div');
                 restaurantDiv.className = 'restaurant';
@@ -423,10 +459,7 @@
                     restaurantDiv.appendChild(createRestaurantHeader(r, false, null));
                     const contentWrap = document.createElement('div');
                     contentWrap.className = 'restaurant-content';
-                    const placeholder = document.createElement('div');
-                    placeholder.className = 'placeholder-note';
-                    placeholder.textContent = placeholderText;
-                    contentWrap.appendChild(placeholder);
+                    contentWrap.appendChild(createMissingMenuNote(r, daySv));
                     restaurantDiv.appendChild(contentWrap);
                 }
                 if (isCollapsed) restaurantDiv.classList.add('collapsed');
@@ -452,7 +485,7 @@
                         r,
                         items,
                         true,
-                        `Ingen meny hittades för ${daySv.toLowerCase()}. Klicka för att besöka.`
+                        daySv
                     );
                 });
 
